@@ -1,0 +1,8 @@
+venv/*
+*.hip
+__pycache__
+*.bgeo*
+
+
+*.hda
+*.otl

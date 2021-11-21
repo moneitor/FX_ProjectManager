@@ -1,0 +1,3 @@
+numpy==1.21.4
+PySide2==5.15.2
+shiboken2==5.15.2
