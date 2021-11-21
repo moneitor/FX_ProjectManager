@@ -1,0 +1,31 @@
+int hedge_first = primhedge(0, @primnum);
+int hedge_next = hedge_next(0, hedge_first);
+if(hedge_isvalid(0, hedge_next)){
+    i@p = 1;
+} else {
+    i@p = 0;
+}
+
+i@h = hedge_first;
+
+i@hedge_src_first = hedge_srcpoint(0, hedge_first);
+i@hedge_dst_first = hedge_dstpoint(0, hedge_first);
+
+i@hedge_src_next = hedge_srcpoint(0, hedge_next);
+i@hedge_dst_next = hedge_dstpoint(0, hedge_next);
+
+vector src_first = point(0, "P",  i@hedge_src_first);
+vector dst_first = point(0, "P",  i@hedge_dst_first);
+
+vector src_next = point(0, "P",  i@hedge_src_next);
+vector dst_next = point(0, "P",  i@hedge_dst_next);
+
+v@vec_first = normalize(dst_first - src_first);
+v@vec_next = normalize(dst_next - src_next);
+
+int new_pt = addpoint(0, @P);
+
+setpointattrib(0, "vec_first", new_pt, v@vec_first);
+setpointattrib(0, "vec_next", new_pt, v@vec_next);
+
+removeprim(0, @primnum, 1);

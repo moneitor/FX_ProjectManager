@@ -1,0 +1,17 @@
+// f = -kx - cv
+// This wrangle uses the dampening harmonic oscilator formula
+// F = -kx -cv
+// where k is how quick the force will reach the target
+// x is the difference between the current value and the target value
+// c is the dampening value
+
+int fgeo = findattribval(1, "point", "name", s@name);
+float k = chf("k");
+float c = chf("c");
+
+
+vector fp = point(1, "P", fgeo);
+
+
+vector x = v@P - fp;
+v@v += (-k * x) - (c * v@v);  

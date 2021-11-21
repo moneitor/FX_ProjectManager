@@ -1,0 +1,21 @@
+vector p = 0;
+
+for (int n=0; n < freqCount; n++) {
+    float f1 = 0;
+    float baseSize = chf("baseSize") * (n + 1);
+    float gFreq = 3;
+    
+    vector restP = point(0, "P", @ptnum);
+    vector uvw = restP * baseSize;
+    
+    int intX = floor(uvw.x);
+    int intY = floor(uvw.y);
+    int intZ = floor(uvw.z);   
+    
+    p = set(intX, intY, intZ) * 1 / baseSize;   
+    
+}
+
+
+
+v@P = p;

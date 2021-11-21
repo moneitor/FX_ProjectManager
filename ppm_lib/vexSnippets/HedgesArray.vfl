@@ -1,0 +1,20 @@
+//////////////////////////////////////////////////////////////////////////////////////////
+// Creates an array containing all the half edges and an integer with the amount of them for the current point//
+//////////////////////////////////////////////////////////////////////////////////////////                       
+            
+int count = 0;
+
+int hedge = pointhedge(0, @ptnum);
+int hedges[];
+
+while(hedge != -1) {
+    append(hedges, hedge);
+    int nextHedge = pointhedgenext(0, hedge);
+    count++;
+    
+    hedge = nextHedge;
+}
+
+i[]@hedges = hedges;
+i@count = count;
+            

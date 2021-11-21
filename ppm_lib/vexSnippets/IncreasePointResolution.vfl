@@ -1,0 +1,48 @@
+float radius = chf("radius");
+int maxpt = chi("max_pt");
+float mindist = chf("min_distance");
+string ptattribs[] = detailintrinsic(0, "pointattributes");
+
+int pts[] = pcfind(0, "P", v@P, radius, maxpt);
+
+
+// For each found point it creates a new point in the middle if myself
+// and the founded point
+foreach(int p; pts) {
+    vector fpos = point(0, "P", p);
+    vector dir = fpos - v@P;
+    float dist = length(dir);
+    vector newpos = v@P + ( dir * 0.5);
+    
+    if(dist >= mindist) {
+        int newpt = addpoint(0, newpos);   
+        
+        // Iterates through all the point attributes and updates the attribs
+        // on the new points
+        foreach(string att; ptattribs){
+            int attType = pointattribtype(0, att);
+            if (attType != -1) {
+              if (attType == 0){
+                int getatt = point(0, att, p);
+                setpointattrib(0, att, newpt, getatt);                
+              }      
+              if (attType == 1) {
+                int attsize = attribsize(0, "point", att);
+                if (attsize == 1) {
+                    float getatt = point(0, att, p);
+                    setpointattrib(0, att, newpt, getatt);
+                    }
+                if (attsize > 1) {
+                    vector getatt = point(0, att, p);
+                    setpointattrib(0, att, newpt, getatt);
+                }
+                
+              }
+              if (attType == 2) {
+                string getatt = point(0, att, p);
+                setpointattrib(0, att, newpt, getatt);
+              }
+           }        
+        }
+    }    
+}

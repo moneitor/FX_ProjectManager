@@ -1,0 +1,12 @@
+matrix3 tm = primintrinsic(0, "transform", @primnum);
+
+matrix3 ident = ident();
+vector axis = set(1,0,0);
+
+
+rotate(ident, radians(chf("amount")), axis);
+scale(ident, chv("scale"));
+
+tm *= ident;
+
+setprimintrinsic(0, "transform", i@primnum, tm, "set");

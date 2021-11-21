@@ -1,0 +1,94 @@
+function float sinePattern (float x; float y; float z; float freq; vector dir){
+
+    dir = normalize(dir);
+
+    float weight = 10;
+    float gaussSize = 1.5;
+    
+    float gaussian = weight * exp( -PI * (gaussSize * gaussSize) * ((x*x) + (y*y) + (z*z)) );
+    float sineshape = cos(2 * PI * freq * ((x*dir.x) + (y*dir.y) + (z*dir.z)) );
+    
+    return gaussian * sineshape;   
+
+}
+
+float jitter = chf("jitter");
+float stretch = f@stretch;
+vector dir = v@stretchDir;
+
+
+if (length(dir) < 0.1) {
+    f@wrinkleRaw = 0;
+    f@wrinkleStr = 0;    
+    return;
+}
+
+int cellCount = chi("cellCount");
+
+dir = normalize(dir);
+float allF = 0;
+int freq = chi("frequency");
+
+vector p = 0;
+
+for (int n=0; n<freq; n++) {
+    float f1 = 0;
+    float baseSize = chf("baseSize") * (n + 1);
+    float gFreq = 3;
+    
+    vector restP = point(1, "P", @ptnum);
+    vector uvw = restP * baseSize;
+    
+    int intX = floor(uvw.x);
+    int intY = floor(uvw.y);
+    int intZ = floor(uvw.z);   
+    
+    float partialX = uvw.x - intX;
+    float partialY = uvw.y - intY;
+    float partialZ = uvw.z - intZ;
+    
+    vector C = 0;
+    
+    int i,j,k;
+    
+    for (i=-1; i<=0; i++) 
+    {
+        for (j=-1; j<=0; j++)
+        {
+            for (k=-1; k<=0; k++) 
+            {
+                float offset = 33.333;
+                
+                for (int cc=0; cc<cellCount; cc++) 
+                {
+                    int centerX = intX - i;
+                    int centerY = intY - j;
+                    int centerZ = intZ - k;
+                    
+                    float randomX = random(centerX * offset  + cc + offset) - 0.5;
+                    float randomY = random(centerY * offset  + cc + offset) - 0.5;
+                    float randomZ = random(centerZ * offset  + cc + offset) - 0.5;
+                    
+                    float qCellX = partialX + i + randomX * jitter;
+                    float qCellY = partialY + j + randomY * jitter;
+                    float qCellZ = partialZ + k + randomZ * jitter;  
+                    
+                    float value = sinePattern(qCellX, qCellY, qCellZ, gFreq, dir);
+                    
+                    f1 +=  value;               
+                }
+            }
+        }
+    }  
+    
+    allF = (f1 + allF) * 0.5;
+}
+
+allF /= cellCount;
+
+f@wrinkleRaw = allF;
+f@wrinkleStr = max(stretch*-1, 0.0);
+
+
+
+

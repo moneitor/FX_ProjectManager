@@ -1,0 +1,9 @@
+string attribute = chs("attribute");
+
+int arr[] = uniquevals(0, "prim", attribute);
+s[]@atts = {};
+
+foreach(int i; arr) {
+    string value = itoa(i);
+    append(s@atts, value);
+}

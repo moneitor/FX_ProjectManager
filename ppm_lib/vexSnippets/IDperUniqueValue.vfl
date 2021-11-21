@@ -1,0 +1,22 @@
+// Generates an integer attribute called i@pieceID for each 
+// unique value in the given attribute
+
+string runOver = chs("rclass");
+
+int numGrp = nuniqueval(0, runOver, chs("../att"));
+
+for (int grp = 0; grp < numGrp; grp++) {
+    string foundGrp = uniqueval(0, runOver, chs("../att"), grp);
+    if(runOver == "point"){
+        if(foundGrp == point(0, chs("../att"), i@ptnum)) {
+            i@pieceID = grp;
+        }
+    }
+    
+    else if(runOver == "prim") {
+        if(foundGrp == prim(0, chs("../att"), i@primnum)) {
+            i@pieceID = grp;
+        }
+    }
+}
+

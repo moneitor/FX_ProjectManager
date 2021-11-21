@@ -1,0 +1,33 @@
+// CREATES POINTS PER VOXEL AND STORE THEIR INFORMATION AS ATTRIBUTES
+
+vector _volres = volumeres(1, "density")
+
+for (int _i = 0; _i < _volres.x; _i++)
+{
+    for (int _j = 0; _j < _volres.y; _j++)
+    {
+        for (int _k = 0; _k < _volres.z; _k++)
+        {
+            vector _vPos = volumeindextopos(1, "density", set(_i, _j, _k));
+            float _density = volumesample(1, "density", _vPos);
+           
+            if (_density > chf("density_bias"))
+            {
+                int _idx = addpoint(0, _vPos);
+                float _vx = volumesample(1, "vel.x", _vPos);
+                float _vy = volumesample(1, "vel.y", _vPos);
+                float _vz = volumesample(1, "vel.z", _vPos);
+                float _restx = volumesample(1, "rest.x", _vPos);
+                float _resty = volumesample(1, "rest.y", _vPos);
+                float _restz = volumesample(1, "rest.z", _vPos);
+                float _rest2x = volumesample(1, "rest2.x", _vPos);
+                float _rest2y = volumesample(1, "rest2.y", _vPos);
+                float _rest2z = volumesample(1, "rest2.z", _vPos);
+                setpointattrib(0, "density", _idx, _density, "set");
+                setpointattrib(0, "v", _idx, set(_vx, _vy, _vz), "set");
+                setpointattrib(0, "rest", _idx, set(_restx, _resty, _restz), "set");
+                setpointattrib(0, "rest2", _idx, set(_rest2x, _rest2y, _rest2z), "set");
+            }
+        }
+    }
+}

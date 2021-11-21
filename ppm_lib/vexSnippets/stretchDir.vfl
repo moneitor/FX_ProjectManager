@@ -1,0 +1,106 @@
+function vector eigenVector( matrix3 myMatrix ; float errorMax){
+
+    vector eigenVal = rand(set(1,5,2));
+    float errorEstimate = 100;
+    float oldEigen = 0;
+   
+    while(errorEstimate  > errorMax) {
+
+        eigenVal = eigenVal * myMatrix;
+   
+        float maxC = max(eigenVal);
+       
+        errorEstimate = ((maxC - oldEigen)/ maxC) * 100;
+   
+        vector newEigen = set(eigenVal.x / maxC , eigenVal.y / maxC , eigenVal.z / maxC);
+   
+        eigenVal = newEigen;
+   
+        oldEigen = maxC;
+   
+        }
+       
+        eigenVal = normalize(eigenVal);
+        return eigenVal;
+       
+}
+
+vector ForceTangent(vector Norm; vector MyVector){
+
+    vector Perpendicular = (dot(MyVector , Norm) / dot(Norm, Norm)) * Norm ;
+    Perpendicular = MyVector - Perpendicular;
+    float mag = length(MyVector);
+    Perpendicular = normalize(Perpendicular);
+   
+    return Perpendicular * mag;
+   
+}
+
+vector restP = point(1, "P", @ptnum);
+vector P = v@P;
+
+vector compressVectors[];
+
+vector avg = set(0,0,0);
+
+float totalStretch = 0;
+float edgeLenAvg = 0;
+
+int hedge = pointhedge(0, @ptnum);
+
+while (hedge != -1) {
+    int pt = hedge_dstpoint(0, hedge);
+    vector dstP =     point(0, "P", pt);
+    vector restDstP = point(1, "P", pt);
+   
+    // Move to origin relative to original P so the operations are done at the origin   
+    dstP = dstP - P;
+    restDstP = restDstP - restP;
+   
+    vector localCompress = 0;
+   
+    edgeLenAvg += length(restDstP);
+   
+    float stretch = length(dstP) - length(restDstP);
+   
+    vector stretchVector = restDstP * stretch;
+   
+    if (stretch < 0) { 
+        localCompress = stretchVector;
+    }
+   
+    totalStretch += stretch;    
+    append(compressVectors, localCompress);    
+     
+   
+    hedge = pointhedgenext(0, hedge);  
+}
+
+if (len(compressVectors) > 0) {
+    totalStretch /= float(len(compressVectors));
+    edgeLenAvg /= float(len(compressVectors));  
+}
+
+totalStretch /= edgeLenAvg;
+avg = 0;
+
+matrix3 variance = 0;
+
+for (int i = 0; i < len(compressVectors); i++) {
+    vector delta = compressVectors[i] - 0;
+    matrix3 covar = outerproduct(delta, delta);
+    variance += covar;
+}
+
+if (len(compressVectors) > 0) {
+    variance = variance / float(len(compressVectors));
+}
+
+
+vector x = eigenVector(variance, 0.01);
+x = ForceTangent(v@N, x);
+
+v@stretchDir = x;
+f@stretch = totalStretch;
+
+

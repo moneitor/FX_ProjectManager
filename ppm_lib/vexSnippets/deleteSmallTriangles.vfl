@@ -1,0 +1,10 @@
+// Measure area of a triangle and compares it with it's perimeter and calculates it's ratio
+
+float ratio_threshold = chf("ratio_threshold");
+f@marea = primintrinsic(0, "measuredarea", @primnum);
+f@mperimeter = primintrinsic(0, "measuredperimeter", @primnum);
+f@ratio = f@mperimeter / f@marea;
+
+if(f@ratio > ratio_threshold) {
+    removeprim(0, @primnum);
+}

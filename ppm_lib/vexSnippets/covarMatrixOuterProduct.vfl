@@ -1,0 +1,21 @@
+// it requires all the vectors you are going to compare stored in an array called myVectors
+
+vector myVectors[] = {};
+
+
+function matrix3 covarianceMatrixFromOuterProduct(vector myVectors[]) {
+
+  matrix3 variance = 0;
+
+  for (int i = 0; i < len(myVectors); i++) {
+      vector delta = myVectors[i] - 0;
+      matrix3 covar = outerproduct(delta, delta);
+      variance += covar;
+  }
+
+  if (len(myVectors) > 0) {
+      variance = variance / float(len(myVectors));
+  }
+  
+  return variance;
+}

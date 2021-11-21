@@ -1,0 +1,49 @@
+////////////////////////////////////////////////////////////////////////////////////////
+//// Approach for parallel transport, generates VEC attributes X, Y and Z ///////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// Create array of all the points
+int points[];
+//int id=@ptnum;
+for (int i = 0; i<@numpt; i++) {
+    //id = point(0,'id',i);
+    append(points,i);
+}
+
+// Create initial normal
+vector UpVec = set(0,1,0);
+
+// Compute new normals sequentially for each point
+foreach(int i ; points) {
+    vector tangentu = point(@OpInput1 ,"tangentu" , i);   
+    vector vec1 = normalize(cross(UpVec, tangentu));
+    vector vec2 = normalize(cross(tangentu, vec1));
+    vec2 = normalize(vec2);
+    UpVec = vec2; //override UpVec attribute with vec2 in order to keep the correct axis
+    setpointattrib(0 ,"N" , i , vec2 , "set");
+    
+    //creates the empty attributes to store the vectors I need for the Orient
+    addattrib(0 , "point", "x" , (set(0,0,0)) );
+    addattrib(0 , "point", "z" , (set(0,0,0)) );
+    addattrib(0 , "point", "y" , (set(0,0,0)) );
+        
+    //set the attributes in case you want to use them outside of this wrangle
+    vector XTemp =normalize(cross(vec2,normalize(tangentu)));
+    setpointattrib(0, "x" , i , XTemp , "set");
+    setpointattrib(0, "z" , i , normalize(tangentu) , "set");
+    setpointattrib(0, "y" , i , vec2 , "set"); 
+    
+       
+    float uRamp = chramp("uRamp" , float(float(i)/npoints(0)) , 0);
+    float spin = chf("spinning") * uRamp;
+    
+    vector4 rotOrient = eulertoquaternion(set(0,spin,0) , 1);
+    vector4 orientTemp = quaternion(lookat(XTemp , vec2 , normalize(tangentu)));
+    vector4 orient = qmultiply(orientTemp , rotOrient);
+    
+    
+    setpointattrib(0, "orient" , i , orient , "set");
+    
+    
+        
+} 

@@ -1,0 +1,42 @@
+// This wrangle uses the dampening harmonic oscilator formula
+// F = -kx -cv
+// where k is how quick the force will reach the target
+// x is the difference between the current value and the target value
+// c is the dampening value
+
+float k = chf("k");
+float c = chf("c");
+
+int quaternion_compare(vector4 A; vector4 B){
+    int compare = 0;
+    if ((A.w * B.w + A.x * B.x + A.y * B.y + A.z * B.z) < 0){
+        compare = 1;
+    }
+    
+    return compare;
+}
+
+
+int fgeo = findattribval(1, "point", "name", s@name);
+
+matrix3 animtm = primintrinsic(1, "transform", fgeo);
+matrix3 mytm = primintrinsic(0, "transform", @ptnum);
+
+vector4 animq = quaternion(animtm);
+vector4 myq = quaternion(mytm);
+
+int reverse = quaternion_compare(myq, animq) ? -1 : 1;
+
+
+animq *= reverse;
+
+float timeMult = 1.0/@TimeInc;
+timeMult *= 1.0/chf("timescale");
+
+
+vector w = lerp(v@w, qconvert(qmultiply(myq, qinvert(animq))) * timeMult , chf("bias"));
+
+
+
+// dampening oscilation formula
+v@w += normalize((-k * w)) - (c * v@w);  

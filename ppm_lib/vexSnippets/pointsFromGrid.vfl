@@ -1,0 +1,28 @@
+//  CREATES POINTS ON A GRID BASED ON ITS SIZE AND ROWS AND COLUMS
+// Connect the grid to the second input
+
+vector _bbcenter = getbbox_center(1);
+vector _bbmax = getbbox_max(1);
+vector _bbmin = getbbox_min(1);
+vector _bbsize = getbbox_size(1);
+
+int _rows = chi('rows');
+int _columns = chi('columns');
+
+int _npoints = _rows*_columns;
+
+for (int _r=0; _r<_rows; _r++)
+{
+    float _sizeX =  _bbsize.x/_rows;
+    float _posX = _bbmin.x + _sizeX*.5 + _r*_sizeX;
+   
+    for (int _c=0; _c<_columns; _c++)
+    {
+        float _sizeZ =  _bbsize.z/_columns;
+        float _posZ = _bbmin.z + _sizeZ*.5 + _c*_sizeZ;
+       
+        int _nPoint = addpoint(0, set(_posX, _bbcenter.y, _posZ));
+        setpointattrib(0, "sizeX", _nPoint, _sizeX, "set");
+        setpointattrib(0, "sizeZ", _nPoint, _sizeZ, "set");
+    }
+}

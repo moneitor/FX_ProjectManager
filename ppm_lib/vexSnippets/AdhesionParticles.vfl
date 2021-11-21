@@ -1,0 +1,38 @@
+vector ForceTangent(vector Norm; vector MyVector){
+/*This function takes vector MyVector and forces it to be orthogonal to the vector 
+Norm, so it is tangent to the surface from which Norm is created, Norm should be the Normal 
+of the surface*/
+    vector Perpendicular = (dot(MyVector , Norm) / dot(Norm, Norm)) * Norm ;
+    Perpendicular = MyVector - Perpendicular;
+    float mag = length(MyVector);
+    Perpendicular = normalize(Perpendicular);
+    
+    return Perpendicular * mag;    
+}
+
+
+float friction = 1-chf("friction");
+float maxdist = chf("distance");
+int prim;
+vector primuv;
+float dist = xyzdist(1, v@P, prim, primuv, maxdist);
+
+vector fN = primuv(1, "N", prim, primuv);
+
+vector grad = fN * -1;
+
+
+vector Norm = grad;
+vector MyVector = v@v;
+
+vector newv = ForceTangent(Norm, MyVector);
+newv = lerp(normalize(newv) * friction, grad, 0.25);
+
+if(dist < maxdist) {
+    v@force += (newv * chf("suction"));
+    
+    if(i@group_fat ==1 ) {
+        v@v -= (v@v * 0.2);
+        v@force -= (v@force * 0.2);
+    }
+}

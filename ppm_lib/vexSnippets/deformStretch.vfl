@@ -1,0 +1,20 @@
+float wrinkleRaw = f@wrinkleRaw ;
+float wrinkleStr = f@wrinkleStr ;
+float absstretch = abs(f@stretch);
+v@Cd = absstretch * 5;
+
+wrinkleStr = clamp(wrinkleStr*2.0, 0.0, chf("compressionClamp"));
+wrinkleStr = pow(wrinkleStr, chf("compressionSensitivityFalloff"));
+
+float w = wrinkleRaw * wrinkleStr;
+w = wrinkleRaw * absstretch;
+
+float clampedDisp = clamp(w, chf("clampInnerDisp"), chf("clampOuterDisp"));
+
+float disp = clampedDisp;
+
+if (chi("deform")) 
+{
+    @P += disp * @N * 0.1 *chf("disp");
+}
+

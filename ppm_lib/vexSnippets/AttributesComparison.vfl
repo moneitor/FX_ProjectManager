@@ -1,0 +1,43 @@
+s[]@_1_pointattribs = detailintrinsic(1, "pointattributes");
+s[]@_1_primitiveattribs = detailintrinsic(1, "primitiveattributes");
+s[]@_1_vertexattribs = detailintrinsic(1, "vertexattributes");
+
+
+s[]@_2_pointattribs = detailintrinsic(2, "pointattributes");
+s[]@_2_primitiveattribs = detailintrinsic(2, "primitiveattributes");
+s[]@_2_vertexattribs = detailintrinsic(2, "vertexattributes");
+
+// Attributes to export 
+s[]@diff_pt_att_1;
+s[]@diff_pt_att_2;
+
+s[]@diff_prim_att_1;
+s[]@diff_prim_att_2;
+
+s[]@diff_vert_att_1;
+s[]@diff_vert_att_2;
+
+
+function string [] missing_attributes (string list1[]; string list2[]){
+    string diff[];
+    
+    foreach (string att1; list1){
+    if(len(find(list2, att1)) > 0){  
+        continue;
+    } else {
+        append(diff, att1);
+    }
+}   
+    
+    return diff;
+}
+
+
+s[]@diff_prim_att_1 = missing_attributes(s@_1_primitiveattribs, s@_2_primitiveattribs);
+s[]@diff_prim_att_2 = missing_attributes(s@_2_primitiveattribs, s@_1_primitiveattribs);
+
+s[]@diff_pt_att_1 = missing_attributes(s@_1_pointattribs, s@_2_pointattribs);
+s[]@diff_pt_att_2 = missing_attributes(s@_2_pointattribs, s@_1_pointattribs);
+
+s[]@diff_vert_att_1 = missing_attributes(s@_1_vertexattribs, s@_2_vertexattribs);
+s[]@diff_vert_att_2 = missing_attributes(s@_2_vertexattribs, s@_1_vertexattribs);
