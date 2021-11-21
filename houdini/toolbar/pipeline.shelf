@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="pipeline" label="Pipeline">
+    <memberTool name="openFile"/>
+    <memberTool name="save"/>
+    <memberTool name="up_version"/>
+    <memberTool name="Extract_fbx"/>
+    <memberTool name="MantraControls"/>
+    <memberTool name="batcher"/>
+    <memberTool name="mergeHDR"/>
+  </toolshelf>
+
+  <tool name="Extract_fbx" label="Extract FBX" icon="OBJ_geo">
+    <script scriptType="python"><![CDATA[import hou
+
+
+def return_null_children():
+    """RETURN A LIST WITH ALL MERGEABLE NODES"""
+    nodesList = []
+    for node in hou.selectedNodes():  
+        childrens = node.allSubChildren()
+        if len(childrens) > 0:
+            for child in childrens:
+                if child.type().name() == "geo":
+                    for newChild in child.allSubChildren():
+                        if not len(newChild.outputs()):
+                            if newChild.type().name() != "subnet":    
+                                nodesList.append(newChild)
+                              
+    return nodesList
+
+    
+def create_merge(objects_to_merge):
+    """CREATE A MERGE NODE WITH ALL THE OUPUT FROM FBX"""
+    num = len(objects_to_merge)
+    name = hou.selectedNodes()[0]
+    name = name.name()
+    merge_node = hou.node("/obj").createNode("geo" , name + "_merge")
+    
+    merge = merge_node.createNode("object_merge" , name + "_merge")
+    merge.parm("numobj").set(num)
+    merge.parm("xformpath").set(".")
+    
+    for i in range(1 , num+1):
+        path = objects_to_merge[i-1].path()
+        merge.parm('objpath%d' %i).set(path)
+                              
+
+    
+create_merge(return_null_children())
+
+]]></script>
+  </tool>
+
+  <tool name="save" label="SAVE NEW" icon="SOP_heightfield_file">
+    <script scriptType="python"><![CDATA[from file_scripts import main_app_file_options as main
+reload (main)
+
+main.run_app()]]></script>
+  </tool>
+
+  <tool name="openFile" label="OPEN" icon="OBJ_fetch">
+    <helpText><![CDATA[This load a Qt menu that allows you to pick any scene in a shot inside of the project.
+
+Double click the scene you want to open, and then press the Open button.]]></helpText>
+    <script scriptType="python"><![CDATA[#from file_scripts import open_file as op
+from file_scripts import open_dialog as op
+from file_scripts import files_handling_class as fil
+reload(fil)
+reload(op)
+
+op.run_open()]]></script>
+  </tool>
+
+  <tool name="up_version" label="UP Version" icon="VOP_add">
+    <script scriptType="python"><![CDATA[from file_scripts import increment_save as inc
+reload (inc)
+
+inc.save_increment()
+reload (inc)]]></script>
+  </tool>
+
+  <tool name="MantraControls" label="Mantra Ctrl" icon="ROP_mantra">
+    <script scriptType="python"><![CDATA[import importlib
+
+
+from qtDialogs import Rop_controls as r
+importlib.reload(r)
+#reload(r)
+
+r.run_app()
+]]></script>
+  </tool>
+
+  <tool name="batcher" label="Batcher" icon="ROP_batch">
+    <script scriptType="python"><![CDATA[import hou
+
+selection = hou.ui.readMultiInput("Select the CFX Geometry", ["Creature Name"], buttons=("OK", "Cancel"))
+
+if selection[0] == 0:
+    geoCreate = hou.node("/obj").createNode("geo", selection[1][0])
+    geoCreate.createNode("RBD_Rigg::01", "test")]]></script>
+  </tool>
+
+  <tool name="mergeHDR" label="Merge HDR" icon="OBJ_light_gi">
+    <script scriptType="python"><![CDATA[import sys
+sys.path.append(r"C:\Users\mo_no\AppData\Local\Programs\Python\Python37-32\lib\site-packages\exif")
+
+from HDR import create_hdr as hdr
+
+reload(hdr)]]></script>
+  </tool>
+</shelfDocument>

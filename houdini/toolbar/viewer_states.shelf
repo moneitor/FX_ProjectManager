@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="viewerStates" label="Viewer States">
+    <memberTool name="mystate1"/>
+    <memberTool name="inspect"/>
+  </toolshelf>
+
+  <tool name="mystate1" label="MyState" icon="PLASMA_App">
+    <toolMenuContext name="network">
+      <contextNetType>SOP</contextNetType>
+    </toolMenuContext>
+    <script scriptType="python"><![CDATA[import stateutils
+import soptoolutils
+
+
+# Unlike asset event callbacks, the tool script does NOT get a reference
+# to the asset type in kwargs["type"] (it does get the tool name in
+# kwargs["toolname"]). So you either need to come up with a way to figure
+# out the node name from the tool name, or simply embed the node name
+# explicitly, like this.
+nodetypename = "Hernan_sopviewerstatetest"
+# Use the "base" name of the asset to name new objects
+basename = "Hernan_sopviewerstatetest"
+
+# Get a reference to the active pane; if this tool was launched from the tab
+# menu in a network edtitor, pane will be a NetworkEditor
+pane = stateutils.activePane(kwargs)
+if isinstance(pane, hou.SceneViewer):
+    network = pane.pwd()
+    print network
+    if network.childTypeCategory() != hou.sopNodeTypeCategory():
+        # We're not already inside an object, so ask the user where they want
+        # the new SOP
+        objects = pane.selectObjects(
+            prompt='Select objects',
+            quick_select=False,
+            use_existing_selection=True,
+            allow_multisel=False,
+            allowed_types=['geo']
+        )
+        if objects:
+            # If the user selected more than one object, just take the first
+            network = objects[0]
+            # Jump into the object
+            pane.setPwd(network)
+        else:
+            # The user pressed Enter without selecting an object, so create
+            # a new object
+            cname = basename + "_object1"
+            network = hou.node("/obj").createNode("geo", node_name=cname)
+
+        # Dive into the network
+        pane.setPwd(network)
+
+    # Create the new node in the selected network (the empty list represents
+    # no component selections)
+    newnode = stateutils.createFilterSop(kwargs, nodetypename, network, [])
+    # Launch the default state associated with the node type (your custom
+    # Python state, if you set up the asset correctly)
+    pane.enterCurrentNodeState()
+    # Alternatively, you could set your custom state explicitly like this
+    # pane.setCurrentState("my_state_name")
+
+else:
+    # For interactions other than in a viewer, fall back to the low-level
+    # function
+    soptoolutils.genericTool(kwargs, nodetypename)
+    
+]]></script>
+  </tool>
+
+  <tool name="inspect" label="Inspect" icon="PLASMA_App">
+    <toolMenuContext name="network">
+      <contextNetType>SOP</contextNetType>
+    </toolMenuContext>
+    <script scriptType="python"><![CDATA[import stateutils
+
+viewer = stateutils.findSceneViewer()
+network = viewer.pwd()
+
+if network.childTypeCategory() != hou.sopNodeTypeCategory():
+    objects = viewer.selectObjects(
+        prompt = "Select object",
+        quick_select = False,
+        use_existing_selection = True,
+        allow_multisel = False,
+        allowed_types = ["geo"]
+        )
+        
+    if objects:
+        network = objects[0]
+        viewer.setPwd(network)
+        
+    else:
+        raise hou.Error("You must select an object to use this tool")
+        
+viewer.setCurrentState("mystate")]]></script>
+  </tool>
+</shelfDocument>

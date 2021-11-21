@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="QtExamples" label="QtExamples">
+    <memberTool name="simpleDialog"/>
+    <memberTool name="ComboBox"/>
+    <memberTool name="inspectScene"/>
+    <memberTool name="StandardDialogs"/>
+    <memberTool name="RopControls"/>
+    <memberTool name="CheckingDirectories"/>
+  </toolshelf>
+
+  <tool name="simpleDialog" label="Simple Dialog" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from qtDialogs import Simple_Dialog as s
+reload(s)
+
+s.run_app()
+]]></script>
+  </tool>
+
+  <tool name="ComboBox" label="Combo Box" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from qtDialogs import Combo_box as c
+reload(c)
+
+c.run_app()
+]]></script>
+  </tool>
+
+  <tool name="inspectScene" label="Inspect Scene" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from qtDialogs import Inspect_scene as i
+reload(i)
+
+i.run_app()
+]]></script>
+  </tool>
+
+  <tool name="StandardDialogs" label="StandardDialogs" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from qtDialogs import Standard_dialogs as s
+reload(s)
+
+s.run_app()
+]]></script>
+  </tool>
+
+  <tool name="RopControls" label="Rop Controls" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from qtDialogs import Rop_controls as r
+reload(r)
+
+r.run_app()
+]]></script>
+  </tool>
+
+  <tool name="CheckingDirectories" label="Checking Directories" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from qtDialogs import Checking_directories as c
+reload(c)
+
+c.run_app()
+]]></script>
+  </tool>
+</shelfDocument>
