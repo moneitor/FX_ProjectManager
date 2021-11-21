@@ -38,7 +38,7 @@ def remove_emp(emp):
 	connection.commit()
 
 
-
+""" EXAMPLES
 hernan = Employee("Hernan", "Llano", 72000)   
 natalia = Employee("Natalia", "Velasquez", 25000)
 francisco = Employee("Francisco", "Velasquez", 25000)
@@ -61,3 +61,4 @@ print (get_emps_by_name("Velasquez"))
 
 connection.commit()
 connection.close()
+"""
