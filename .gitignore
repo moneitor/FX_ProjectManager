@@ -2,7 +2,7 @@ venv/*
 *.hip
 __pycache__
 *.bgeo*
+*backup*
 
-
-*.hda
-*.otl
+*.hda*
+*.otl*
