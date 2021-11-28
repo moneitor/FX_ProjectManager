@@ -1,0 +1,10 @@
+attribwrangle/snippet
+    Pos from second input
+    vector fpos = point(1, "P", @ptnum);
+
+attribwrangle/snippet
+    Remove inside volume
+    float sample = volumesample(1, 0, v@P);
+    if (sample < 0) {
+        removepoint(0, @ptnum);
+    }

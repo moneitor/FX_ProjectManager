@@ -1,11 +1,10 @@
 import sys
 from PySide2 import QtUiTools, QtWidgets
-import OsUtils
+import utils.OsUtils
 import os
 import houdini_start
-import json_utils
-import folder_utils
-from ProjectObjects import Project
+import utils.json_utils
+import utils.folder_utils as folder_utils
 
 
 projects_dir =  os.path.normpath( os.path.join( os.path.dirname(os.path.dirname(__file__)) , "projects") )
