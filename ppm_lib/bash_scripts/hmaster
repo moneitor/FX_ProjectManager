@@ -2,5 +2,5 @@
 
 cd /opt/hfs19.0.383/
 source houdini_setup
-houdini
+houdini -foreground
 

@@ -4,7 +4,8 @@ import subprocess as sb
 
 HOU_NAME = "hfs19.0.383"
 
-def hou_run():
+def hou_run(fps=24, resx=1920, resy=1280):
+    
     _env = os.environ
     abs_path = os.path.abspath(__file__)
     pwd = os.path.dirname(os.path.dirname(abs_path))
@@ -18,8 +19,12 @@ def hou_run():
 
     _env["HH"] = os.pathsep.join([os.path.join(hfs, "houdini"), os.path.expanduser(user_expand)])
     _env["HOUDINI_PATH"] = ":".join([hou_pipe_path, _env["HH"], _env.get("HOUDINI_PATH", "")])
+    
+    # Set custom environment variables
+    _env["FPS"] =  str(fps)
+    _env["RESX"], _env["RESY"] = str(resx), str(resy)
 
-
+    # RUN HOUDINI
     result = sb.run(hou_bash_path, shell=True)
         
 
