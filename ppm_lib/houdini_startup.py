@@ -25,6 +25,7 @@ def hou_run(fps=24, resx=1920, resy=1280):
     # Set custom environment variables
     _env["FPS"] =  str(fps)
     _env["RESX"], _env["RESY"] = str(resx), str(resy)
+    #_env["PYTHONPATH"] = ":".join([ppm_lib, _env.get("PYTHONPATH", "")])
     
     # RUN HOUDINI
     result = sb.run(hou_bash_path, shell=True)

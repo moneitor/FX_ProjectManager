@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Author: Hernan Llano
+# Date Created:  30/11/2021
+# Last Modified:  30/11/2021
+
+# Description
+# On linux, sources the houdini setup on  /opt/
+# and then runs Houdini, foreground flag is set so
+# the output from houdini is shown in the terminal used to open it.
+
 cd /opt/hfs19.0.383/
 source houdini_setup
 houdini -foreground -desktop "ppm"
