@@ -14,8 +14,9 @@ class Main_PPM(QtWidgets.QWidget):
 	def __init__(self, parent=None):
 		super(Main_PPM, self).__init__(parent)
 
-		ui_file = r'.\ui\ppm_main.ui'
-		self.ui = QtUiTools.QUiLoader().load(ui_file, parentWidget=self)
+		file_path = os.path.abspath(os.path.dirname(__file__))
+		file_path = os.path.join(file_path, "ui", "ppm_main.ui")
+		self.ui = QtUiTools.QUiLoader().load(file_path, parentWidget=self)
 
 		self.project_path = projects_dir
 		self.project_name = ""

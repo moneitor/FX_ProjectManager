@@ -1,0 +1,28 @@
+function float F(vector pos; vector dir; float freq; float amp; float time){
+    // Given a vector dir, and a position, it will create a sine
+    // pattern in the direction of that vector
+    
+    float speed = 0.1;
+    float phase = 10;
+    
+    float dot = dot(pos, normalize(dir));
+    
+    float result = amp * cos( 2 * PI * freq * (dot - (speed * time)) + phase);    
+
+    return result;
+}
+
+
+float freq = chf("freq");
+float amp = chf("amp");
+
+
+vector staticP = point(1, "P", @ptnum);
+vector dirNoise = point(1, "dirNoise", @ptnum);
+vector stretchDir = v@stretchDir + dirNoise;
+
+
+float result = F(staticP, stretchDir, freq, amp, 0);
+
+
+f@pattern = result;
