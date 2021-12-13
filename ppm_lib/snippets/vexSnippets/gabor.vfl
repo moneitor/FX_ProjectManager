@@ -1,0 +1,45 @@
+float F(vector p; float freq; vector dir){
+    // Given a vector dir, and a position, it will create a sine
+    // pattern in the direction of that vector     
+    
+    float gaus = 10 * exp(-PI * (1.5*1.5) * (dot(p, p)));
+    float result = cos( 2 * PI * freq * (dot(p, normalize(dir))) );    
+
+    return result * gaus;
+}
+
+
+vector stretchDir = v@stretchDir;
+float freq = chf("freq");
+
+float f1 = 0;
+
+vector uvw = point(1, "P", @ptnum) * set(2, 2, 2);
+    
+int intX = floor(uvw.x);
+int intY = floor(uvw.y);
+int intZ = floor(uvw.z);
+
+float partialX = uvw.x-intX;
+float partialY = uvw.y-intY; 
+float partialZ = uvw.z-intZ;
+
+
+vector p = 0;
+
+for(int i=-1;i<=0;i++) 
+{
+    for(int j=-1;j<=0;j++) 
+    {
+        for(int k=-1;k<=0;k++) 
+        {                     
+              
+            p = set( partialX + i, partialY + j, partialZ + k);            
+            float result = F(p, freq, stretchDir);
+                    
+            f1 += result;  
+         }
+     }
+}
+
+f@pattern = f1;
