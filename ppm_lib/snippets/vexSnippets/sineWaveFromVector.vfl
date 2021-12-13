@@ -1,28 +1,40 @@
-function float F(vector pos; vector dir; float freq; float amp; float time){
+float F(vector p; float freq; vector dir){
     // Given a vector dir, and a position, it will create a sine
-    // pattern in the direction of that vector
+    // pattern in the direction of that vector     
     
-    float speed = 0.1;
-    float phase = 10;
-    
-    float dot = dot(pos, normalize(dir));
-    
-    float result = amp * cos( 2 * PI * freq * (dot - (speed * time)) + phase);    
+    float gaus = 10 * exp(-PI * (1.5*1.5) * (dot(p, p)));
+    float result = cos( 2 * PI * freq * (dot(p, normalize(dir))) );    
 
-    return result;
+    return result * gaus;
 }
 
 
+vector stretchDir = v@stretchDir;
 float freq = chf("freq");
-float amp = chf("amp");
+
+float f1 = 0;
+
+vector uvw = point(1, "P", @ptnum) * set(2, 2, 2);
+    
+int intX = floor(uvw.x);
+int intY = floor(uvw.y);
+int intZ = floor(uvw.z);
+
+vector diffP = set(uvw.x-intX, uvw.y-intY, uvw.z-intZ);
 
 
-vector staticP = point(1, "P", @ptnum);
-vector dirNoise = point(1, "dirNoise", @ptnum);
-vector stretchDir = v@stretchDir + dirNoise;
+vector p = 0;
 
+for(int i=-1;i<=0;i++) 
+{
+    for(int j=-1;j<=0;j++) 
+    {
+        for(int k=-1;k<=0;k++) 
+        {           
+            vector diff = diffP + set(i, j, k);                    
+            f1 += F(diff, freq, stretchDir);
+         }
+     }
+}
 
-float result = F(staticP, stretchDir, freq, amp, 0);
-
-
-f@pattern = result;
+f@pattern = f1;
