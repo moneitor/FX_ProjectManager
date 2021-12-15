@@ -1,0 +1,45 @@
+function vector ForceTangent(vector Norm; vector MyVector){
+/*This function takes vector MyVector and forces it to be orthogonal to the vector
+Norm, so it is tangent to the surface from which Norm is created, Norm should be the Normal
+of the surface*/
+    vector Perpendicular = (dot(MyVector , Norm) / dot(Norm, Norm)) * Norm ;
+    Perpendicular = MyVector - Perpendicular;
+    float mag = length(MyVector);
+    //Perpendicular = normalize(Perpendicular);
+   
+    return Perpendicular;    
+}
+
+
+
+float attraction = chf("attraction");
+float follow = chf("follow");
+float global_mult = chf("global_multiplier");
+int prim;
+vector primuv;
+
+float dist = xyzdist(1, v@P, prim, primuv, 1);
+
+float radius = chf("radius");
+
+int handleCurve = pcopen(1, "P", v@P, radius, 1);
+int handleCol = pcopen(2, "P", v@P, 10, 5);
+
+vector curveP = pcfilter(handleCurve, "P");
+vector curveTan = pcfilter(handleCurve, "tangent");
+
+vector surfN = pcfilter(handleCol, "N");
+
+
+vector attract = normalize(curveP - v@P);
+attract = normalize((attract * attraction) + (curveTan * follow));
+attract *= global_mult;
+
+
+attract = ForceTangent(surfN, attract); // Comment if you want
+v@N = attract;
+
+
+if(dist < 0.1) {    
+    v@force += attract ;      
+}
