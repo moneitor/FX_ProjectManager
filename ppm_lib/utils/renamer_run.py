@@ -1,6 +1,6 @@
 import sys
 from PySide2 import QtUiTools, QtWidgets
-import OsUtils
+import file_utils
 import os
 
 
@@ -54,11 +54,11 @@ class Rename_files(QtWidgets.QWidget):
 
 		if os.path.isdir(self.folder) and len(self.new_text) > 0:
 			print (self.old_text, self.new_text)			
-			OsUtils.rename_files(self.folder, mode, self.old_text, self.new_text)
+			file_utils.rename_files(self.folder, mode, self.old_text, self.new_text)
 
 	def renumber(self):
 		if os.path.isdir(self.folder):
-			OsUtils.renumber_files(self.folder, self.new_start, 4)
+			file_utils.renumber_files(self.folder, self.new_start, 4)
 
 		
 

@@ -3,7 +3,7 @@ venv/*
 __pycache__
 *.bgeo*
 *backup*
-
+*projects*
 *.hda*
 *.otl*
 *token*

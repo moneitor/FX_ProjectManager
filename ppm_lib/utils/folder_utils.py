@@ -9,14 +9,9 @@ def asset_folders():
     return folders
 
 
-def design_folders():
-    folders = {"02_Textures": {"HDRI":None,
-                             "JPGs": None,
-                             "EXR": None}}
-    return folders
-
 def reference():
-    folders = {"03_Reference": {"Images": None , "Video": None}}
+    folders = {"03_Reference": {"Images": None , 
+                                "Video": None}}
 
     return folders
 
@@ -25,6 +20,7 @@ def sequence(sequence_name):
     folders = {"{}".format(sequence_name): {"Sequence_info": None }}
 
     return folders
+
 
 def sandbox():
     folders = {"04_Sandbox": {"Natalia": None, "Hernan": None}}
@@ -58,12 +54,15 @@ def make_dirs_from_dict(direct, current_dir='./'):
             os.mkdir(pathFolder)
             if type(values) == dict:
                 make_dirs_from_dict(values, os.path.join(current_dir, key))
+                
+                
+
+
 
 
 
 def create_folders_project(path):
-    make_dirs_from_dict(asset_folders(), path)
-    make_dirs_from_dict(design_folders(), path)
+    make_dirs_from_dict(asset_folders(), path)    
     make_dirs_from_dict(reference(), path)
     make_dirs_from_dict(sandbox(), path)
 

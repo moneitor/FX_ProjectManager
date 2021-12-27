@@ -1,6 +1,7 @@
 import logging
 import sys
 import getpass
+import os
 
 
 
@@ -8,6 +9,10 @@ class Logger(object):
     
     LOGGER_NAME = getpass.getuser()  
     LEVEL_DEFAULT = logging.DEBUG
+    PROPAGATE_DEFAULT = True
+    FORMAT_DEFAULT = "[%(name)s][%(levelname)s] %(message)s"
+    HOME = os.path.expanduser("~")
+    DESKTOP = HOME + "/Desktop/test.log"
     
     _logger_obj = None
     
@@ -26,8 +31,9 @@ class Logger(object):
             else: 
                 cls._logger_obj = logging.getLogger(cls.LOGGER_NAME)
                 cls._logger_obj.setLevel(cls.LEVEL_DEFAULT)
+                cls._logger_obj.propagate = cls.PROPAGATE_DEFAULT
                 
-                formatter = logging.Formatter("[%(name)s][%(levelname)s] %(message)s")
+                formatter = logging.Formatter(cls.FORMAT_DEFAULT)
                 
                 handler = logging.StreamHandler(sys.stderr)
                 handler.setFormatter(formatter)
@@ -41,6 +47,10 @@ class Logger(object):
         lg = cls.logger_obj()
         lg.setLevel(level)
     
+    @classmethod
+    def set_propagate(cls, propagate):
+        lg = cls.logger_obj()
+        lg.propagate = propagate
     
     @classmethod
     def debug(cls, msg, *args, **kwargs):
@@ -78,11 +88,11 @@ class Logger(object):
         lg.exception(level, msg, *args, **kwargs)
         
     @classmethod
-    def write_to_file(cls, path, level=logging.WARNING):
-        file_handler = logging.FileHandler(path)
+    def write_to_file(cls, level=logging.WARNING):
+        file_handler = logging.FileHandler(cls.DESKTOP)
         file_handler.setLevel(level)
         
-        formatter = logging.Formatter("[%(asctime)s][%(levelname)s] %(message)s")
+        formatter = logging.Formatter(cls.FORMAT_DEFAULT)
         
         file_handler.setFormatter(formatter)
         logger = cls.logger_obj()
@@ -91,8 +101,9 @@ class Logger(object):
         
 if __name__ == "__main__":
     Logger.set_level(logging.WARNING)
+    Logger.set_propagate(False)
     
-    Logger.write_to_file("/home/hernan/Desktop/test.log")
+    Logger.write_to_file()   
     
     Logger.debug("Debug message")
     Logger.info("Info Message")
