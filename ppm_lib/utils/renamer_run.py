@@ -8,7 +8,7 @@ class Rename_files(QtWidgets.QWidget):
 	def __init__(self):
 		super(Rename_files, self).__init__()
 
-		ui_file = "./renamer.ui"
+		ui_file = "./ui/renamer.ui"
 		self.ui = QtUiTools.QUiLoader().load(ui_file, parentWidget=self)
 
 		self.folder = ""

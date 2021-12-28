@@ -21,7 +21,7 @@ def shot(shot_number):
     return folders
 
 
-def mkdir(path):
+def ppm_mkdir(path):
     lg.Logger.info("Creating folder {}".format(path))
     if not os.path.exists(path):        
         os.makedirs(path)
@@ -30,7 +30,7 @@ def mkdir(path):
         
         
         
-def rmdir(path):
+def ppm_rmdir(path):
     """
     Removes the directory on the given path
     """
@@ -52,7 +52,7 @@ def make_dirs_from_dict(dir, folder_dict):
     for key, values in folder_dict.items():
         pathFolder = os.path.join(dir, key)
         if not os.path.exists(pathFolder):
-            mkdir(pathFolder)
+            ppm_mkdir(pathFolder)
             if type(values) == dict:                
                 inner_folder = os.path.join(dir, key)                
                 make_dirs_from_dict(inner_folder, values)      
