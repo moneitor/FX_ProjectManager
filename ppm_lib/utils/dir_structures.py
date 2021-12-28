@@ -46,31 +46,6 @@ def shot(sequence, shot_number):
 
 
 
-def make_dirs_from_dict(direct, current_dir='./'):
-
-    for key, values in direct.items():
-        pathFolder = os.path.join(current_dir, key)
-        if not os.path.exists(pathFolder):
-            os.mkdir(pathFolder)
-            if type(values) == dict:
-                make_dirs_from_dict(values, os.path.join(current_dir, key))
-                
-                
-
-
-
-
-
-def create_folders_project(path):
-    make_dirs_from_dict(asset_folders(), path)    
-    make_dirs_from_dict(reference(), path)
-    make_dirs_from_dict(sandbox(), path)
-
-
-def create_sequence_folder(sequence_name, path):
-    make_dirs_from_dict(sequence(sequence_name), path)
-    
-
 
 def go_folder(project_path, houdini=0, shot_number=1):
     '''Set the project_path as the current working directory

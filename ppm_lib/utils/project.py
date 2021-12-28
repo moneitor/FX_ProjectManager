@@ -24,7 +24,6 @@ DELETE_BY_NAME = 'DELETE FROM projects WHERE name = ?;'
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
 
-##  Database initialization for projects
 
 class Projects:    
     
