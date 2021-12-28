@@ -1,4 +1,4 @@
-# Simple pipeline and Houdini Python tools
+## FX Personal Project Manager
 
 Hi there.
 
