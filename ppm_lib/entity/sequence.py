@@ -7,8 +7,13 @@ import os
 
 ######################### COMANDS ###################################
 CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
+CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
+
 INSERT_SEQUENCE = 'INSERT INTO sequences (name, fps, resolution, path) VALUES (?, ?, ?, ?);'
+
 GET_ALL_SEQUENCES = 'SELECT * FROM sequences'
+GET_ALL_SHOTS = 'SELECT * FROM shots'
+
 GET_SEQUENCE_BY_NAME = 'SELECT * FROM sequences WHERE name = ?;'
 DELETE_BY_NAME = 'DELETE FROM sequences WHERE name = ?;'
 
@@ -26,10 +31,11 @@ class Sequences:
         if isinstance(project, Project):
             self.prj = project
         self.project_name = self.prj.get_name()    
-        self.project_path = self.prj.get_path()    
+        self.project_path = self.prj.get_path()  
+        self.project_basedir = os.path.dirname(self.project_path)  
         
         # Connection to the databases 
-        self.connection_seq = db_u.connect(os.path.join(PROJECTS_PATH, self.project_name, "sequences.db")) 
+        self.connection_seq = db_u.connect(os.path.join(self.project_path, "sequences.db")) 
         
         # Creation of the database table
         db_u.create_table(self.connection_seq, CREATE_SEQUENCES)    
@@ -67,7 +73,9 @@ class Sequences:
         seqs = self.get_sequences_info()
         for seq in seqs:    
             names.append(seq[1])
-        lg.Logger.info(names)        
+            lg.Logger.info(seq[1])
+        
+        return names        
         
     
     def get_sequences_path(self):
@@ -79,10 +87,12 @@ class Sequences:
     
         
     def delete_sequence(self, sequence_name):
-        db.delete(self.connection_seq, sequence_name, DELETE_BY_NAME)
-        sequence_path = os.path.join(self.project_path,  sequence_name) 
-        ppm_rmdir(sequence_path)
+        sequence_path = os.path.join(self.project_path,  sequence_name)
         
+        if os.path.exists(sequence_path):
+            db.delete(self.connection_seq, sequence_name, DELETE_BY_NAME)             
+            ppm_rmdir(sequence_path)
+            
         
             
         
@@ -94,24 +104,41 @@ class Sequence:
         if isinstance(project, Project):
             self.prj = project
         self.project_name = self.prj.get_name()
-        self.seq_name = seq_name        
-        # Connection to the database        
-        self.connection_seq = db_u.connect(os.path.join(PROJECTS_PATH, self.project_name, "sequences.db")) 
-        
-        
+        self.seq_name = seq_name              
+        self.project_path = self.prj.get_path()  
+        self.project_basedir = os.path.dirname(self.project_path)  
+           
+        # Connection to the database         
+        if os.path.exists(self.project_path):       
+            self.connection_seq = db_u.connect(os.path.join(self.project_path, "sequences.db")) 
+        if os.path.exists(os.path.join(self.project_path,  self.seq_name, "shots.db")):            
+            self.connection_shot = db_u.connect(os.path.join(self.project_path,  self.seq_name, "shots.db"))       
+                
         # Creation of the database table
         db_u.create_table(self.connection_seq, CREATE_SEQUENCES)    
     
 
     def get_shots(self):
-        pass
+        sh = db.get_all(self.connection_shot, GET_ALL_SHOTS)
+        shots = []
+        for s in sh:
+            shots.append(s[-1])
+        return shots  
+    
+    
+    def get_name(self):
+        seq = db.find_by_name(self.connection_seq, self.seq_name, GET_SEQUENCE_BY_NAME)
+        if seq != None:
+            seq = seq.split(",")[1].strip()
+            return seq
+        
     
     
     def get_path(self):
         path = db.find_by_name(self.connection_seq, self.seq_name, GET_SEQUENCE_BY_NAME)
         if path != None:
             path = path.split(",")[-1].strip()
-        return path
+            return path
     
     
     

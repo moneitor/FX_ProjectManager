@@ -1,30 +1,53 @@
+from typing import Sequence
 from ppm_logger import logger as lg
 from entity import project as pr
 from entity import sequence as seq
+from entity import shot as s
+import db.database_utils as db_u
 
 
-projects = pr.Projects()
-#proj.add_project("PECUECA", 24, "1920")
-project = pr.Project("PECUECA")
-
-sequences = seq.Sequences(project)
-sequences.add_sequence("HHH")
-sequence = seq.Sequence(project, "AAA")
+import os
 
 
+######################### COMANDS ###################################
+CREATE_PROJECTS = 'CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
+GET_ALL_PROJECTS = 'SELECT * FROM projects'
+#######################################################################
 
+
+PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
+
+
+# Connection to the database        
+connection_project = db_u.connect(os.path.join(PROJECTS_PATH, "projects.db")) 
+        
+# Creation of the database table
+db_u.create_table(connection_project, CREATE_PROJECTS)
+
+all_projects =  pr.Projects().get_all_project_names() 
     
-lg.Logger.info(sequence.get_path())
+lg.Logger.info(all_projects)
 
 
-"""
-def pprint_dict(module_name, dict):
-    for key in dict.keys():
-        print (key)       
-    
 
-if __name__ == '__main__':
 
-    pprint_dict(__name__, globals())
-    
-"""
+
+
+
+
+
+
+
+#projects = pr.Projects()
+#projects.add_project("PROJECT_C", 24, "1920")
+#project = pr.Project("FULL")
+
+#sequences = seq.Sequences(project)
+#sequences.add_sequence("AAA")
+#sequence = seq.Sequence(project, "AAA")
+
+#shots = s.Shots(sequence)
+#shots.add_shot("shotA")
+#shot = s.Shot(sequence, "shotA")
+#lg.Logger.info(shot.get_path())

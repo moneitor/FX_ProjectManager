@@ -1,7 +1,8 @@
 from ppm_logger import logger as lg
 from db import database_interface as db
 import db.database_utils as db_u
-from directory.directory_utils import ppm_mkdir, ppm_rmdir
+from directory.directory_utils import ppm_mkdir, ppm_rmdir, make_dirs_from_dict
+from directory import dir_structures as ds
 
 import os
 
@@ -84,16 +85,20 @@ class Projects:
             db.add_new(self.connection_project, name, fps, resolution, path, INSERT_PROJECT)
             
             #Creation of the project folder
-            if os.path.exists(PROJECTS_PATH):
-                ppm_mkdir(path)  
+            if os.path.exists(PROJECTS_PATH): 
+                asset_dict = ds.asset_folders()                  
+                sandbox_dict = ds.sandbox()         
+                reference_dict = ds.reference() 
+                ppm_mkdir(path)
+                make_dirs_from_dict(path, asset_dict)
+                make_dirs_from_dict(path, sandbox_dict)
+                make_dirs_from_dict(path, reference_dict)
+                  
             
         else:
-            lg.Logger.warning("Project [{}] already exists".format(name))
+            lg.Logger.warning("Project [{}] already exists".format(name))       
         
-        
-            
-        
-        
+
         
     def delete_project(self, name):
         '''Deletes the project with the given name'''
@@ -124,12 +129,8 @@ class Project:
         sequences = []
         for seq in seqs:
             sequences.append(seq[-1])
-        return sequences
-    
-       
-    def get_shots(self):
-        pass
-    
+        return sequences    
+
     
     def get_path(self):
         path = db.find_by_name(self.connection_project, self.project_name, GET_PROJECT_BY_NAME)

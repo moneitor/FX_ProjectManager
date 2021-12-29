@@ -1,4 +1,5 @@
 from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget, QPushButton, QTabWidget, QVBoxLayout, QWidget
+import ppm_main_logic as logic
 import sys
 
 
@@ -12,6 +13,8 @@ class PPM_Main_UI(QDialog):
         self.widgets()
         self.layouts()
         self.connections()
+        
+        self.initialize_projects_list()
         
     
     def widgets(self):
@@ -131,8 +134,15 @@ class PPM_Main_UI(QDialog):
         
     def connections(self):
         pass
+    
+    
+    def initialize_projects_list(self):
+        projects = logic.all_projects
+        self.lst_projects.addItems(projects)
         
-        
+    
+    def addProject(self):
+        pass
         
         
         

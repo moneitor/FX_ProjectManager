@@ -55,6 +55,7 @@ def make_dirs_from_dict(dir, folder_dict):
     for key, values in folder_dict.items():
         pathFolder = os.path.join(dir, key)
         if not os.path.exists(pathFolder):
+            
             ppm_mkdir(pathFolder)
             if type(values) == dict:                
                 inner_folder = os.path.join(dir, key)                

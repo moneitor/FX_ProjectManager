@@ -10,8 +10,14 @@ def asset_folders():
 
 
 def reference():
-    folders = {"03_Reference": {"Images": None , 
+    folders = {"02_Reference": {"Images": None , 
                                 "Video": None}}
+
+    return folders
+
+
+def sandbox():
+    folders = {"03_Sandbox": {"Natalia": None, "Hernan": None}}
 
     return folders
 
@@ -22,14 +28,8 @@ def sequence(sequence_name):
     return folders
 
 
-def sandbox():
-    folders = {"04_Sandbox": {"Natalia": None, "Hernan": None}}
-
-    return folders
-
-
-def shot(sequence, shot_number):
-    folders = {"Shot_{}".format(shot_number): {"publish": None,
+def shot(shot_name):
+    folders =  {"publish": None,
                                                "work": {"anim": None,
                                                         "comp": None,
                                                         "fx":  {"Geo": None , "Textures": None, "Render": None, "Flipbooks": None,
@@ -40,7 +40,7 @@ def shot(sequence, shot_number):
                                                         "RnD": None,
                                                         "Track": None,
                                                         "Photogrametry": None,
-                                                        "Lens_info": None}}}
+                                                        "Lens_info": None}}
 
     return folders
 
