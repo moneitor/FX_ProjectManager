@@ -1,6 +1,6 @@
 import sys
 from PySide2 import QtUiTools, QtWidgets
-import file_utils
+import utils.file_utils.file_utils as file_utils
 import os
 
 

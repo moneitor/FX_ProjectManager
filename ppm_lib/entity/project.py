@@ -1,10 +1,11 @@
-from logging_utils import logger as lg
-import database_interface as db
-import database_utils as db_u
-from directory_utils import ppm_mkdir, ppm_rmdir
+from ppm_logger import logger as lg
+from db import database_interface as db
+import db.database_utils as db_u
+from directory.directory_utils import ppm_mkdir, ppm_rmdir
 
 import os
 
+__all__= ["Projects", "project"]
 
 ######################### COMANDS ###################################
 CREATE_PROJECTS = 'CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
@@ -36,17 +37,17 @@ class Projects:
         
     
     def get_all_projects_info(self):
-        """
+        '''
         Displays all the projects
-        """
+        '''
         projects = db.get_all(self.connection_project, GET_ALL_PROJECTS)        
         return projects
         
         
     def get_all_project_names(self):
-        """
+        '''
         Displays all the project names
-        """
+        '''
         names = []
         projects = self.get_all_projects_info()
         
@@ -58,9 +59,9 @@ class Projects:
     
     
     def get_all_projects_path(self):
-        """
+        '''
         Displays all the project names
-        """
+        '''
         path = []
         projects = self.get_all_projects_info()
         
@@ -74,22 +75,28 @@ class Projects:
         return path
     
     
-    def create_project(self, name, fps, resolution):
-        """Creates the project folder 
+    def add_project(self, name, fps, resolution):
+        '''Creates the project folder 
         and stores the information on the database
-        """
-        path = os.path.join(PROJECTS_PATH, name)        
-        db.add_new(self.connection_project, name, fps, resolution, path, INSERT_PROJECT)
+        '''
+        if not db.find_by_name(self.connection_project, name, GET_PROJECT_BY_NAME):        
+            path = os.path.join(PROJECTS_PATH, name)        
+            db.add_new(self.connection_project, name, fps, resolution, path, INSERT_PROJECT)
+            
+            #Creation of the project folder
+            if os.path.exists(PROJECTS_PATH):
+                ppm_mkdir(path)  
+            
+        else:
+            lg.Logger.warning("Project [{}] already exists".format(name))
         
         
-        #Creation of the project folder
-        if os.path.exists(PROJECTS_PATH):
-            ppm_mkdir(path)              
+            
         
         
         
     def delete_project(self, name):
-        """Deletes the project with the given name"""
+        '''Deletes the project with the given name'''
         path = os.path.join(PROJECTS_PATH, name)
         db.delete(self.connection_project, path, DELETE_BY_NAME)
     
@@ -105,7 +112,11 @@ class Project:
                 
         # Creation of the database table
         db_u.create_table(self.connection_project, CREATE_PROJECTS)    
-        db_u.create_table(self.connection_seq, CREATE_SEQUENCES)   
+        db_u.create_table(self.connection_seq, CREATE_SEQUENCES) 
+        
+        
+    def get_name(self):
+        return self.project_name  
 
     
     def get_sequences(self):
@@ -147,21 +158,26 @@ class Project:
         
     
     
+#def pprint_dict(module_name, dict):
+#    for key in dict.keys():
+#        print (key)
+
     
-    
+#print ("********************** {} *************************".format(__name__))
+#pprint_dict(__name__, globals())
+
 
 if __name__ == "__main__":
 
-    
+    pass
     #prs = Projects()
-    pr = Project("CHAMACO")
+    #pr = Project("CHAMACO")
     #lg.Logger.info(pr.get_project_info())
-    lg.Logger.info(pr.get_sequences())
+    #lg.Logger.info(pr.get_sequences())
     #prs.create_project("CHORIZO", 30, "1920x1080")
     #prs.delete_project("ROMOLA")
     
     #lg.Logger.info(prs.get_all_projects_path())
     #lg.Logger.info(prs.get_all_projects_info())
 
-    
     

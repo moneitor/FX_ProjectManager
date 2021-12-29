@@ -1,5 +1,4 @@
-import database_utils
-from logging_utils import logger as lg
+from db import database_utils
 import os
 
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 

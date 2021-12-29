@@ -1,7 +1,7 @@
 import os
 import tarfile
-from file_utils import get_files_of_type
-from logging_utils import logger as lg
+from utils.file_utils.file_utils import get_files_of_type
+from logging import logger as lg
 
 
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 

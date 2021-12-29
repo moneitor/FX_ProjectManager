@@ -1,5 +1,8 @@
+import sys
+sys.path.append("..")
+
 import os
-from logging_utils import logger as lg
+from ppm_logger import logger as lg
 
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects")

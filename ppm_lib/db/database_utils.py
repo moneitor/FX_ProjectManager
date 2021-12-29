@@ -1,8 +1,4 @@
 import sqlite3
-from logging_utils import logger as lg
-
-
-
 
 
 
@@ -40,5 +36,3 @@ def delete_by_name(connection, name, cmd):
     
     
 
-if __name__ == "__main__":
-    lg.Logger.info("test")

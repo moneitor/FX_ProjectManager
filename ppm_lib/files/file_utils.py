@@ -1,6 +1,6 @@
 import os
 import glob
-from logging_utils import logger as lg
+from logging import logger as lg
 
 
 

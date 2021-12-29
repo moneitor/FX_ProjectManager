@@ -1,4 +1,4 @@
-import file_utils as fu
+import utils.file_utils.file_utils as fu
 import os
 import OpenEXR as exr
 
