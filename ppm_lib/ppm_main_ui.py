@@ -1,14 +1,29 @@
+from PySide2 import QtWidgets
 from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget, QPushButton, QTabWidget, QVBoxLayout, QWidget
 import ppm_main_logic as logic
 import sys
+import ppm_logger.logger as lg
+from PySide2.QtCore import Qt
+
+import ppm_new_project_ui as new_ui
 
 
 class PPM_Main_UI(QDialog):
     def __init__(self):
         super(PPM_Main_UI, self).__init__()
-        self.setWindowTitle("Personal Project Manager")
+        self.setWindowTitle("PROJECT MANAGER")
         self.setMaximumWidth(700)
         self.setMinimumHeight(400)
+        
+        self._project_name = ""
+        self._project_fps = ""
+        self._project_resolution = ""
+        
+        self._sequence_name = ""
+        self._shot_name = ""
+        self._project_path = ""
+        self._sequence_path = ""
+        self._shot_path = ""
         
         self.widgets()
         self.layouts()
@@ -35,8 +50,12 @@ class PPM_Main_UI(QDialog):
         self.btn_houdini = QPushButton("Houdini")
         self.btn_nuke = QPushButton("Nuke")
         # - General stuff
-        self.project_path = QLabel("Project Path")
-        self.project_path.setText("..")
+        self.lbl_project_path = QLabel("Project Path")
+        self.lbl_project_path.setText("..")
+        self.lbl_project_fps = QLabel()
+        self.lbl_project_fps.setText("..")
+        self.lbl_project_resolution = QLabel()
+        self.lbl_project_resolution.setText("..")
         
         # Files Widgets
         self.btn_rename_files = QPushButton("Rename")
@@ -72,7 +91,10 @@ class PPM_Main_UI(QDialog):
         self.lyt_main_projects_h.addLayout(self.lyt_dcc)
         
         self.lbl_path = QFormLayout()
-        self.lbl_path.addRow("Project path: ", self.project_path)        
+        self.lbl_path.addRow("Path: ", self.lbl_project_path)  
+        self.lbl_path.addRow("FPS: ", self.lbl_project_fps)      
+        self.lbl_path.addRow("Resolution: ", self.lbl_project_resolution) 
+        self.lbl_path.setLabelAlignment(Qt.AlignRight)
         
         self.lyt_projects.addWidget(self.lst_projects)
         self.lyt_projects.addWidget(self.btn_add_project)
@@ -92,15 +114,14 @@ class PPM_Main_UI(QDialog):
         
         self.lyt_main_projects_v = QVBoxLayout()
         self.lyt_main_projects_v.addLayout(self.lyt_main_projects_h)
-        self.lyt_main_projects_v.addLayout(self.lbl_path)
-                
+        self.lyt_main_projects_v.addLayout(self.lbl_path)        
+                                
         
         ###### STUFF RELATED TO THE FILES #########################
-
         self.lyt_files = QHBoxLayout()
         self.lyt_files.addWidget(self.btn_rename_files)
         self.lyt_files.addWidget(self.btn_renumber_files)
-        self.lyt_files.addWidget(self.btn_fix_padding)
+        self.lyt_files.addWidget(self.btn_fix_padding)        
         
         
         ###### STUFF RELATED TO THE TEMPLATES
@@ -114,7 +135,7 @@ class PPM_Main_UI(QDialog):
         self.lyt_templates_v.addWidget(self.lst_template)
         self.lyt_templates_v.addLayout(self.form_dcc)      
                 
-        self.lyt_templates_h.addLayout(self.lyt_templates_v)
+        self.lyt_templates_h.addLayout(self.lyt_templates_v)        
         
         
         ##### PUTTING IT ALL TOGETHER   
@@ -133,16 +154,42 @@ class PPM_Main_UI(QDialog):
         
         
     def connections(self):
-        pass
+        self.btn_add_project.clicked.connect(self.addProject)
     
     
     def initialize_projects_list(self):
         projects = logic.all_projects
         self.lst_projects.addItems(projects)
         
+        
+    def update_project_list(self):
+        pass
+    
+    
+    def update_sequences_list(self):
+        pass
+    
+    
+    def update_shots_list(self):
+        pass
+        
     
     def addProject(self):
-        pass
+        lg.Logger.info("Adding project")
+        new_project_window = new_ui.PPM_NewProject()
+        result = new_project_window.exec_()
+        
+        if result == QtWidgets.QDialog.Accepted:
+            self._project_name = new_project_window.return_name()
+            self._project_fps = new_project_window.return_fps()
+            self._project_resolution = new_project_window.return_resolution()
+            
+            self.lbl_project_path.setText(self._project_name)
+            print(self._project_name)
+            self.lbl_project_fps.setText(self._project_fps)
+            print(self._project_fps)
+            self.lbl_project_resolution.setText(self._project_resolution)
+            print(self._project_resolution)
         
         
         
