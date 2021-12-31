@@ -25,9 +25,17 @@ connection_project = db_u.connect(os.path.join(PROJECTS_PATH, "projects.db"))
 # Creation of the database table
 db_u.create_table(connection_project, CREATE_PROJECTS)
 
-all_projects =  pr.Projects().get_all_project_names() 
     
-lg.Logger.info(all_projects)
+def create_new_project(name, fps, resolution):
+    if name and fps and resolution:
+        pr.Projects().add_project(name, fps, resolution)
+        
+        
+def get_project(name):
+    project = pr.Project(name)
+    return project     
+
+        
 
 
 

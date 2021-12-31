@@ -4,6 +4,7 @@ import ppm_main_logic as logic
 import sys
 import ppm_logger.logger as lg
 from PySide2.QtCore import Qt
+from entity import project as pr
 
 import ppm_new_project_ui as new_ui
 
@@ -155,12 +156,14 @@ class PPM_Main_UI(QDialog):
         
     def connections(self):
         self.btn_add_project.clicked.connect(self.addProject)
+        self.lst_projects.itemClicked.connect(self.get_project)
     
     
     def initialize_projects_list(self):
-        projects = logic.all_projects
-        self.lst_projects.addItems(projects)
-        
+        all_projects =  pr.Projects().get_all_project_names() 
+        self.lst_projects.clear()
+        self.lst_projects.addItems(all_projects)          
+
         
     def update_project_list(self):
         pass
@@ -184,12 +187,27 @@ class PPM_Main_UI(QDialog):
             self._project_fps = new_project_window.return_fps()
             self._project_resolution = new_project_window.return_resolution()
             
-            self.lbl_project_path.setText(self._project_name)
-            print(self._project_name)
-            self.lbl_project_fps.setText(self._project_fps)
-            print(self._project_fps)
+            self.lbl_project_path.setText(self._project_name)            
+            self.lbl_project_fps.setText(self._project_fps)            
             self.lbl_project_resolution.setText(self._project_resolution)
-            print(self._project_resolution)
+            
+            logic.create_new_project(self._project_name, int(self._project_fps), self._project_resolution)
+            self.initialize_projects_list()
+            
+            
+    def get_project(self, t):
+        project_name = t.text()
+        project = logic.get_project(project_name)
+        print(project.get_project_info())
+        
+        self._project_name = str(project.get_name())
+        self._project_fps = str(project.get_fps()) 
+        self._project_resolution = str(project.get_resolution())
+        
+        self.lbl_project_path.setText(str(project.get_path()) )
+        self.lbl_project_fps.setText(str(project.get_fps()) )
+        self.lbl_project_resolution.setText(str(project.get_resolution()))
+            
         
         
         
