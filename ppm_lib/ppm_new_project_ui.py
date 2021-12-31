@@ -31,6 +31,7 @@ class PPM_NewProject(QDialog):
         self.cmb_resolution.setCurrentIndex(2)
                 
         self.btn_create = QPushButton("Create")   
+        self.btn_create.setEnabled(False)
         self.btn_cancel = QPushButton("Cancel")
         self.qwidget1 = QWidget()           
 
@@ -56,17 +57,19 @@ class PPM_NewProject(QDialog):
         self.setLayout(self.lyt_v_main)
     
     
-    def connections(self):        
+    def connections(self): 
+        self.ln_project_name.textChanged.connect(self.check_name)       
         self.btn_create.clicked.connect(self.accept)
         self.btn_cancel.clicked.connect(self.close)       
         # TODO fix the accepting problem so it checks for an empty name 
         
         
-    def check_valid_name(self):
-        if not self.ln_project_name.text():
-            QMessageBox.warning(self, "Warning", "Please add a project name.")
+    def check_name(self):
+        if self.ln_project_name.text():            
+            self.btn_create.setEnabled(True)
         else:
-            self.btn_create.clicked.connect(self.accept)
+            self.btn_create.setEnabled(False)      
+
         
         
     def return_name(self):        

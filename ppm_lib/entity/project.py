@@ -89,10 +89,12 @@ class Projects:
                 asset_dict = ds.asset_folders()                  
                 sandbox_dict = ds.sandbox()         
                 reference_dict = ds.reference() 
+                edit_dict = ds.edit()
                 ppm_mkdir(path)
                 make_dirs_from_dict(path, asset_dict)
                 make_dirs_from_dict(path, sandbox_dict)
                 make_dirs_from_dict(path, reference_dict)
+                make_dirs_from_dict(path, edit_dict)
                   
             
         else:
@@ -102,8 +104,11 @@ class Projects:
         
     def delete_project(self, name):
         '''Deletes the project with the given name'''
-        path = os.path.join(PROJECTS_PATH, name)
-        db.delete(self.connection_project, path, DELETE_BY_NAME)
+        lg.Logger.critical("{}  Trying to remove project {}".format(__name__, name)) 
+        if name:                        
+            db.delete(self.connection_project, name, DELETE_BY_NAME)
+            ppm_rmdir(os.path.join(PROJECTS_PATH, name) )
+            
     
     
 

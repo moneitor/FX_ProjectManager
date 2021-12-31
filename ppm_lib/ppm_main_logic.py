@@ -26,36 +26,61 @@ connection_project = db_u.connect(os.path.join(PROJECTS_PATH, "projects.db"))
 db_u.create_table(connection_project, CREATE_PROJECTS)
 
     
-def create_new_project(name, fps, resolution):
-    if name and fps and resolution:
-        pr.Projects().add_project(name, fps, resolution)
-        
+
+####### PROJECTS ###########################################
         
 def get_project(name):
     project = pr.Project(name)
-    return project     
+    return project   
+  
 
+def create_new_project(name, fps, resolution):
+    if name and fps and resolution:
+        pr.Projects().add_project(name, fps, resolution)
+
+
+def delete_project(name):            
+    if name:        
+        lg.Logger.critical("{}  Trying to remove project {}".format(__name__, name))
+        projects = pr.Projects()
+        projects.delete_project(name)   
         
+        
+######## SEQUENCES  ######################################
+
+def get_sequence(project, sequence_name):
+    pass
+
+
+def create_new_sequence(sequence_name):
+    pass
+
+
+def delete_sequence(sequence_name):
+    pass
 
 
 
 
 
+######## SHOTS  ##########################################    
 
 
 
 
+if __name__ == "__main__":
 
 
-#projects = pr.Projects()
-#projects.add_project("PROJECT_C", 24, "1920")
-#project = pr.Project("FULL")
+    projects = pr.Projects()
+    projects.delete_project("romola")
+    #projects.add_project("PROJECT_C", 24, "1920")
+    #project = pr.Project("FULL")
 
-#sequences = seq.Sequences(project)
-#sequences.add_sequence("AAA")
-#sequence = seq.Sequence(project, "AAA")
+    #sequences = seq.Sequences(project)
+    #sequences.add_sequence("AAA")
+    #sequence = seq.Sequence(project, "AAA")
 
-#shots = s.Shots(sequence)
-#shots.add_shot("shotA")
-#shot = s.Shot(sequence, "shotA")
-#lg.Logger.info(shot.get_path())
+    #shots = s.Shots(sequence)
+    #shots.add_shot("shotA")
+    #shot = s.Shot(sequence, "shotA")
+    lg.Logger.info(projects.get_all_project_names())

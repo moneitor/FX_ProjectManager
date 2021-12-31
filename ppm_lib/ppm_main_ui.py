@@ -1,5 +1,5 @@
 from PySide2 import QtWidgets
-from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget, QPushButton, QTabWidget, QVBoxLayout, QWidget
+from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
 import ppm_main_logic as logic
 import sys
 import ppm_logger.logger as lg
@@ -16,6 +16,7 @@ class PPM_Main_UI(QDialog):
         self.setMaximumWidth(700)
         self.setMinimumHeight(400)
         
+        self._project = None
         self._project_name = ""
         self._project_fps = ""
         self._project_resolution = ""
@@ -157,6 +158,7 @@ class PPM_Main_UI(QDialog):
     def connections(self):
         self.btn_add_project.clicked.connect(self.addProject)
         self.lst_projects.itemClicked.connect(self.get_project)
+        self.btn_rm_project.clicked.connect(self.delete_project)
     
     
     def initialize_projects_list(self):
@@ -197,8 +199,7 @@ class PPM_Main_UI(QDialog):
             
     def get_project(self, t):
         project_name = t.text()
-        project = logic.get_project(project_name)
-        print(project.get_project_info())
+        project = logic.get_project(project_name)      
         
         self._project_name = str(project.get_name())
         self._project_fps = str(project.get_fps()) 
@@ -207,7 +208,25 @@ class PPM_Main_UI(QDialog):
         self.lbl_project_path.setText(str(project.get_path()) )
         self.lbl_project_fps.setText(str(project.get_fps()) )
         self.lbl_project_resolution.setText(str(project.get_resolution()))
+        
+        self._project = project
+        
+        return project
             
+        
+    def delete_project(self):    
+        name = self._project_name               
+        
+        if not self._project_name:
+            QMessageBox.warning(self, "Warning", "Select a project.")    
+            return
+        res = QMessageBox.question(self, "Warning", "Are you sure that you want to delete this project? ")
+        if res == QMessageBox.Yes:
+            print(self._project_name)
+            logic.delete_project(name)           
+            
+        self.initialize_projects_list()
+        
         
         
         

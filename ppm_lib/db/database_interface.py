@@ -1,4 +1,5 @@
 from db import database_utils
+from ppm_logger import logger as lg
 import os
 
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
@@ -37,7 +38,7 @@ def find_by_name(connection, name, cmd):
         
 
 def delete(connection, name, cmd):
-    
+    #lg.Logger.critical("Trying to remove project {}".format(name))
     database_utils.delete_by_name(connection, name, cmd)    
    
     

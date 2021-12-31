@@ -3,6 +3,7 @@ sys.path.append("..")
 
 import os
 from ppm_logger import logger as lg
+import shutil
 
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects")
@@ -39,7 +40,8 @@ def ppm_rmdir(path):
     """
     lg.Logger.info("Removing folder {}".format(path))
     if os.path.exists(path):
-        os.removedirs(path)
+        #os.removedirs(path)
+        shutil.rmtree(path)
     
         
 

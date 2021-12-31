@@ -101,10 +101,8 @@ class Logger(object):
         
 if __name__ == "__main__":
     Logger.set_level(logging.WARNING)
-    Logger.set_propagate(False)
-    
-    Logger.write_to_file()   
-    
+    Logger.set_propagate(False)    
+    Logger.write_to_file()       
     Logger.debug("Debug message")
     Logger.info("Info Message")
     Logger.warning("Warning message")

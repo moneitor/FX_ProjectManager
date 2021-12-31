@@ -3,27 +3,36 @@ import os
 
 
 def asset_folders():
-    folders = {"01_Asset": {"Models": None,
-                            "Textures": None}}
+    folders = {"01_asset": {"characters": {"model":None, "lookDev": None, "rig": None},
+                            "environments": {"layout": None, "lookDev": None, "model": None},
+                            "props": {"lookDev": None, "model": None},
+                            "vehicles": {"lookDev": None, "model": None}}}
 
     return folders
 
 
 def reference():
-    folders = {"02_Reference": {"Images": None , 
+    folders = {"02_reference": {"Images": None , 
                                 "Video": None}}
 
     return folders
 
 
+def edit():
+    folders = {"04_edit": {"exrs": None , 
+                           "proxies": None}}
+
+    return folders
+
+
 def sandbox():
-    folders = {"03_Sandbox": {"Natalia": None, "Hernan": None}}
+    folders = {"03_sandbox": {"natalia": None, "hernan": None}}
 
     return folders
 
 
 def sequence(sequence_name):
-    folders = {"{}".format(sequence_name): {"Sequence_info": None }}
+    folders = {"{}".format(sequence_name): {"sequence_info": None }}
 
     return folders
 
@@ -32,15 +41,18 @@ def shot(shot_name):
     folders =  {"publish": None,
                                                "work": {"anim": None,
                                                         "comp": None,
-                                                        "fx":  {"Geo": None , "Textures": None, "Render": None, "Flipbooks": None,
-                                                                "Abc": None, "Hda": None, "Simulation": None,
-                                                                "Cameras": None},
-                                                        "Lighting": None,
-                                                        "Roto": None,
-                                                        "RnD": None,
-                                                        "Track": None,
-                                                        "Photogrametry": None,
-                                                        "Lens_info": None}}
+                                                        "fx":  {"geo": None , "textures": None, "render": None, "flipbooks": None,
+                                                                "abc": None, "hda": None, "simulation": None,
+                                                                "cameras": None},
+                                                        "lighting": None,
+                                                        "roto": None,
+                                                        "rnd": None,
+                                                        "track": None,
+                                                        "photogrametry": None,
+                                                        "lens_info": None,
+                                                        "plate": None,
+                                                        "camera": None,
+                                                        "previs": None}}
 
     return folders
 

@@ -1,6 +1,6 @@
 import os
 import tarfile
-from utils.file_utils.file_utils import get_files_of_type
+from files.file_utils import get_files_of_type
 from logging import logger as lg
 
 
