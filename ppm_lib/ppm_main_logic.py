@@ -1,6 +1,6 @@
 from typing import Sequence
 from ppm_logger import logger as lg
-from entity import project as pr
+from entity import project as pr, sequence
 from entity import sequence as seq
 from entity import shot as s
 import db.database_utils as db_u
@@ -48,16 +48,23 @@ def delete_project(name):
         
 ######## SEQUENCES  ######################################
 
-def get_sequence(project, sequence_name):
-    pass
+def get_sequence(project, sequence_name):    
+    sequence = seq.Sequence(project, sequence_name)
+    lg.Logger.info("__  {} __Trying to get sequence {}.".format(__name__, sequence_name))
+    return sequence
 
 
-def create_new_sequence(sequence_name):
-    pass
+def create_new_sequence(project, sequence_name):
+    if sequence_name and sequence_name:
+        sequences = seq.Sequences(project)
+        sequences.add_sequence(sequence_name)
 
 
-def delete_sequence(sequence_name):
-    pass
+def delete_sequence(project, sequence_name):
+    if sequence_name:                
+        lg.Logger.critical("{}  Trying to remove sequence {}".format(__name__, sequence_name))
+        sequences = seq.Sequences(project)
+        sequences.delete_sequence(sequence_name)
 
 
 
@@ -74,11 +81,11 @@ if __name__ == "__main__":
     projects = pr.Projects()
     projects.delete_project("romola")
     #projects.add_project("PROJECT_C", 24, "1920")
-    #project = pr.Project("FULL")
+    project = pr.Project("FULL")
 
-    #sequences = seq.Sequences(project)
-    #sequences.add_sequence("AAA")
-    #sequence = seq.Sequence(project, "AAA")
+    sequences = seq.Sequences(project)
+    sequences.add_sequence("AAA")
+    sequence = seq.Sequence(project, "AAA")
 
     #shots = s.Shots(sequence)
     #shots.add_shot("shotA")

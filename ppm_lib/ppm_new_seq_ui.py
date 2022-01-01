@@ -49,7 +49,7 @@ class PPM_New_Sequence(QDialog):
             self.btn_create_seq.setEnabled(False)
             
         
-    def get_name(self):
+    def return_name(self):
         return self.ln_seq_name.text()
     
     
