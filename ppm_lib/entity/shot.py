@@ -8,7 +8,9 @@ import os
 
 ######################### COMANDS ###################################
 CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
+#CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, firstFrame INTEGER, lastFrame INTEGER, path TEXT);'
 INSERT_SHOT = 'INSERT INTO shots (name, fps, resolution, path) VALUES (?, ?, ?, ?);'
+#INSERT_SHOT = 'INSERT INTO shots (name, firstFrame, lastFrame, path) VALUES (?, ?, ?, ?);'
 GET_ALL_SHOTS = 'SELECT * FROM shots'
 GET_SHOT_BY_NAME = 'SELECT * FROM shots WHERE name = ?;'
 DELETE_BY_NAME = 'DELETE FROM shots WHERE name = ?;'

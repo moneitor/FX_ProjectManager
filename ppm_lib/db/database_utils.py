@@ -35,4 +35,16 @@ def delete_by_name(connection, name, cmd):
         return connection.execute(cmd, (name,)).fetchall()
     
     
+    
+def add_sequence(connection, name, path, cmd):
+    with connection:
+        return connection.execute(cmd, (name, path)).fetchall()
+    
+    
+    
+def add_shot(connection, name, firstFrame, lastFrame, path, cmd):
+    with connection:
+        return connection.execute(cmd, (name, firstFrame, lastFrame, path)).fetchall()
+    
+    
 
