@@ -60,13 +60,14 @@ class PPM_NewProject(QDialog):
     def connections(self): 
         self.ln_project_name.textChanged.connect(self.check_name)       
         self.btn_create.clicked.connect(self.accept)
-        self.btn_cancel.clicked.connect(self.close)       
-        # TODO fix the accepting problem so it checks for an empty name 
+        self.btn_cancel.clicked.connect(self.close)     
+        
         
         
     def check_name(self):
-        if self.ln_project_name.text():            
-            self.btn_create.setEnabled(True)
+        if self.ln_project_name.text():    
+            if not self.ln_project_name.text()[0].isdigit():                   
+                self.btn_create.setEnabled(True)
         else:
             self.btn_create.setEnabled(False)      
 

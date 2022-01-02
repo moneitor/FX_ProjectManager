@@ -59,15 +59,29 @@ class PPM_Main_UI(QDialog):
         # - Sequences
         self.lst_sequences = QListWidget()
         self.btn_add_seq = QPushButton("Add Sequence")
+        self.btn_add_seq.setEnabled(False)
+        self.btn_add_seq.setStyleSheet("background-color: rgb(100,100,100)")
         self.btn_rm_seq = QPushButton("Remove Seq")
+        self.btn_rm_seq.setEnabled(False)
+        self.btn_rm_seq.setStyleSheet("background-color: rgb(100,100,100)")
         # - Shots
         self.lst_shots = QListWidget()
         self.btn_add_shot = QPushButton("Add Shot")
+        self.btn_add_shot.setEnabled(False)
+        self.btn_add_shot.setStyleSheet("background-color: rgb(100,100,100)")
         self.btn_rm_shot = QPushButton("Remove Shot")
+        self.btn_rm_shot.setEnabled(False)
+        self.btn_rm_shot.setStyleSheet("background-color: rgb(100,100,100)")
         self.btn_edit_shot = QPushButton("Edit Shot")
+        self.btn_edit_shot.setEnabled(False)
+        self.btn_edit_shot.setStyleSheet("background-color: rgb(100,100,100)")
         # - DCC
         self.btn_houdini = QPushButton("Houdini")
+        self.btn_houdini.setEnabled(False)
+        self.btn_houdini.setStyleSheet("background-color: rgb(100,100,100)")
         self.btn_nuke = QPushButton("Nuke")
+        self.btn_nuke.setEnabled(False)
+        self.btn_nuke.setStyleSheet("background-color: rgb(100,100,100)")
         # - General stuff
         self.lbl_project_path = QLabel("Project Path")
         self.lbl_project_path.setText("..")
@@ -243,7 +257,12 @@ class PPM_Main_UI(QDialog):
         
         self.lbl_project_path.setText(str(project.get_path()) )
         self.lbl_project_fps.setText(str(project.get_fps()) )
-        self.lbl_project_resolution.setText(str(project.get_resolution()))        
+        self.lbl_project_resolution.setText(str(project.get_resolution()))   
+        
+        self.btn_add_seq.setEnabled(True)
+        self.btn_add_seq.setStyleSheet("background-color: rgb(45,45,45)")        
+        self.btn_rm_seq.setEnabled(True)
+        self.btn_rm_seq.setStyleSheet("background-color: rgb(45,45,45)")     
         
         self._project = project
         
@@ -293,6 +312,13 @@ class PPM_Main_UI(QDialog):
         self.lbl_project_path.setText(self._sequence_path)
         
         self._sequence = sequence 
+        
+        self.btn_add_shot.setEnabled(True)
+        self.btn_add_shot.setStyleSheet("background-color: rgb(45,45,45)")        
+        self.btn_rm_shot.setEnabled(True)
+        self.btn_rm_shot.setStyleSheet("background-color: rgb(45,45,45)")        
+        self.btn_edit_shot.setEnabled(True)
+        self.btn_edit_shot.setStyleSheet("background-color: rgb(45,45,45)")
         
         self.update_shots_list()        
 
@@ -344,6 +370,11 @@ class PPM_Main_UI(QDialog):
         self.lbl_shot_first_frame.setText(self._shot_first_frame)
         self.lbl_shot_last_frame.setText(self._shot_last_frame)
         
+        self.btn_houdini.setEnabled(True)
+        self.btn_houdini.setStyleSheet("background-color: rgb(45,45,45)")        
+        self.btn_nuke.setEnabled(True)
+        self.btn_nuke.setStyleSheet("background-color: rgb(45,45,45)")
+        
             
                   
         self._shot = shot       
@@ -372,7 +403,8 @@ class PPM_Main_UI(QDialog):
                 resy= int(self._project_resolution.split("x")[-1].strip()), 
                 job=self._shot_path, 
                 first_frame=int(self._shot_first_frame),
-                last_frame=int(self._shot_last_frame),)
+                last_frame=int(self._shot_last_frame),
+                shot_path = self._shot_path)
               
 
 

@@ -26,7 +26,18 @@ def edit():
 
 
 def sandbox():
-    folders = {"03_sandbox": {"natalia": None, "hernan": None}}
+    folders = {"03_sandbox": {"natalia": {"fx":  {"geo": None , "textures": None, "render": None, "flipbooks": None,
+                                                                "abc": None, "hda": None, "simulation": None,
+                                                                "cameras": None},
+                                          "comp": None
+                                          },
+                             "hernan": {"fx":  {"geo": None , "textures": None, "render": None, "flipbooks": None,
+                                                                "abc": None, "hda": None, "simulation": None,
+                                                                "cameras": None},
+                                        "comp" : None
+                                        }
+                             }
+               }
 
     return folders
 

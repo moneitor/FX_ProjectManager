@@ -6,7 +6,7 @@ from .init_values import HOU_VERSION, HOU_INSTALLATION
 
 
 
-def set_env(fps, resx, resy, job, first_frame, last_frame):
+def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
     _env = os.environ
     
     abs_path = os.path.abspath(__file__)
@@ -35,6 +35,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame):
     _env["RESX"], _env["RESY"] = str(resx), str(resy)
     _env["JOB"] = job   
     _env["DFSTART"], _env["DFEND"] = str(first_frame), str(last_frame)
+    _env["SHOTPATH"] = shot_path
     
     
     lg.Logger.info("HH set to [{}]".format(hh))   
@@ -48,4 +49,4 @@ def set_env(fps, resx, resy, job, first_frame, last_frame):
 
     
 if __name__ == "__main__":
-    set_houdini_env()
+    set_env()

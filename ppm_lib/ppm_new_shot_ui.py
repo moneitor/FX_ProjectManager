@@ -63,8 +63,9 @@ class PPM_NewProject(QDialog):
         
         
     def check_name(self):
-        if self.ln_shot_name.text():            
-            self.btn_create.setEnabled(True)
+        if self.ln_shot_name.text():     
+            if not self.ln_shot_name.text()[0].isdigit():       
+                self.btn_create.setEnabled(True)
         else:
             self.btn_create.setEnabled(False)      
 
