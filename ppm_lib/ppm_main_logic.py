@@ -27,8 +27,7 @@ db_u.create_table(connection_project, CREATE_PROJECTS)
 
     
 
-####### PROJECTS ###########################################
-        
+####### PROJECTS ###########################################        
 def get_project(name):
     project = pr.Project(name)
     return project   
@@ -40,29 +39,27 @@ def create_new_project(name, fps, resolution):
 
 
 def delete_project(name):            
-    if name:        
-        lg.Logger.critical("{}  Trying to remove project {}".format(__name__, name))
+    if name:       
         projects = pr.Projects()
         projects.delete_project(name)   
         
         
+        
+        
 ######## SEQUENCES  ######################################
-
 def get_sequence(project, sequence_name):    
-    sequence = seq.Sequence(project, sequence_name)
-    lg.Logger.info("__  {} __Trying to get sequence {}.".format(__name__, sequence_name))
+    sequence = seq.Sequence(project, sequence_name)    
     return sequence
 
 
 def create_new_sequence(project, sequence_name):
-    if sequence_name and sequence_name:
+    if project and sequence_name:
         sequences = seq.Sequences(project)
         sequences.add_sequence(sequence_name)
 
 
 def delete_sequence(project, sequence_name):
-    if sequence_name:                
-        lg.Logger.critical("{}  Trying to remove sequence {}".format(__name__, sequence_name))
+    if sequence_name:              
         sequences = seq.Sequences(project)
         sequences.delete_sequence(sequence_name)
 
@@ -71,13 +68,24 @@ def delete_sequence(project, sequence_name):
 
 
 ######## SHOTS  ##########################################    
+def get_shot(sequence, shot_name):
+    shot = s.Shot(sequence, shot_name)    
+    return shot
 
 
+def create_new_shot(sequence, shot_name):
+    if sequence and shot_name:
+        shots = s.Shots(sequence)
+        shots.add_shot(shot_name)
+
+
+def delete_shot(sequence, shot_name):
+    if shot_name:              
+        shots = s.Shots(sequence)
+        shots.delete_shot(shot_name)
 
 
 if __name__ == "__main__":
-
-
     projects = pr.Projects()
     projects.delete_project("romola")
     #projects.add_project("PROJECT_C", 24, "1920")

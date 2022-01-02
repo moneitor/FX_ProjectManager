@@ -6,11 +6,13 @@ import ppm_logger.logger as lg
 from PySide2.QtCore import Qt
 from entity import project as pr
 from entity import sequence as sq
+from entity import shot as s
 from ui.palette import Palette
 
 
 import ppm_new_project_ui as new_ui
 import ppm_new_seq_ui as new_ui_seq
+import ppm_new_shot_ui as new_ui_shot
 
 import os
 
@@ -19,7 +21,7 @@ class PPM_Main_UI(QDialog):
     def __init__(self):
         super(PPM_Main_UI, self).__init__()
         self.setWindowTitle("PROJECT MANAGER")
-        self.setMaximumWidth(700)
+        self.setMaximumWidth(800)
         self.setMinimumHeight(400)
         
         self._project = None
@@ -172,10 +174,13 @@ class PPM_Main_UI(QDialog):
         self.lst_projects.itemClicked.connect(self.get_project)        
         self.btn_rm_project.clicked.connect(self.delete_project)
         
-        
-        self.lst_sequences.itemClicked.connect(self.get_sequence)
         self.btn_add_seq.clicked.connect(self.add_sequence)
+        self.lst_sequences.itemClicked.connect(self.get_sequence)        
         self.btn_rm_seq.clicked.connect(self.delete_sequence)
+        
+        self.btn_add_shot.clicked.connect(self.add_shot)
+        self.lst_shots.itemClicked.connect(self.get_shot)        
+        self.btn_rm_shot.clicked.connect(self.delete_shot)
     
     
     def initialize_projects_list(self):
@@ -192,7 +197,9 @@ class PPM_Main_UI(QDialog):
     
     
     def update_shots_list(self):
-        pass
+        all_shots = s.Shots(self._sequence).get_shot_names()
+        self.lst_shots.clear()
+        self.lst_shots.addItems(all_shots)
         
     
     def add_project(self):
@@ -273,9 +280,11 @@ class PPM_Main_UI(QDialog):
         self._sequence_name = str(sequence.get_name())
         self._sequence_path = os.path.join(self._project_path, self._sequence_name)
         self.lbl_project_path.setText(self._sequence_path)
-
         
-        self._sequence = sequence      
+        self._sequence = sequence 
+        
+        self.update_shots_list()
+        self.lst_shots.setCurrentRow(0)
 
         return sequence
     
@@ -291,6 +300,49 @@ class PPM_Main_UI(QDialog):
             logic.delete_sequence(self._project, sequence_name)           
             
         self.update_sequences_list()
+        
+        
+    def add_shot(self):
+        lg.Logger.info("Adding Shot")
+        new_shot_window = new_ui_shot.PPM_NewProject()
+        result = new_shot_window.exec_()
+        
+        if result == QtWidgets.QDialog.Accepted:
+            self._shot_name = new_shot_window.return_name()     
+            self._shot_path = os.path.join(self._sequence_name, self._shot_name)
+            self.lbl_project_path.setText(self._shot_path)        
+
+            logic.create_new_shot(self._sequence, self._shot_name)
+            self.update_shots_list()
+        
+        print(self._sequence_name)
+    
+    
+    def get_shot(self, t):
+        shot_name = t.text()
+        
+        shot = logic.get_shot(self._sequence, shot_name)      
+        
+        self._shot_name = str(shot.get_name())
+        self._shot_path = os.path.join(self._sequence_path, self._shot_name)
+        self.lbl_project_path.setText(self._shot_path)
+        
+        self._shot = shot       
+               
+        return shot
+    
+    
+    def delete_shot(self):
+        shot_name = self._shot_name               
+        
+        if not self._shot_name:
+            QMessageBox.warning(self, "Warning", "Select a shot.")    
+            return
+        res = QMessageBox.question(self, "Warning", "Are you sure that you want to delete this shot? ")
+        if res == QMessageBox.Yes:            
+            logic.delete_shot(self._sequence, shot_name)           
+            
+        self.update_shots_list()
               
 
 

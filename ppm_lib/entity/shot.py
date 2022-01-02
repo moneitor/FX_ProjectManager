@@ -65,7 +65,7 @@ class Shots:
     
     def get_shot_names(self):
         names = []
-        shots = self.get_shots_info()
+        shots = self.get_shots()
         for shot in shots:
             names.append(shot[1])
             lg.Logger.info(shot[1])
