@@ -14,6 +14,8 @@ import ppm_new_project_ui as new_ui
 import ppm_new_seq_ui as new_ui_seq
 import ppm_new_shot_ui as new_ui_shot
 
+from houdini_startup import hou_run
+
 import os
 
 
@@ -36,6 +38,8 @@ class PPM_Main_UI(QDialog):
         self._shot_name = ""
         self._shot = None               
         self._shot_path = ""
+        self._shot_first_frame = ""
+        self._shot_last_frame = ""
         
         self._project_path = "" 
         
@@ -71,6 +75,10 @@ class PPM_Main_UI(QDialog):
         self.lbl_project_fps.setText("..")
         self.lbl_project_resolution = QLabel()
         self.lbl_project_resolution.setText("..")
+        self.lbl_shot_first_frame = QLabel()
+        self.lbl_shot_first_frame.setText("..")
+        self.lbl_shot_last_frame = QLabel()
+        self.lbl_shot_last_frame.setText("..")
         
         # Files Widgets
         self.btn_rename_files = QPushButton("Rename")
@@ -109,6 +117,8 @@ class PPM_Main_UI(QDialog):
         self.lbl_path.addRow("Path: ", self.lbl_project_path)  
         self.lbl_path.addRow("FPS: ", self.lbl_project_fps)      
         self.lbl_path.addRow("Resolution: ", self.lbl_project_resolution) 
+        self.lbl_path.addRow("Shot First Frame: ", self.lbl_shot_first_frame)
+        self.lbl_path.addRow("Shot Last Frame: ", self.lbl_shot_last_frame)
         self.lbl_path.setLabelAlignment(Qt.AlignRight)
         
         self.lyt_projects.addWidget(self.lst_projects)
@@ -181,13 +191,15 @@ class PPM_Main_UI(QDialog):
         self.btn_add_shot.clicked.connect(self.add_shot)
         self.lst_shots.itemClicked.connect(self.get_shot)        
         self.btn_rm_shot.clicked.connect(self.delete_shot)
+        
+        self.btn_houdini.clicked.connect(self.hou_run)
     
     
     def initialize_projects_list(self):
         all_projects =  pr.Projects().get_all_project_names() 
         self.lst_projects.clear()
-        self.lst_projects.addItems(all_projects)     
-        self.lst_projects.setCurrentRow(0)            
+        self.lst_projects.addItems(all_projects)    
+                   
 
     
     def update_sequences_list(self):
@@ -231,12 +243,11 @@ class PPM_Main_UI(QDialog):
         
         self.lbl_project_path.setText(str(project.get_path()) )
         self.lbl_project_fps.setText(str(project.get_fps()) )
-        self.lbl_project_resolution.setText(str(project.get_resolution()))
+        self.lbl_project_resolution.setText(str(project.get_resolution()))        
         
         self._project = project
         
-        self.update_sequences_list()
-        self.lst_sequences.setCurrentRow(0)
+        self.update_sequences_list()        
         
         return project
             
@@ -283,8 +294,7 @@ class PPM_Main_UI(QDialog):
         
         self._sequence = sequence 
         
-        self.update_shots_list()
-        self.lst_shots.setCurrentRow(0)
+        self.update_shots_list()        
 
         return sequence
     
@@ -310,9 +320,11 @@ class PPM_Main_UI(QDialog):
         if result == QtWidgets.QDialog.Accepted:
             self._shot_name = new_shot_window.return_name()     
             self._shot_path = os.path.join(self._sequence_name, self._shot_name)
-            self.lbl_project_path.setText(self._shot_path)        
+            self.lbl_project_path.setText(self._shot_path)     
+            self._shot_first_frame = new_shot_window.return_first_frame()  
+            self._shot_last_frame = new_shot_window.return_last_frame()  
 
-            logic.create_new_shot(self._sequence, self._shot_name)
+            logic.create_new_shot(self._sequence, self._shot_name, self._shot_first_frame, self._shot_last_frame)
             self.update_shots_list()
         
         print(self._sequence_name)
@@ -324,9 +336,16 @@ class PPM_Main_UI(QDialog):
         shot = logic.get_shot(self._sequence, shot_name)      
         
         self._shot_name = str(shot.get_name())
-        self._shot_path = os.path.join(self._sequence_path, self._shot_name)
-        self.lbl_project_path.setText(self._shot_path)
+        self._shot_path = os.path.join(self._sequence_path, self._shot_name)        
+        self._shot_first_frame = str(logic.get_shot_first_frame(self._sequence, self._shot_name))
+        self._shot_last_frame = str(logic.get_shot_last_frame(self._sequence, self._shot_name))
         
+        self.lbl_project_path.setText(self._shot_path)
+        self.lbl_shot_first_frame.setText(self._shot_first_frame)
+        self.lbl_shot_last_frame.setText(self._shot_last_frame)
+        
+            
+                  
         self._shot = shot       
                
         return shot
@@ -343,6 +362,17 @@ class PPM_Main_UI(QDialog):
             logic.delete_shot(self._sequence, shot_name)           
             
         self.update_shots_list()
+        
+        
+        
+    def hou_run(self):
+        lg.Logger.info("Running houdini")
+        hou_run(fps=int(self._project_fps),
+                resx=int(self._project_resolution.split("x")[0].strip()), 
+                resy= int(self._project_resolution.split("x")[-1].strip()), 
+                job=self._shot_path, 
+                first_frame=int(self._shot_first_frame),
+                last_frame=int(self._shot_last_frame),)
               
 
 

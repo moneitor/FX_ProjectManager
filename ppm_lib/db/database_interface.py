@@ -34,19 +34,48 @@ def find_by_name(connection, name, cmd):
     for data in datas:
         info = "{}, {}, {}, {}, {}".format(data[0], data[1], data[2], data[3], data[4])
         return(info)
+    
+    
+def find_by_name_sequence(connection, name, cmd):
+    _name = name
+    
+    datas = database_utils.get_by_name(connection, name, cmd)   
+    
+    for data in datas:
+        info = "{}, {}, {}".format(data[0], data[1], data[2])
+        return(info)
+    
+    
+
+def find_by_name_shot(connection, name, cmd):
+    _name = name
+    
+    datas = database_utils.get_by_name(connection, name, cmd)   
+    
+    for data in datas:
+        info = "{}, {}, {}, {}, {}".format(data[0], data[1], data[2], data[3], data[4])
+        return(info)
         
         
 
-def delete(connection, name, cmd):
-    #lg.Logger.critical("Trying to remove project {}".format(name))
-    database_utils.delete_by_name(connection, name, cmd)    
-   
+def delete(connection, name, cmd):    
+    database_utils.delete_by_name(connection, name, cmd)      
+    
+
+    
+def add_new_sequence(connection, name, path, cmd):
+    _name = name
+    _path = path            
+    database_utils.add_sequence(connection, _name, _path, cmd)
     
     
     
-    
-def add_new_sequence(connection):
-    pass
+def add_new_shot(connection, name, firstFrame, lastFrame, path, cmd):
+    _name = name
+    _first_frame = firstFrame
+    _last_frame = lastFrame
+    _path = path            
+    database_utils.add_shot(connection, _name, _first_frame, _last_frame, _path, cmd)
     
 
 

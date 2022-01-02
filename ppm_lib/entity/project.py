@@ -10,8 +10,8 @@ __all__= ["Projects", "project"]
 
 ######################### COMANDS ###################################
 CREATE_PROJECTS = 'CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
-CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
-#CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, path TEXT);'
+#CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
+CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, path TEXT);'
 # TODO UPDATE THE CREATE SEQUENCES DATABASE TO 
 
 INSERT_PROJECT = 'INSERT INTO projects (name, fps, resolution, path) VALUES (?, ?, ?, ?);'

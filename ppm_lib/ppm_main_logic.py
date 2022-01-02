@@ -73,10 +73,22 @@ def get_shot(sequence, shot_name):
     return shot
 
 
-def create_new_shot(sequence, shot_name):
+def get_shot_first_frame(sequence, shot_name):
+    shot = s.Shot(sequence, shot_name)
+    first_frame = shot.get_first_frame()
+    return first_frame
+
+
+def get_shot_last_frame(sequence, shot_name):
+    shot = s.Shot(sequence, shot_name)
+    last_frame = shot.get_last_frame()
+    return last_frame
+
+
+def create_new_shot(sequence, shot_name, first_frame, last_frame):
     if sequence and shot_name:
         shots = s.Shots(sequence)
-        shots.add_shot(shot_name)
+        shots.add_shot(shot_name, first_frame, last_frame)
 
 
 def delete_shot(sequence, shot_name):

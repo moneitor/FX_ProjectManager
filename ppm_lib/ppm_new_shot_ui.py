@@ -74,11 +74,11 @@ class PPM_NewProject(QDialog):
         return self.ln_shot_name.text()
     
     
-    def return_fps(self):        
+    def return_first_frame(self):        
         return self.cmb_firstFrame.text()
     
     
-    def return_resolution(self):
+    def return_last_frame(self):
         return self.cmb_lastFrame.text()
     
     

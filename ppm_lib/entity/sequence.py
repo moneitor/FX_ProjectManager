@@ -6,15 +6,15 @@ from db import database_utils as db_u
 import os
 
 ######################### COMANDS ###################################
-CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
-#CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, path TEXT);'
-CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
-#CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, firstFrame INTEGER, lastFrame INTEGER, path TEXT);'
+#CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
+CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, path TEXT);'
+#CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
+CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, firstFrame INTEGER, lastFrame INTEGER, path TEXT);'
 
 
 
-INSERT_SEQUENCE = 'INSERT INTO sequences (name, fps, resolution, path) VALUES (?, ?, ?, ?);'
-#INSERT_SEQUENCE = 'INSERT INTO sequences (name, path) VALUES (?, ?);'
+#INSERT_SEQUENCE = 'INSERT INTO sequences (name, fps, resolution, path) VALUES (?, ?, ?, ?);'
+INSERT_SEQUENCE = 'INSERT INTO sequences (name, path) VALUES (?, ?);'
 
 GET_ALL_SEQUENCES = 'SELECT * FROM sequences'
 GET_ALL_SHOTS = 'SELECT * FROM shots'
@@ -53,7 +53,7 @@ class Sequences:
         lg.Logger.warning(sequence_path)
         
         if not db.find_by_name(self.connection_seq, sequence_name, GET_SEQUENCE_BY_NAME):
-            db.add_new(self.connection_seq, sequence_name, -1, "NA", sequence_path, INSERT_SEQUENCE)      
+            db.add_new_sequence(self.connection_seq, sequence_name, sequence_path, INSERT_SEQUENCE)      
         
             if os.path.exists(self.project_path):                
                 ppm_mkdir(sequence_path)         
@@ -132,7 +132,7 @@ class Sequence:
     
     
     def get_name(self):
-        seq = db.find_by_name(self.connection_seq, self.seq_name, GET_SEQUENCE_BY_NAME)
+        seq = db.find_by_name_sequence(self.connection_seq, self.seq_name, GET_SEQUENCE_BY_NAME)
         if seq != None:
             seq = seq.split(",")[1].strip()
             return seq
@@ -140,7 +140,7 @@ class Sequence:
     
     
     def get_path(self):
-        path = db.find_by_name(self.connection_seq, self.seq_name, GET_SEQUENCE_BY_NAME)
+        path = db.find_by_name_sequence(self.connection_seq, self.seq_name, GET_SEQUENCE_BY_NAME)
         if path != None:
             path = path.split(",")[-1].strip()
             return path

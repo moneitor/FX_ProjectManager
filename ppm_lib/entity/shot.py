@@ -7,10 +7,10 @@ from directory import dir_structures as ds
 import os
 
 ######################### COMANDS ###################################
-CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
-#CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, firstFrame INTEGER, lastFrame INTEGER, path TEXT);'
-INSERT_SHOT = 'INSERT INTO shots (name, fps, resolution, path) VALUES (?, ?, ?, ?);'
-#INSERT_SHOT = 'INSERT INTO shots (name, firstFrame, lastFrame, path) VALUES (?, ?, ?, ?);'
+
+CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, firstFrame INTEGER, lastFrame INTEGER, path TEXT);'
+
+INSERT_SHOT = 'INSERT INTO shots (name, firstFrame, lastFrame, path) VALUES (?, ?, ?, ?);'
 GET_ALL_SHOTS = 'SELECT * FROM shots'
 GET_SHOT_BY_NAME = 'SELECT * FROM shots WHERE name = ?;'
 DELETE_BY_NAME = 'DELETE FROM shots WHERE name = ?;'
@@ -38,11 +38,11 @@ class Shots:
         db_u.create_table(self.connection_shot, CREATE_SHOTS)
     
     
-    def add_shot(self, shot_name):
+    def add_shot(self, shot_name, first_frame, last_frame):
         shot_path = os.path.join(self.sequence_path, shot_name)
         
         if not db.find_by_name(self.connection_shot, shot_name, GET_SHOT_BY_NAME):
-            db.add_new(self.connection_shot, shot_name, -1, "NA", shot_path, INSERT_SHOT)
+            db.add_new_shot(self.connection_shot, shot_name, first_frame, last_frame, shot_path, INSERT_SHOT)
             
             if os.path.exists(self.sequence_path):    
                           
@@ -79,9 +79,10 @@ class Shots:
         for shot in shots:
             paths.append(shot[-1])
             lg.Logger.info(shot[-1])
-        return paths
+        return paths     
     
     
+        
     def delete_shot(self, shot_name):
         shot_path = os.path.join(self.sequence_path, shot_name)
         
@@ -115,8 +116,22 @@ class Shot:
         return self.shot_name
     
     
+    def get_first_frame(self):
+        path = db.find_by_name_shot(self.connection_shot, self.shot_name, GET_SHOT_BY_NAME)   
+        if path != None:
+            first_frame = path.split(",")[2].strip()            
+            return int(first_frame)
+    
+    
+    def get_last_frame(self):
+        path = db.find_by_name_shot(self.connection_shot, self.shot_name, GET_SHOT_BY_NAME)   
+        if path != None:
+            last_frame = path.split(",")[3].strip()            
+            return int(last_frame)
+    
+    
     def get_path(self):                   
-        path = db.find_by_name(self.connection_shot, self.shot_name, GET_SHOT_BY_NAME)   
+        path = db.find_by_name_shot(self.connection_shot, self.shot_name, GET_SHOT_BY_NAME)   
         if path != None:
             path = path.split(",")[-1].strip()            
             return path 
