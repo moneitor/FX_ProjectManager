@@ -1,5 +1,5 @@
 from PySide2 import QtGui, QtWidgets
-from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
+from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
 import ppm_main_logic as logic
 import sys
 import ppm_logger.logger as lg
@@ -56,6 +56,7 @@ class PPM_Main_UI(QDialog):
         self.lst_projects = QListWidget()        
         self.btn_add_project = QPushButton("Add Project")
         self.btn_rm_project = QPushButton("Remove Project")
+        
         # - Sequences
         self.lst_sequences = QListWidget()
         self.btn_add_seq = QPushButton("Add Sequence")
@@ -64,6 +65,7 @@ class PPM_Main_UI(QDialog):
         self.btn_rm_seq = QPushButton("Remove Seq")
         self.btn_rm_seq.setEnabled(False)
         self.btn_rm_seq.setStyleSheet("background-color: rgb(100,100,100)")
+        
         # - Shots
         self.lst_shots = QListWidget()
         self.btn_add_shot = QPushButton("Add Shot")
@@ -75,22 +77,30 @@ class PPM_Main_UI(QDialog):
         self.btn_edit_shot = QPushButton("Edit Shot")
         self.btn_edit_shot.setEnabled(False)
         self.btn_edit_shot.setStyleSheet("background-color: rgb(100,100,100)")
-        # - DCC
+        
+        # - DCC        
         self.btn_houdini = QPushButton("Houdini")
         self.btn_houdini.setEnabled(False)
         self.btn_houdini.setStyleSheet("background-color: rgb(100,100,100)")
         self.btn_nuke = QPushButton("Nuke")
         self.btn_nuke.setEnabled(False)
-        self.btn_nuke.setStyleSheet("background-color: rgb(100,100,100)")
+        self.btn_nuke.setStyleSheet("background-color: rgb(100,100,100)")        
+        
         # - General stuff
         self.lbl_project_path = QLabel("Project Path")
         self.lbl_project_path.setText("..")
+        self.lbl_project_path.setStyleSheet("background-color: black: border: 1px solid black;")
+        
         self.lbl_project_fps = QLabel()
         self.lbl_project_fps.setText("..")
+        self.lbl_project_fps.setStyleSheet("background-color: black: border: 1px solid black;")
+        
         self.lbl_project_resolution = QLabel()
         self.lbl_project_resolution.setText("..")
+        
         self.lbl_shot_first_frame = QLabel()
         self.lbl_shot_first_frame.setText("..")
+        
         self.lbl_shot_last_frame = QLabel()
         self.lbl_shot_last_frame.setText("..")
         
@@ -119,7 +129,13 @@ class PPM_Main_UI(QDialog):
         self.lyt_projects = QVBoxLayout()
         self.lyt_sequences = QVBoxLayout()
         self.lyt_shots = QVBoxLayout()
-        self.lyt_dcc = QVBoxLayout()        
+        self.lyt_dcc = QVBoxLayout()  
+        
+        self.dcc_grp = QGroupBox("Software")        
+        self.dcc_v_layout = QVBoxLayout()
+        self.dcc_v_layout.addWidget(self.btn_houdini)
+        self.dcc_v_layout.addWidget(self.btn_nuke)
+        self.dcc_grp.setLayout(self.dcc_v_layout)              
         
         self.lyt_main_projects_h = QHBoxLayout()
         self.lyt_main_projects_h.addLayout(self.lyt_projects)
@@ -127,13 +143,15 @@ class PPM_Main_UI(QDialog):
         self.lyt_main_projects_h.addLayout(self.lyt_shots)
         self.lyt_main_projects_h.addLayout(self.lyt_dcc)
         
+        self.grp_info = QGroupBox("General Information")
         self.lbl_path = QFormLayout()
         self.lbl_path.addRow("Path: ", self.lbl_project_path)  
         self.lbl_path.addRow("FPS: ", self.lbl_project_fps)      
         self.lbl_path.addRow("Resolution: ", self.lbl_project_resolution) 
         self.lbl_path.addRow("Shot First Frame: ", self.lbl_shot_first_frame)
-        self.lbl_path.addRow("Shot Last Frame: ", self.lbl_shot_last_frame)
+        self.lbl_path.addRow("Shot Last Frame: ", self.lbl_shot_last_frame)        
         self.lbl_path.setLabelAlignment(Qt.AlignRight)
+        self.grp_info.setLayout(self.lbl_path)
         
         self.lyt_projects.addWidget(self.lst_projects)
         self.lyt_projects.addWidget(self.btn_add_project)
@@ -148,13 +166,14 @@ class PPM_Main_UI(QDialog):
         self.lyt_shots.addWidget(self.btn_rm_shot)
         self.lyt_shots.addWidget(self.btn_edit_shot)
         
-        self.lyt_dcc.addWidget(self.btn_houdini)
-        self.lyt_dcc.addWidget(self.btn_nuke)
+        #self.lyt_dcc.addWidget(self.btn_houdini)
+        #self.lyt_dcc.addWidget(self.btn_nuke)
+        self.lyt_dcc.addWidget(self.dcc_grp)
         self.lyt_dcc.addStretch()
         
         self.lyt_main_projects_v = QVBoxLayout()
         self.lyt_main_projects_v.addLayout(self.lyt_main_projects_h)
-        self.lyt_main_projects_v.addLayout(self.lbl_path)        
+        self.lyt_main_projects_v.addWidget(self.grp_info)        
                                 
         
         ###### STUFF RELATED TO THE FILES #########################
@@ -266,7 +285,9 @@ class PPM_Main_UI(QDialog):
         
         self._project = project
         
-        self.update_sequences_list()        
+        self.update_sequences_list()   
+        self.update_shots_list()   
+        self.lst_shots.clear()  
         
         return project
             
@@ -344,7 +365,7 @@ class PPM_Main_UI(QDialog):
         result = new_shot_window.exec_()
         
         if result == QtWidgets.QDialog.Accepted:
-            self._shot_name = new_shot_window.return_name()     
+            self._shot_name = self._sequence_name + "_" + new_shot_window.return_name()     
             self._shot_path = os.path.join(self._sequence_name, self._shot_name)
             self.lbl_project_path.setText(self._shot_path)     
             self._shot_first_frame = new_shot_window.return_first_frame()  
@@ -358,10 +379,11 @@ class PPM_Main_UI(QDialog):
     
     def get_shot(self, t):
         shot_name = t.text()
+        shot_name = shot_name.split("_")[-1]
         
         shot = logic.get_shot(self._sequence, shot_name)      
         
-        self._shot_name = str(shot.get_name())
+        self._shot_name = self._sequence_name + "_" + str(shot.get_name())
         self._shot_path = os.path.join(self._sequence_path, self._shot_name)        
         self._shot_first_frame = str(logic.get_shot_first_frame(self._sequence, self._shot_name))
         self._shot_last_frame = str(logic.get_shot_last_frame(self._sequence, self._shot_name))

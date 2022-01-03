@@ -20,16 +20,15 @@ class PPM_NewProject(QDialog):
         
         
     def widgets(self):        
-        self.ln_shot_name = QLineEdit()
-        self.ln_shot_name.setPlaceholderText("Write shot name here...")
+        self.ln_shot_name = QSpinBox()
+        self.ln_shot_name.setValue(10)
         self.cmb_firstFrame = QSpinBox()   
         self.cmb_firstFrame.setMaximum(10000)
         self.cmb_firstFrame.setValue(1001)
         self.cmb_lastFrame = QSpinBox()
         self.cmb_lastFrame.setMaximum(10000)
         self.cmb_lastFrame.setValue(1100)
-        self.btn_create = QPushButton("Create")   
-        self.btn_create.setEnabled(False)
+        self.btn_create = QPushButton("Create")         
         self.btn_cancel = QPushButton("Cancel")
         self.qwidget1 = QWidget()           
 
@@ -38,7 +37,7 @@ class PPM_NewProject(QDialog):
         self.lyt_v_main = QVBoxLayout()
         self.lyt_h_main = QHBoxLayout()
         self.form_main = QFormLayout()
-        self.form_main.addRow("Shot Name:", self.ln_shot_name)
+        self.form_main.addRow("Shot Number:", self.ln_shot_name)
         self.form_main.addRow("First Frame:", self.cmb_firstFrame)
         self.form_main.addRow("Last Frame:", self.cmb_lastFrame)
         self.form_main.setLabelAlignment(Qt.AlignRight)
@@ -55,24 +54,15 @@ class PPM_NewProject(QDialog):
         self.setLayout(self.lyt_v_main)
     
     
-    def connections(self): 
-        self.ln_shot_name.textChanged.connect(self.check_name)       
+    def connections(self):               
         self.btn_create.clicked.connect(self.accept)
-        self.btn_cancel.clicked.connect(self.close)      
-        
-        
-        
-    def check_name(self):
-        if self.ln_shot_name.text():     
-            if not self.ln_shot_name.text()[0].isdigit():       
-                self.btn_create.setEnabled(True)
-        else:
-            self.btn_create.setEnabled(False)      
+        self.btn_cancel.clicked.connect(self.close)             
 
         
-        
-    def return_name(self):        
-        return self.ln_shot_name.text()
+    def return_name(self):
+        value = str(self.ln_shot_name.text())
+        fixed_value = value.zfill(3)
+        return fixed_value
     
     
     def return_first_frame(self):        
