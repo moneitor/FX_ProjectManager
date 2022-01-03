@@ -29,5 +29,5 @@ Given the selected sequence, will allow the user to create a new shot whose name
 and the shot number
 
 ####      File Renamer window
-![](images/renamer.jpeg)
+![](images/renamer.jpg)
 Work in progress, allows to rename files, offset the frame range, fix padding issues, and eventually will be a work with an instance of a FileSequence() object that will allow all the functionalities needed by a sequence of files.
