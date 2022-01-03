@@ -38,13 +38,19 @@ class Projects:
         # Creation of the database table
         db_u.create_table(self.connection_project, CREATE_PROJECTS)
         
+        
+    def get_projects(self):
+        """Returns a list of Project() objects
+        """
+        projects = []
+        projects_db = db.get_all(self.connection_project, GET_ALL_PROJECTS)
+        for project in projects_db:
+            current_project = Project(project[1])
+            projects.append(current_project)
+            
+        return projects       
     
-    def get_all_projects_info(self):
-        '''
-        Displays all the projects
-        '''
-        projects = db.get_all(self.connection_project, GET_ALL_PROJECTS)        
-        return projects
+
         
         
     def get_all_project_names(self):
@@ -52,11 +58,11 @@ class Projects:
         Displays all the project names
         '''
         names = []
-        projects = self.get_all_projects_info()
+        projects = self.get_projects()
         
                 
         for project in projects:
-            names.append(project[1])
+            names.append(project.get_name())
         
         return names    
     
@@ -66,11 +72,11 @@ class Projects:
         Displays all the project names
         '''
         path = []
-        projects = self.get_all_projects_info()
+        projects = self.get_projects()
         
         for project in projects:
-            if os.path.exists(project[-1]):
-                path.append(project[-1])
+            if os.path.exists(project.get_path()):
+                path.append(project.get_path())
                 
             else:
                 lg.Logger.warning("Project {} does not exist".format(project[1]))

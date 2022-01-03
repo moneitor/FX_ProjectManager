@@ -21,6 +21,7 @@ class PPM_NewProject(QDialog):
         
     def widgets(self):        
         self.ln_shot_name = QSpinBox()
+        self.ln_shot_name.setMaximum(10000)
         self.ln_shot_name.setValue(10)
         self.cmb_firstFrame = QSpinBox()   
         self.cmb_firstFrame.setMaximum(10000)
@@ -61,7 +62,7 @@ class PPM_NewProject(QDialog):
         
     def return_name(self):
         value = str(self.ln_shot_name.text())
-        fixed_value = value.zfill(3)
+        fixed_value = value.zfill(4)
         return fixed_value
     
     

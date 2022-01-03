@@ -263,6 +263,8 @@ class PPM_Main_UI(QDialog):
             
             logic.create_new_project(self._project_name, int(self._project_fps), self._project_resolution)
             self.initialize_projects_list()
+            self.lst_sequences.clear()
+            self.lst_shots.clear()
             
             
     def get_project(self, t):
@@ -285,9 +287,12 @@ class PPM_Main_UI(QDialog):
         
         self._project = project
         
-        self.update_sequences_list()   
-        self.update_shots_list()   
-        self.lst_shots.clear()  
+        try:
+            self.update_sequences_list()   
+            self.update_shots_list()   
+            self.lst_shots.clear()  
+        except:
+            lg.Logger.info("No sequences or shots created yet")
         
         return project
             
@@ -304,6 +309,8 @@ class PPM_Main_UI(QDialog):
             logic.delete_project(name)           
             
         self.initialize_projects_list()
+        self.lst_sequences.clear()
+        self.lst_shots.clear()
         
         
         
@@ -357,6 +364,7 @@ class PPM_Main_UI(QDialog):
             logic.delete_sequence(self._project, sequence_name)           
             
         self.update_sequences_list()
+        self.lst_shots.clear()
         
         
     def add_shot(self):

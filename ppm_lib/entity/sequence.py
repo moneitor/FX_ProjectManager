@@ -59,36 +59,41 @@ class Sequences:
                 ppm_mkdir(sequence_path)         
                 
         else:
-            lg.Logger.warning("Sequence [{}] already exists".format(sequence_name))   
+            lg.Logger.warning("Sequence [{}] already exists".format(sequence_name)) 
             
             
-    def get_sequences_info(self):
-        
-        seqs = []
-        sequences = db.get_all(self.connection_seq, GET_ALL_SEQUENCES)        
-        
-        for sequence in sequences:
-            seqs.append(sequence)           
-        
-        return seqs  
+    
+    def get_sequences(self):
+        """
+        Returns a list of Sequences() objects
+        """
+        sequences = []
+        sequence_db = db.get_all(self.connection_seq, GET_ALL_SEQUENCES)
+        for sequence in sequence_db:
+            current_sequence = Sequence(self.prj, sequence[1])
+            sequences.append(current_sequence)
+            
+        return sequences  
+             
+            
     
     
     def get_sequences_names(self):
         names = []
-        seqs = self.get_sequences_info()
+        seqs = self.get_sequences()
         for seq in seqs:    
-            names.append(seq[1])
-            lg.Logger.info(seq[1])
+            names.append(seq.get_name())            
         
         return names        
         
     
     def get_sequences_path(self):
         paths = []
-        seqs = self.get_sequences_info()
+        seqs = self.get_sequences()
         for seq in seqs:    
-            paths.append(seq[-1])
+            paths.append(seq.get_path())
         lg.Logger.info(paths)     
+        
     
         
     def delete_sequence(self, sequence_name):
@@ -120,14 +125,16 @@ class Sequence:
             self.connection_shot = db_u.connect(os.path.join(self.project_path,  self.seq_name, "shots.db"))       
                 
         # Creation of the database table
-        db_u.create_table(self.connection_seq, CREATE_SEQUENCES)    
-    
+        db_u.create_table(self.connection_seq, CREATE_SEQUENCES)      
 
+
+    
     def get_shots(self):
         sh = db.get_all(self.connection_shot, GET_ALL_SHOTS)
         shots = []
         for s in sh:
             shots.append(s[-1])
+            
         return shots  
     
     

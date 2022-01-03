@@ -22,10 +22,15 @@ DELETE_BY_NAME = 'DELETE FROM shots WHERE name = ?;'
 
 class Shots:
     def __init__(self, sequence):
-        if isinstance(sequence, Sequence):
-            self.sequence = sequence
-        if sequence.get_name() == None:
-            lg.Logger.critical("The given sequence is not initialized correctly")
+        if sequence:      
+            if sequence.get_name() == None:
+                lg.Logger.critical("The given sequence is not initialized correctly")
+                return  
+            
+            if isinstance(sequence, Sequence):
+                self.sequence = sequence           
+            
+        else:
             return
         self.sequence_name = self.sequence.get_name()
         self.sequence_path = self.sequence.get_path()
@@ -51,34 +56,39 @@ class Shots:
                 
         else:
             lg.Logger.warning("Shot [{}] already exists".format(shot_name))
-    
-    
-    def get_shots(self):
-        sh = []
-        shots = db.get_all(self.connection_shot, GET_ALL_SHOTS)
-        
-        for shot in shots:
-            sh.append(shot)
             
-        return sh
+            
+    def get_shots(self):
+        """
+        Returns a list of Sequences() objects
+        """
+        shots = []
+        shots_db = db.get_all(self.connection_shot, GET_ALL_SHOTS)
+        for shot in shots_db:
+            current_shot = Shot(self.sequence, shot[1])
+            shots.append(current_shot)
+            
+        return shots    
+    
+
     
     
     def get_shot_names(self):
         names = []
         shots = self.get_shots()
         for shot in shots:
-            names.append(shot[1])
-            lg.Logger.info(shot[1])
+            names.append(shot.get_name())
+            lg.Logger.info(shot.get_name())
         return names
         
     
     
     def get_shots_path(self):
         paths = []
-        shots = self.get_shots_info()
+        shots = self.get_shots
         for shot in shots:
-            paths.append(shot[-1])
-            lg.Logger.info(shot[-1])
+            paths.append(shot.get_path())
+            lg.Logger.info(shot.get_path())
         return paths     
     
     
