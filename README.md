@@ -13,3 +13,12 @@ There are VEX Snippets that you might find useful inside:
 
 ####      Project manager window
 ![](images/main_window.jpeg)
+
+####      New Project window
+![](images/new_project.jpeg)
+
+####      New Sequence window
+![](images/new_sequence.jpeg)
+
+####      New Shot window
+![](images/new_shot.jpeg)
