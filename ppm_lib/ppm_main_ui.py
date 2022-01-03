@@ -16,6 +16,8 @@ import ppm_new_shot_ui as new_ui_shot
 
 from houdini_startup import hou_run
 
+from files import renamer
+
 import os
 
 
@@ -177,10 +179,11 @@ class PPM_Main_UI(QDialog):
                                 
         
         ###### STUFF RELATED TO THE FILES #########################
-        self.lyt_files = QHBoxLayout()
+        self.lyt_files = QVBoxLayout()
         self.lyt_files.addWidget(self.btn_rename_files)
         self.lyt_files.addWidget(self.btn_renumber_files)
-        self.lyt_files.addWidget(self.btn_fix_padding)        
+        self.lyt_files.addWidget(self.btn_fix_padding)       
+        self.lyt_files.addStretch() 
         
         
         ###### STUFF RELATED TO THE TEMPLATES
@@ -226,6 +229,8 @@ class PPM_Main_UI(QDialog):
         self.btn_rm_shot.clicked.connect(self.delete_shot)
         
         self.btn_houdini.clicked.connect(self.hou_run)
+        
+        self.btn_rename_files.clicked.connect(self.run_renamer)
     
     
     def initialize_projects_list(self):
@@ -435,6 +440,14 @@ class PPM_Main_UI(QDialog):
                 first_frame=int(self._shot_first_frame),
                 last_frame=int(self._shot_last_frame),
                 shot_path = self._shot_path)
+        
+        
+        
+    ######################### FILE UTILITIES ############################################################
+    
+    def run_renamer(self):
+        renamer_window = renamer.Renamer()
+        renamer_window.exec_()
               
 
 
