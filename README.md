@@ -10,3 +10,6 @@ This is still work in progress and will remain like that for the long term.
 
 There are VEX Snippets that you might find useful inside:
 **FX_ProjectManager/ppm_lib/snippets/vexSnippets/**
+
+####      Project manager window
+![](images/main_window.jpeg)
