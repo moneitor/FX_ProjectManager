@@ -9,13 +9,15 @@ import os
 class Renamer(QDialog):
     def __init__(self):
         super(Renamer, self).__init__()
-        self.setWindowTitle("Rename")
+        self.setWindowTitle("RENAME - RENUMBER")
         self.setMinimumSize(600,250)
         
         self.folder = ""
         self.old_text = ""
         self.new_text = ""
         self.new_start = 1001		
+        
+        self.full_sequence = []
         
         
         self.widgets()
@@ -109,6 +111,12 @@ class Renamer(QDialog):
         self.folder = asset_dir
         self.return_first_element(asset_dir)
         
+    
+    def update_list_from_files_in_folder(self):
+        files = os.listdir(self.folder)
+        self.full_sequence = files
+        return files
+        
 
     def update_folder_text(self):
         self.folder = self.ln_folder_path.text()
@@ -135,19 +143,24 @@ class Renamer(QDialog):
             mode = "replace"         
 
         if os.path.isdir(self.folder) and len(self.new_text) > 0 and len(self.old_text) > 0:
-            print (self.folder, self.old_text, self.new_text)			
-            rename_files(self.folder, mode, self.old_text, self.new_text)
+            			
+            self.full_sequence = rename_files(self.folder, mode, self.old_text, self.new_text)
+            self.update_list_from_files_in_folder()
+            self.return_first_element(self.folder)
             
 
     def renumber(self):
         if os.path.isdir(self.folder):
             renumber_files(self.folder, self.new_start, 4)
+            self.return_first_element(self.folder)
+        
             
             
     def padding(self):
         if os.path.isdir(self.folder):
             print(self.folder)
             fix_padding(self.folder)
+            self.return_first_element(self.folder)
             
         
     def return_first_element(self, dir_name):

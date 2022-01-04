@@ -1,3 +1,12 @@
+"""
+Main hub from where most of the PPM applications are run, it is divided in three
+main segments.
+    
+Project creation, File Utils and Templates.
+    
+moduleauthor::Hernan Llano <hernan@3d.gmail.com>   
+"""
+
 from PySide2 import QtGui, QtWidgets
 from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
 import ppm_main_logic as logic

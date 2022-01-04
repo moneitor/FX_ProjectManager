@@ -26,6 +26,8 @@ def rename_files(dir_name, mode, old_text="", new_text=""):
     """
     Rename files using a prefix or a postfix, or fully replace a part of the original Lctext
     """
+    files = []
+    
     for fil in os.listdir(dir_name):
         fil = os.path.join(dir_name, fil)
         file_name = os.path.basename(fil)
@@ -38,8 +40,12 @@ def rename_files(dir_name, mode, old_text="", new_text=""):
             new_name = os.path.join(dir_name, file_name.replace(file_name, file_name + new_text))
             
         print("File [{}],  [{}]".format(old_text, new_text))
+        
+        files.append(new_name)
 
         os.rename(fil, new_name)
+        
+    return files
 
 
 
@@ -92,7 +98,10 @@ def renumber_files(dir_name, new_start_frame=1001, leading_zeroes=4):
   
   
 def fix_padding(dir_name):
-      for fil in os.listdir(dir_name):
+    
+    files = []
+    
+    for fil in os.listdir(dir_name):
         fil = os.path.join(dir_name, fil)
         directory = os.path.dirname(fil)
         file_full_name = os.path.basename(fil)
@@ -107,11 +116,23 @@ def fix_padding(dir_name):
         
         full_path_new = os.path.join(directory, new_name)
         
+        files.append(full_path_new)
+        
         os.rename(fil, full_path_new)
         
+    return files
         
-def get_first_file_from_sequence(dir_name):    
-    return os.listdir(dir_name)[0]
+        
+def get_first_file_from_sequence(dir_name):  
+    first_file = os.listdir(dir_name)[0]
+    
+    basename =  first_file.split(".")[0]
+    frame = "#" * len(first_file.split(".")[-2])
+    extension = first_file.split(".")[-1]
+    
+    final_name = basename + "." + frame + "." + extension
+    
+    return final_name
         
         
         
