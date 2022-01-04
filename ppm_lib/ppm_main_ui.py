@@ -64,11 +64,13 @@ class PPM_Main_UI(QDialog):
     def widgets(self):
         # Projects widgets        
         # - Projects
+        self.lbl_projects = QLabel("Projects:")
         self.lst_projects = QListWidget()        
         self.btn_add_project = QPushButton("Add Project")
         self.btn_rm_project = QPushButton("Remove Project")
         
         # - Sequences
+        self.lbl_sequences = QLabel("Sequences:")
         self.lst_sequences = QListWidget()
         self.btn_add_seq = QPushButton("Add Sequence")
         self.btn_add_seq.setEnabled(False)
@@ -78,6 +80,7 @@ class PPM_Main_UI(QDialog):
         self.btn_rm_seq.setStyleSheet("background-color: rgb(100,100,100)")
         
         # - Shots
+        self.lbl_shots = QLabel("Shots:")
         self.lst_shots = QListWidget()
         self.btn_add_shot = QPushButton("Add Shot")
         self.btn_add_shot.setEnabled(False)
@@ -156,22 +159,25 @@ class PPM_Main_UI(QDialog):
         
         self.grp_info = QGroupBox("General Information")
         self.lbl_path = QFormLayout()
-        self.lbl_path.addRow("Path: ", self.lbl_project_path)  
-        self.lbl_path.addRow("FPS: ", self.lbl_project_fps)      
-        self.lbl_path.addRow("Resolution: ", self.lbl_project_resolution) 
-        self.lbl_path.addRow("Shot First Frame: ", self.lbl_shot_first_frame)
-        self.lbl_path.addRow("Shot Last Frame: ", self.lbl_shot_last_frame)        
+        self.lbl_path.addRow("Path -> ", self.lbl_project_path)  
+        self.lbl_path.addRow("FPS -> ", self.lbl_project_fps)      
+        self.lbl_path.addRow("Resolution -> ", self.lbl_project_resolution) 
+        self.lbl_path.addRow("Shot First Frame -> ", self.lbl_shot_first_frame)
+        self.lbl_path.addRow("Shot Last Frame -> ", self.lbl_shot_last_frame)        
         self.lbl_path.setLabelAlignment(Qt.AlignRight)
         self.grp_info.setLayout(self.lbl_path)
         
+        self.lyt_projects.addWidget(self.lbl_projects)
         self.lyt_projects.addWidget(self.lst_projects)
         self.lyt_projects.addWidget(self.btn_add_project)
         self.lyt_projects.addWidget(self.btn_rm_project)
         
+        self.lyt_sequences.addWidget(self.lbl_sequences)
         self.lyt_sequences.addWidget(self.lst_sequences)
         self.lyt_sequences.addWidget(self.btn_add_seq)
         self.lyt_sequences.addWidget(self.btn_rm_seq)
         
+        self.lyt_shots.addWidget(self.lbl_shots)
         self.lyt_shots.addWidget(self.lst_shots)
         self.lyt_shots.addWidget(self.btn_add_shot)
         self.lyt_shots.addWidget(self.btn_rm_shot)
