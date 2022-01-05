@@ -34,7 +34,7 @@ class PPM_Main_UI(QDialog):
     def __init__(self):
         super(PPM_Main_UI, self).__init__()
         self.setWindowTitle("PROJECT MANAGER")
-        self.setMaximumWidth(800)
+        self.setMaximumWidth(860)
         self.setMinimumHeight(400)
         
         self._project = None
@@ -98,7 +98,16 @@ class PPM_Main_UI(QDialog):
         self.btn_houdini.setStyleSheet("background-color: rgb(100,100,100)")
         self.btn_nuke = QPushButton("Nuke")
         self.btn_nuke.setEnabled(False)
-        self.btn_nuke.setStyleSheet("background-color: rgb(100,100,100)")        
+        self.btn_nuke.setStyleSheet("background-color: rgb(100,100,100)")       
+        
+        # Assets widgets
+        self.btn_search_file = QPushButton("Search for file")
+        self.ln_file_path = QLineEdit()
+        self.btn_cg_add_abc = QPushButton("Add Alembic")  
+        self.btn_cg_add_obj = QPushButton("Add OBJ")  
+        self.btn_cg_add_fbx = QPushButton("Add FBX") 
+        self.ln_asset_name = QLineEdit()
+        self.ln_asset_name.setPlaceholderText("Write asset name")
         
         # - General stuff
         self.lbl_project_path = QLabel("Project Path")
@@ -116,13 +125,12 @@ class PPM_Main_UI(QDialog):
         self.lbl_shot_first_frame.setText("..")
         
         self.lbl_shot_last_frame = QLabel()
-        self.lbl_shot_last_frame.setText("..")
-        
+        self.lbl_shot_last_frame.setText("..")       
+                           
         # Files Widgets
         self.btn_rename_files = QPushButton("Rename")
         self.btn_renumber_files = QPushButton("Renumber")
-        self.btn_fix_padding = QPushButton("Fix Padding")
-        
+        self.btn_fix_padding = QPushButton("Fix Padding")        
         
         # Template Widgets
         self.cmb_dcc = QComboBox()
@@ -138,12 +146,14 @@ class PPM_Main_UI(QDialog):
         self.wdg_projects = QWidget()
         self.wdg_files = QWidget()
         self.wdg_templates = QWidget()
+        self.wdg_assets = QWidget()
         
         ###### STUFF RELATED TO THE PROJECTS TAB ###############################
         self.lyt_projects = QVBoxLayout()
         self.lyt_sequences = QVBoxLayout()
         self.lyt_shots = QVBoxLayout()
         self.lyt_dcc = QVBoxLayout()  
+        self.lyt_assets = QVBoxLayout()
         
         self.dcc_grp = QGroupBox("Software")        
         self.dcc_v_layout = QVBoxLayout()
@@ -181,17 +191,34 @@ class PPM_Main_UI(QDialog):
         self.lyt_shots.addWidget(self.lst_shots)
         self.lyt_shots.addWidget(self.btn_add_shot)
         self.lyt_shots.addWidget(self.btn_rm_shot)
-        self.lyt_shots.addWidget(self.btn_edit_shot)
+        self.lyt_shots.addWidget(self.btn_edit_shot)        
         
-        #self.lyt_dcc.addWidget(self.btn_houdini)
-        #self.lyt_dcc.addWidget(self.btn_nuke)
         self.lyt_dcc.addWidget(self.dcc_grp)
         self.lyt_dcc.addStretch()
         
         self.lyt_main_projects_v = QVBoxLayout()
         self.lyt_main_projects_v.addLayout(self.lyt_main_projects_h)
-        self.lyt_main_projects_v.addWidget(self.grp_info)        
-                                
+        self.lyt_main_projects_v.addWidget(self.grp_info)   
+           
+        
+        ##### STUFF RELATED TO ASSETS
+        self.lyt_h_asset_file = QHBoxLayout()
+        self.lyt_h_cg_buttons = QHBoxLayout()
+        self.grp_cg_buttons = QGroupBox("CG Assets")
+        self.lyt_h_asset_file.addWidget(self.btn_search_file)
+        self.lyt_h_asset_file.addWidget(self.ln_file_path) 
+        self.lyt_assets.addLayout(self.lyt_h_asset_file)
+        
+        self.lyt_h_cg_buttons.addWidget(self.btn_cg_add_abc)
+        self.lyt_h_cg_buttons.addWidget(self.btn_cg_add_obj)
+        self.lyt_h_cg_buttons.addWidget(self.btn_cg_add_fbx)
+        
+        self.grp_cg_buttons.setLayout(self.lyt_h_cg_buttons)
+        
+        self.lyt_assets.addWidget(self.grp_cg_buttons)    
+        self.lyt_assets.addWidget(self.ln_asset_name)
+        self.lyt_assets.addStretch()      
+                                        
         
         ###### STUFF RELATED TO THE FILES #########################
         self.lyt_files = QVBoxLayout()
@@ -206,23 +233,25 @@ class PPM_Main_UI(QDialog):
         self.lyt_templates_v = QVBoxLayout()     
         self.form_dcc = QFormLayout()        
                        
-        self.form_dcc.addRow("Output houdini", self.ln_run)        
-        
+        self.form_dcc.addRow("Output houdini", self.ln_run)         
         self.lyt_templates_v.addWidget(self.cmb_dcc)
         self.lyt_templates_v.addWidget(self.lst_template)
         self.lyt_templates_v.addLayout(self.form_dcc)      
                 
-        self.lyt_templates_h.addLayout(self.lyt_templates_v)        
+        self.lyt_templates_h.addLayout(self.lyt_templates_v)      
         
+
         
         ##### PUTTING IT ALL TOGETHER   
         self.wdg_projects.setLayout(self.lyt_main_projects_v)
+        self.wdg_assets.setLayout(self.lyt_assets)
         self.wdg_files.setLayout(self.lyt_files)
-        self.wdg_templates.setLayout(self.lyt_templates_h)
+        self.wdg_templates.setLayout(self.lyt_templates_h)        
         
         self.tab_main.addTab(self.wdg_projects, "Projects")
+        self.tab_main.addTab(self.wdg_assets, "Assets")
         self.tab_main.addTab(self.wdg_files, "File Utils")
-        self.tab_main.addTab(self.wdg_templates, "Templates")
+        self.tab_main.addTab(self.wdg_templates, "Templates")        
         
         self.main_layout = QHBoxLayout()
         self.main_layout.addWidget(self.tab_main)     
