@@ -9,7 +9,7 @@
 # and then runs Houdini, foreground flag is set so
 # the output from houdini is shown in the terminal used to open it.
 
-cd /opt/hfs19.0.383/
+cd ${H_INSTALL}     #/opt/hfs19.0.383/
 source houdini_setup
 houdini -foreground -desktop "ppm"
 

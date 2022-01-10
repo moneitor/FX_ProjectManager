@@ -36,6 +36,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
     _env["JOB"] = job   
     _env["DFSTART"], _env["DFEND"] = str(first_frame), str(last_frame)
     _env["SHOTPATH"] = shot_path
+    _env["H_INSTALL"] = hfs
     
     
     lg.Logger.info("HH set to [{}]".format(hh))   
