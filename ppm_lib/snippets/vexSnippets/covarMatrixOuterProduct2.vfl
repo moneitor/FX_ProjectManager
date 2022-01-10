@@ -1,0 +1,12 @@
+// Example given to me by Andy Nicholas
+
+vector c = getbbox_center(1);
+matrix3 @cov_mat;
+int numpts = npoints(1);
+
+for(int i=0;i<numpts;i++)
+{
+    vector p = point(1, "P", i) - c;
+    @cov_mat += outerproduct(p, p);
+}
+@cov_mat/=float(numpts);
