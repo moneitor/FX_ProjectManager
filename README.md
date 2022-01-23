@@ -13,6 +13,13 @@ This is still work in progress and will remain like that for the long term.
 There are VEX Snippets that you might find useful inside:
 **FX_ProjectManager/ppm_lib/snippets/vexSnippets/**
 
+
+
+ * Create a virtualenvironment inside the FX_ProjectManager folder and install the python dependecies defined on the **requirements.txt**.
+ * Run ```pip install -r requirements.txt```. This will install the python libraries required.
+
+
+
 ####      Project manager window
 ![](images/main_window.jpeg)
 
