@@ -18,7 +18,11 @@ There are VEX Snippets that you might find useful inside:
  * Create a virtualenvironment inside the FX_ProjectManager folder and install the python dependecies defined on the **requirements.txt**.
  * Run ```pip install -r requirements.txt```. This will install the python libraries required.
 
+The **first part** of the manager is in charge of creation and modification of projects, sequences and shots, Modification of file sequences, ingesting of plates, conversion from DNG to EXR.
 
+The **second part** of the manager is software based and works from inside each DCC "Nuke, and Houdini", which will let you open and save files, version up, manage versioning of caches, publishing of setups etc.
+
+## First part
 
 ####      Project manager window
 ![](images/main_window.jpeg)
