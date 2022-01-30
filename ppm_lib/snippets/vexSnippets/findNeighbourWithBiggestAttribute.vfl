@@ -1,0 +1,21 @@
+int n[] = neighbours(0, @ptnum);
+
+float maxval = f@dist;
+int foundPT = 0;
+
+for (int i = 0; i < len(n); ++i) {
+    float current_value = point(0, "dist", n[i]);
+    if (current_value > maxval) {
+        maxval = current_value;
+        foundPT = n[i];
+    } else {
+        continue;
+    }
+}
+
+vector foundP = point(0, "P", foundPT);
+
+
+v@parent_dir = normalize(foundP - v@P); // gives direction to the parent point
+v@parentP = foundP;
+i@parentPT = foundPT;
