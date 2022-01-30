@@ -1,0 +1,41 @@
+// This goins in one wrangle
+matrix ident = ident();
+
+translate(ident, v@parentP);
+
+4@tm = ident;
+
+
+// This goes in another wrangle
+for(int point = 0 ; point < @numpt ; point++) {
+
+    int parentPT = point(0, "parentPT", point);  // Find parent point  
+    matrix parentTM = point(0, "tm", point);  // Find parent transformation  
+    vector myP = point(0, "P", point); // Find position of current point  
+    vector dir = point(0, "parent_dir", parentPT); // Find direction to parent
+    dir = point(0, "gradient", parentPT); // Find gradient of dist
+    float dist = point(0, "dist_factor", point); // distance from border attribute
+    
+    matrix rotation = ident(); // Creates identity matrix to rotate parentTM     
+    
+    dir = normalize(cross(normalize(dir), set(0,1,0))); // Creates the axis to rotate rotation
+    
+    rotate(rotation , -radians(chf("angle")) * 0.1 * dist, dir); // rotates rotation along dir
+    
+    matrix deformedParent = parentTM * rotation; // Rotates the parent Transformation    
+    
+    matrix offset =  invert(parentTM) * (deformedParent); // invert the parentTM and then applies the deformation
+    
+    
+    vector offsetP =  (myP * offset) - myP; // Computes offset of my Position and my position after
+                                            // multiplication with offset matrix
+    offsetP.y *= 0.3; // Scales down offset Y axis 
+    myP += offsetP; // adds resulting offset to my Position
+    
+    
+    setpointattrib(0, "P" , point , myP , "set");       
+
+}
+
+
+
