@@ -7,23 +7,25 @@ from dotenv import load_dotenv
 dotenv_path = "../.env"
 
 
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path=dotenv_path)    
-    
-    lg.Logger.info(os.getenv("HOU_INSTALLATION"))
-    lg.Logger.info(os.getenv("HOU_VERSION"))
 
-    HOU_VERSION = os.getenv("HOU_VERSION")
-    HOU_INSTALLATION = os.getenv("HOU_INSTALLATION")
-
-else:
-    lg.Logger.warning("Please make sure '.env' file exist on the root directory of FX_ProjectManager. ")
 
 
 
 def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
-    lg.Logger.critical("SETTING ENVIRONMENTS")
-    lg.Logger.critical(HOU_VERSION)
+    
+    if os.path.exists(dotenv_path):
+        load_dotenv(dotenv_path=dotenv_path)    
+        
+        lg.Logger.info(os.getenv("HOU_INSTALLATION"))
+        lg.Logger.info(os.getenv("HOU_VERSION"))
+
+        HOU_VERSION = os.getenv("HOU_VERSION")
+        HOU_INSTALLATION = os.getenv("HOU_INSTALLATION")
+
+    else:
+        lg.Logger.warning("Please make sure '.env' file exist on the root directory of FX_ProjectManager. ")
+    
+    
     _env = os.environ
     
     abs_path = os.path.abspath(__file__)
