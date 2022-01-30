@@ -40,15 +40,24 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
         
     
     if platform == "win32":
-        user_expand_hou = os.path.join("~", "Documents", HOU_VERSION)
-          
+        user_expand_hou = os.path.join("~", "Documents", HOU_VERSION)          
 
     
     hh = os.pathsep.join([os.path.join(hfs, "houdini"), os.path.expanduser(user_expand_hou)])
     _env["HH"] = hh
-    hpath = ":".join([hou_pipe_path, _env["HH"],_env.get("HOUDINI_PATH", "")])
-    _env["HOUDINI_PATH"] = hpath
     
+    
+    if platform == "linux" or platform == "linux2":
+        hpath = ":".join([hou_pipe_path, _env["HH"],_env.get("HOUDINI_PATH", "")])
+        _env["HOUDINI_PATH"] = hpath    
+        
+    
+    if platform == "win32":
+        user_expand_hou = os.path.join("~", "Documents", HOU_VERSION) 
+        hpath = ";".join([hou_pipe_path, _env["HH"],_env.get("HOUDINI_PATH", "")])
+        _env["HOUDINI_PATH"] = hpath
+        
+
     
     pythonpath = os.getenv("PYTHONPATH")
     if pythonpath:
