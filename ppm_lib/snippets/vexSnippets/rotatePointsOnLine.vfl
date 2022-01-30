@@ -1,0 +1,26 @@
+matrix oldMat = ident();
+float totalPoints = float(@numpt);
+
+
+
+for(int point = 0 ; point < @numpt ; point++) {
+    float bias = float(point)/totalPoints;
+    vector pos0 = point(0 , "P" , 0);
+       
+    matrix myMat = ident();
+    
+    vector tangent = (point(0,"P", point) - point(0,"P" , point -1));
+           
+    if(point!=0){
+        translate(myMat , (normalize(tangent) * length(tangent)));  
+    }              
+ 
+    rotate(myMat , radians(chf("angle")) , set(1,0,0));   
+    
+    myMat*=oldMat;
+    vector newPos = pos0 * myMat;
+    oldMat = myMat;
+    
+    setpointattrib(0, "P" , point , newPos , "set");
+ 
+}
