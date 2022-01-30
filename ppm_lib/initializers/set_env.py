@@ -34,8 +34,8 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
     ppm_lib = os.path.join(pwd, "ppm_lib")
     
     hfs = HOU_INSTALLATION
-    user_expand_hou = "~/{}".format(HOU_VERSION)
-    
+    #user_expand_hou = "~/{}".format(HOU_VERSION)
+    user_expand_hou = os.path.join("~", HOU_VERSION)
     
     hh = os.pathsep.join([os.path.join(hfs, "houdini"), os.path.expanduser(user_expand_hou)])
     _env["HH"] = hh
