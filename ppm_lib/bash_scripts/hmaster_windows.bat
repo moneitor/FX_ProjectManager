@@ -1,3 +1,3 @@
-cd %HOU_INSTALLATION%
+cd %HOU_INSTALLATION%\bin
 
 houdini.exe
