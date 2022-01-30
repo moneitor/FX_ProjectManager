@@ -1,0 +1,13 @@
+int segments = chi("segments");
+float height = chf("length");
+//float size;
+
+
+for (int seg = 0; seg < segments; seg++) {
+    //bias of the position along the length of the tentacle
+    float posBias = chramp("pos_Bias" , (float(seg)/segments));
+    posBias = fit(posBias , 0 , 1 , 0 , height);
+    
+    //creation of each segment
+    addpoint(0 , set(0,posBias,0));
+}
