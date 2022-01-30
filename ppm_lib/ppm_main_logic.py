@@ -20,7 +20,7 @@ PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
 
 
 # Connection to the database        
-if os.path.exsists(PROJECTS_PATH):
+if os.path.exists(PROJECTS_PATH):
     connection_project = db_u.connect(os.path.join(PROJECTS_PATH, "projects.db")) 
 else:
     os.makedirs(PROJECTS_PATH)
