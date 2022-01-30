@@ -1,0 +1,70 @@
+float h = chf("sawthooth_smooth");
+matrix oldTM = ident();
+float motion;
+
+for (int piece = 0 ; piece < numpt ; piece++) {
+    float tentacle = rand(chi("tentacle") + chi("seed")) * chf("random_tentacles");
+    vector storeLineP = point(0 , "P" , 0);
+    matrix theTM = ident();
+    vector disp = (point(0 , "P" , piece)  - point(0 , "P" , piece-1) );
+    float freq = chf("freq");
+    float offset = chf("offset");
+    float bias = (float(piece)/numpt);
+    float curlRamp = chramp("curl_Bias" , (float(piece)/numpt));
+    float rotAlongXRamp = chramp("rotAlong_X_Bias" , (float(piece)/numpt));
+    
+    //create the vectors to rotate the matrix later
+    vector rotX = set(0 , radians(chf("rot_along_X")) * rotAlongXRamp , 0) ;
+    vector rotY = set(0 , radians(chf("rot_along_Y")) * rotAlongXRamp , 0) ;
+    vector rotZ = set(0 , radians(chf("rot_along_Z")) * rotAlongXRamp , 0) ;
+    
+    //this is the value that we will use to multiply the angle later 
+    if(chi("sine_saw")==0){
+        motion = sin(bias * freq + (@Time * offset + tentacle)) * (curlRamp);
+    } else {
+        bias = (1- (float(piece)/numpt)) * freq + (@Time * offset + tentacle);
+        motion = bias - (tanh(((bias+0.5)-floor(bias+0.5)-0.5)*h)/2+floor(bias+0.5)-0.5);
+        motion = fit(motion , 0.1 , 0.9 , -1 , 1);
+        motion *= curlRamp;
+    }
+    
+    //disp = set(0 , point(0 , "pscale" , piece) , 0);
+    vector oldPos = point(0 , "P", piece);
+    
+    //if the piece is not 0 it will translate the matrix based on the distance
+    //between the points
+    if (piece!=0) {
+        translate(theTM , disp);
+    }
+    
+    
+    //Create the matrix that rotate along each axis
+    matrix3 rotAlongX = qconvert((eulertoquaternion(rotX , 0)));
+    matrix3 rotAlongY = qconvert((eulertoquaternion(rotY , 0)));
+    matrix3 rotAlongZ = qconvert((eulertoquaternion(rotZ , 0)));
+    
+    //send to origin
+    setpointattrib(0 , "P" , piece , set(0,0,0) , "set");
+    
+    rotate(theTM , radians(chf("angle") * motion), set(1,0,0));
+    
+    //here we rotate the transformation matrix by multiplying it to some already
+    //rotated matrices
+    theTM *= rotAlongX;
+    theTM *= rotAlongY;
+    theTM *= rotAlongZ;
+    theTM *= oldTM;
+        
+    vector newPos = set(0,0,0) * theTM;
+    newPos += storeLineP;
+    
+    addattrib(0 , "point" , "xform" , theTM);
+    
+    setpointattrib(0 , "xform" , piece , theTM , "set");    
+    setpointattrib(0 , "P" , piece , newPos , "set");
+    
+    //setprimintrinsic(0 , "transform" , piece , xform ,"set");
+    oldTM = theTM;
+    
+    
+}
