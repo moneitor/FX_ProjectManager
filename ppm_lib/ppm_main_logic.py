@@ -20,7 +20,10 @@ PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
 
 
 # Connection to the database        
-connection_project = db_u.connect(os.path.join(PROJECTS_PATH, "projects.db")) 
+if os.path.exsists(PROJECTS_PATH):
+    connection_project = db_u.connect(os.path.join(PROJECTS_PATH, "projects.db")) 
+else:
+    os.makedirs(PROJECTS_PATH)
         
 # Creation of the database table
 db_u.create_table(connection_project, CREATE_PROJECTS)
