@@ -7,4 +7,4 @@ __pycache__
 *.hda*
 *.otl*
 *token*
-*config.env
+.env

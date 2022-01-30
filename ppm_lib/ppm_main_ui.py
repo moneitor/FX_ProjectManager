@@ -7,6 +7,8 @@ Project creation, File Utils and Templates.
 moduleauthor::Hernan Llano <hernan@3d.gmail.com>   
 """
 
+
+
 from PySide2 import QtGui, QtWidgets
 from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
 import ppm_main_logic as logic
@@ -32,7 +34,8 @@ import os
 
 class PPM_Main_UI(QDialog):
     def __init__(self):
-        super(PPM_Main_UI, self).__init__()
+        super(PPM_Main_UI, self).__init__()       
+
         self.setWindowTitle("PROJECT MANAGER")
         self.setMaximumWidth(860)
         self.setMinimumHeight(400)
