@@ -1,4 +1,5 @@
 ## FX Personal Project Manager
+#### Using Python 3.8.10
 
 Hi there.
 
@@ -14,9 +15,11 @@ There are VEX Snippets that you might find useful inside:
 **FX_ProjectManager/ppm_lib/snippets/vexSnippets/**
 
 
+### Installation steps
 
  * Create a virtualenvironment inside the FX_ProjectManager folder and install the python dependecies defined on the **requirements.txt**.
- * Run ```pip install -r requirements.txt```. This will install the python libraries required.
+ * Run ```pip install -r requirements.txt```. This will install the python libraries required. On Windows you might need a different version of the same libraries
+ * rename the ```./.env_example``` to ```./env``` and update it's contents to point to the installation folders on your system
 
 The **first part** of the manager is in charge of creation and modification of projects, sequences and shots, Modification of file sequences, ingesting of plates, conversion from DNG to EXR.
 
