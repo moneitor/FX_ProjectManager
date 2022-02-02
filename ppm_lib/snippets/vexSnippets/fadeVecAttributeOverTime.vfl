@@ -1,0 +1,4 @@
+float startFrame = chf("start_frame");
+float endFrame = chf("end_frame");
+
+v@`chs("attribute")` *= pow(fit(f@Frame, startFrame, endFrame, 1, 0), 1.3);
