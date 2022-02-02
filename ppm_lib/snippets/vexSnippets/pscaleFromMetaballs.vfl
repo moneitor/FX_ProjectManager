@@ -1,0 +1,4 @@
+float pscale_mult = chf("pscale_mult");
+
+float w = metaweight(@OpInput2, v@P);
+f@pscale = fit01(pow( min(metaweight(@OpInput2, v@P)/50, 1), 2), 0.3, 2);
