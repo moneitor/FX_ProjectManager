@@ -59,7 +59,7 @@ create_merge(return_null_children())
   <tool name="save" label="SAVE NEW" icon="SOP_heightfield_file">
     <script scriptType="python"><![CDATA[import importlib
 
-from file_scripts import main_app_file_options as main
+from file_scripts import save_file_ui as main
 importlib.reload(main)
 
 main.run_app()]]></script>
@@ -91,12 +91,18 @@ else:
 
   <tool name="up_version" label="UP Version" icon="VOP_add">
     <script scriptType="python"><![CDATA[import importlib
+import hou
 
-from file_scripts import increment_save as inc
+from file_scripts import files_handling as fh
+importlib.reload(fh)
+
+from file_scripts import incremental_save as inc
 importlib.reload(inc)
 
-inc.save_increment()
-importlib.reload(inc)]]></script>
+file_path = hou.hipFile.name()
+
+inc.houdini_version_up(file_path)
+]]></script>
   </tool>
 
   <tool name="MantraControls" label="Mantra Ctrl" icon="ROP_mantra">

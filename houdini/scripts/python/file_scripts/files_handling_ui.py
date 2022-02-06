@@ -59,7 +59,8 @@ class Files(QDialog):
         file_handler = Houdini_Files()
         files = file_handler.return_file_names()
         
-        self.lst_files.addItems(files)
+        if files:
+            self.lst_files.addItems(files)
         
         
     def return_file_path(self, f):
