@@ -1,5 +1,4 @@
 from PySide2 import QtWidgets, QtCore, QtGui
-from palette import Palette
 import hou
 import os
 
@@ -212,9 +211,6 @@ def run_open():
     open_app = OpenDialog()
     open_app.setParent(parentHou, QtCore.Qt.Window)
 
-    open_app.setStyle(QtWidgets.QStyleFactory.create("fusion"))
-    dark_palette = QtGui.QPalette()
-    Palette(dark_palette)
-    open_app.setPalette(dark_palette)
+    open_app.setStyle(QtWidgets.QStyleFactory.create("fusion"))    
 
     open_app.show()

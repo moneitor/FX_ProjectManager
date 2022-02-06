@@ -1,7 +1,7 @@
 import hou
 import os
 import json
-
+"""
 project_path = os.environ.get("PROJECT_PATH")
 json_project_path = project_path + "/project_Info.json"
 obj = hou.node("/obj")
@@ -56,3 +56,4 @@ def main():
 
 
 main()
+"""

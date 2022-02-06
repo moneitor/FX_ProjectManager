@@ -7,10 +7,6 @@ from dotenv import load_dotenv
 dotenv_path = "../.env"
 
 
-
-
-
-
 def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
     
     if os.path.exists(dotenv_path):

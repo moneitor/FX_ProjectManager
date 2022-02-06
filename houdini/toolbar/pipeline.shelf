@@ -12,7 +12,6 @@
     <memberTool name="Extract_fbx"/>
     <memberTool name="MantraControls"/>
     <memberTool name="batcher"/>
-    <memberTool name="mergeHDR"/>
   </toolshelf>
 
   <tool name="Extract_fbx" label="Extract FBX" icon="OBJ_geo">
@@ -58,8 +57,10 @@ create_merge(return_null_children())
   </tool>
 
   <tool name="save" label="SAVE NEW" icon="SOP_heightfield_file">
-    <script scriptType="python"><![CDATA[from file_scripts import main_app_file_options as main
-reload (main)
+    <script scriptType="python"><![CDATA[import importlib
+
+from file_scripts import main_app_file_options as main
+importlib.reload(main)
 
 main.run_app()]]></script>
   </tool>
@@ -68,21 +69,34 @@ main.run_app()]]></script>
     <helpText><![CDATA[This load a Qt menu that allows you to pick any scene in a shot inside of the project.
 
 Double click the scene you want to open, and then press the Open button.]]></helpText>
-    <script scriptType="python"><![CDATA[#from file_scripts import open_file as op
-from file_scripts import open_dialog as op
-from file_scripts import files_handling_class as fil
-reload(fil)
-reload(op)
+    <script scriptType="python"><![CDATA[import importlib
+import hou
+from PySide2.QtWidgets import QMessageBox
 
-op.run_open()]]></script>
+from file_scripts import files_handling as f
+importlib.reload(f)
+
+from file_scripts import files_handling_ui as f_ui
+importlib.reload(f_ui)
+
+if not hou.hipFile.hasUnsavedChanges():
+    f_ui.show_files()
+else: 
+    msgBoxSave = QMessageBox()
+    msgBoxSave.setText("Save your changes first")
+    msgBoxSave.exec_()
+
+]]></script>
   </tool>
 
   <tool name="up_version" label="UP Version" icon="VOP_add">
-    <script scriptType="python"><![CDATA[from file_scripts import increment_save as inc
-reload (inc)
+    <script scriptType="python"><![CDATA[import importlib
+
+from file_scripts import increment_save as inc
+importlib.reload(inc)
 
 inc.save_increment()
-reload (inc)]]></script>
+importlib.reload(inc)]]></script>
   </tool>
 
   <tool name="MantraControls" label="Mantra Ctrl" icon="ROP_mantra">
@@ -91,7 +105,7 @@ reload (inc)]]></script>
 
 from qtDialogs import Rop_controls as r
 importlib.reload(r)
-#reload(r)
+
 
 r.run_app()
 ]]></script>
@@ -105,14 +119,5 @@ selection = hou.ui.readMultiInput("Select the CFX Geometry", ["Creature Name"], 
 if selection[0] == 0:
     geoCreate = hou.node("/obj").createNode("geo", selection[1][0])
     geoCreate.createNode("RBD_Rigg::01", "test")]]></script>
-  </tool>
-
-  <tool name="mergeHDR" label="Merge HDR" icon="OBJ_light_gi">
-    <script scriptType="python"><![CDATA[import sys
-sys.path.append(r"C:\Users\mo_no\AppData\Local\Programs\Python\Python37-32\lib\site-packages\exif")
-
-from HDR import create_hdr as hdr
-
-reload(hdr)]]></script>
   </tool>
 </shelfDocument>

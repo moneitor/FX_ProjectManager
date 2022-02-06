@@ -502,10 +502,10 @@ class PPM_Main_UI(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     
-    #app.setStyle(QtWidgets.QStyleFactory.create("fusion"))
-    dark_palette = QtGui.QPalette()
-    Palette(dark_palette)
-    app.setPalette(dark_palette)
+    app.setStyle(QtWidgets.QStyleFactory.create("fusion"))
+    #dark_palette = QtGui.QPalette()
+    #Palette(dark_palette)
+    #app.setPalette(dark_palette)
     
     w = PPM_Main_UI()
     w.show()
