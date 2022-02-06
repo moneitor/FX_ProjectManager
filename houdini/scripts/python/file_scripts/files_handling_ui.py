@@ -61,6 +61,8 @@ class Files(QDialog):
         
         if files:
             self.lst_files.addItems(files)
+            
+        self.lst_files.sortItems()
         
         
     def return_file_path(self, f):
