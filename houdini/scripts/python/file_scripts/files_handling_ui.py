@@ -14,7 +14,8 @@ class Files(QDialog):
         self.setWindowTitle("Open File")
         self.setMinimumSize(400,300)
         
-        self._full_file_path = ""        
+        self._full_file_path = ""    
+        self._file_time_created = ""    
         
         self.widgets()
         self.layouts()
@@ -51,6 +52,7 @@ class Files(QDialog):
         
         self.btn_cancel.clicked.connect(self.close)    
         self.lst_files.itemClicked.connect(self.return_file_path)  
+        self.lst_files.itemClicked.connect(self.file_info)
         self.btn_open.clicked.connect(self.open_file)
         self.btn_open.clicked.connect(self.accept)
         
@@ -87,6 +89,12 @@ class Files(QDialog):
 
         else:
             print("Please select a file")
+            
+    
+    def file_info(self, f):
+        file_handler = Houdini_Files()        
+        
+        self._file_time_created = file_handler.return_file_info(f.text())
         
         
         

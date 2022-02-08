@@ -2,11 +2,12 @@ from hashlib import new
 import os
 import sys
 from files import file_utils
+from datetime import datetime
 
 
 class Houdini_Files():
     def __init__(self):
-        self._shot_path = os.getenv("SHOTPATH")  
+        self._shot_path = os.getenv("SHOT")  
         self._work_path = os.path.join(self._shot_path, "work", "fx")    
         self._file_paths = []  
         self._files = []   
@@ -87,6 +88,18 @@ class Houdini_Files():
         full_path = os.path.join(self._work_path, file_name)
         
         return full_path
+    
+    
+    def return_file_info(self, file_name):
+        
+        full_file_path = os.path.join(os.getenv("SHOT"), "work", "fx", file_name)
+        
+        time_last_modified = datetime.fromtimestamp(  os.path.getmtime(full_file_path)  ).strftime('%Y-%m-%d %H:%M:%S')
+        time_created = datetime.fromtimestamp(  os.path.getctime(full_file_path)  ).strftime('%Y-%m-%d %H:%M:%S')
+        
+        
+        return time_last_modified
+        
             
         
         

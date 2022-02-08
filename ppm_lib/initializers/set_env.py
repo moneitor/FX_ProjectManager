@@ -66,7 +66,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
     _env["RESX"], _env["RESY"] = str(resx), str(resy)
     _env["JOB"] = job   
     _env["DFSTART"], _env["DFEND"] = str(first_frame), str(last_frame)
-    _env["SHOTPATH"] = shot_path
+    _env["SHOT"] = shot_path
     _env["H_INSTALL"] = hfs
     
     
