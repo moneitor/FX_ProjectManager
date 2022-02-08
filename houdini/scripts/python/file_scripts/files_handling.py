@@ -96,9 +96,10 @@ class Houdini_Files():
         
         time_last_modified = datetime.fromtimestamp(  os.path.getmtime(full_file_path)  ).strftime('%Y-%m-%d %H:%M:%S')
         time_created = datetime.fromtimestamp(  os.path.getctime(full_file_path)  ).strftime('%Y-%m-%d %H:%M:%S')
+        size = str(  round(  float(os.path.getsize(full_file_path)) / ( 1024 * 1024 ),  3))
         
         
-        return time_last_modified
+        return time_last_modified, size
         
             
         

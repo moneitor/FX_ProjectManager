@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QWidget, QListWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QStyleFactory, QMessageBox
+from PySide2.QtWidgets import QWidget, QListWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QStyleFactory, QMessageBox, QFormLayout
 from PySide2 import QtCore
 from .files_handling import Houdini_Files
 import os
@@ -12,7 +12,8 @@ class Files(QDialog):
     def __init__(self, parent=parentHou ):
         super(Files, self).__init__()
         self.setWindowTitle("Open File")
-        self.setMinimumSize(400,300)
+        self.setMinimumSize(600,300)
+        self.setMaximumSize(600,700)
         
         self._full_file_path = ""    
         self._file_time_created = ""    
@@ -27,22 +28,34 @@ class Files(QDialog):
     def widgets(self):
         self.lbl_files = QLabel("Houdini Files:")
         self.lst_files = QListWidget()  
+        self.lst_files.setMinimumWidth(400)        
         self.btn_open = QPushButton("Open")
         self.btn_cancel = QPushButton("Cancel")
+        self.lbl_file_date = QLabel("")
+        self.lbl_file_size = QLabel("")
         
     
     def layouts(self):
         self.lyt_main = QVBoxLayout()
+        
+        self.lyt_list = QHBoxLayout()
+        self.lyt_list.addWidget(self.lst_files)
+        self.lyt_list.addStretch()
         
         self.lyt_buttons = QHBoxLayout()
         self.lyt_buttons.addStretch()
         self.lyt_buttons.addWidget(self.btn_open)
         self.lyt_buttons.addWidget(self.btn_cancel)
         
-        self.lyt_main.addWidget(self.lbl_files)
-        self.lyt_main.addWidget(self.lst_files)
+        self.form_date = QFormLayout()
+        self.form_date.addRow("Last Modificated: ", self.lbl_file_date)
+        self.form_date.addRow("File Size MB: ", self.lbl_file_size)
         
-        self.lyt_main.addLayout(self.lyt_buttons)        
+        self.lyt_main.addWidget(self.lbl_files) 
+        self.lyt_main.addLayout(self.lyt_list)        
+        self.lyt_main.addStretch()      
+        self.lyt_main.addLayout(self.form_date) 
+        self.lyt_main.addLayout(self.lyt_buttons)               
         
         
         self.setLayout(self.lyt_main)
@@ -94,7 +107,11 @@ class Files(QDialog):
     def file_info(self, f):
         file_handler = Houdini_Files()        
         
-        self._file_time_created = file_handler.return_file_info(f.text())
+        self._file_time_created = file_handler.return_file_info(f.text())[0]
+        self._file_size = file_handler.return_file_info(f.text())[1]
+        
+        self.lbl_file_date.setText(self._file_time_created)
+        self.lbl_file_size.setText(self._file_size)
         
         
         

@@ -52,3 +52,22 @@ and the shot number
 ![](images/renamer.jpg)
 
 Work in progress, allows to rename files, offset the frame range, fix padding issues, and eventually will be a work with an instance of a FileSequence() object that will allow all the functionalities needed by a sequence of files.
+
+
+## Houdini
+
+#### PPM Shelf
+![](images/PPM_Shelf.png)
+The main Houdini functionalities are part of the PPM_Lib shelf tool
+
+
+#### Open file
+![](images/openFile.png)
+
+Displays the files saved in the current shot.
+
+#### Save new file
+![](images/savingFile.png)
+
+Displays the files saved in the current shot.
+

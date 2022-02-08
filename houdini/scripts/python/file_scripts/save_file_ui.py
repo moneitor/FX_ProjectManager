@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QDialog, QLineEdit, QPushButton, QSpinBox, QLabel, QHBoxLayout, QFormLayout, QVBoxLayout, QMessageBox, QStyleFactory
+from PySide2.QtWidgets import QDialog, QLineEdit, QPushButton, QSpinBox, QLabel, QHBoxLayout, QFormLayout, QVBoxLayout, QMessageBox, QStyleFactory, QWidget
 from PySide2 import QtCore, QtGui
 import hou
 from .save_file_logic import fix_name
@@ -12,7 +12,7 @@ parentHou = hou.ui.mainQtWindow()
 
 
 
-class FileSave(QDialog):
+class FileSave(QWidget):
     """
     File Saving dialog
     """
@@ -20,7 +20,7 @@ class FileSave(QDialog):
         super(FileSave, self).__init__()
         self.setWindowTitle("Pipeline Save")
         self.file_name = ""        
-        self.shot_path = os.getenv("SHOTPATH")        
+        self.shot_path = os.getenv("SHOT")        
         self.version_value = 1
         self.full_name_for_save = ""
                
@@ -52,7 +52,7 @@ class FileSave(QDialog):
         self.cancel.setMaximumSize(100, 50)
 
         self.display_name = QLabel("...")
-        self.display_path = QLabel(os.getenv("SHOTPATH"))
+        self.display_path = QLabel(os.getenv("SHOT"))
         
 
     def create_connections(self):
