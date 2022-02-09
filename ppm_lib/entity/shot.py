@@ -5,6 +5,7 @@ from db import database_interface as db
 from db import database_utils as db_u
 from directory import dir_structures as ds
 import os
+from PySide2.QtWidgets import QMessageBox
 
 ######################### COMANDS ###################################
 
@@ -55,7 +56,8 @@ class Shots:
                 make_dirs_from_dict(shot_path, shot_dict)
                 
         else:
-            lg.Logger.warning("Shot [{}] already exists".format(shot_name))
+            lg.Logger.warning("Shot [{}] already exists".format(shot_name))            
+            return False
             
             
     def get_shots(self):

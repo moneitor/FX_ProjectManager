@@ -91,7 +91,9 @@ def get_shot_last_frame(sequence, shot_name):
 def create_new_shot(sequence, shot_name, first_frame, last_frame):
     if sequence and shot_name:
         shots = s.Shots(sequence)
-        shots.add_shot(shot_name, first_frame, last_frame)
+        shot = shots.add_shot(shot_name, first_frame, last_frame)
+        
+        return shot
 
 
 def delete_shot(sequence, shot_name):

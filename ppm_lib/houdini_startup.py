@@ -8,9 +8,9 @@ from sys import platform
 
 HOU_NAME = "hfs19.0.383"
 
-def hou_run(fps=24, resx=1920, resy=1280, job="", first_frame=1001, last_frame=1100, shot_path=""):
+def hou_run(fps=24, resx=1920, resy=1280, job="", first_frame=1001, last_frame=1100, shot_path="", project_path="", common=""):
     # set all environment variables needed for houdini    
-    set.set_env(fps, resx, resy, job, first_frame, last_frame, shot_path)     
+    set.set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project_path, common)     
    
        
     # RUN HOUDINI

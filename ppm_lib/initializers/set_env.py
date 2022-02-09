@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 dotenv_path = "../.env"
 
 
-def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
+def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, common):
     
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path=dotenv_path)    
@@ -43,15 +43,28 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
     _env["HH"] = hh
     
     
+    ##### Setting HOUDINI_PATH
     if platform == "linux" or platform == "linux2":
-        hpath = ":".join([hou_pipe_path, _env["HH"],_env.get("HOUDINI_PATH", "")])
+        hpath = ":".join([hou_pipe_path, common, _env["HH"],_env.get("HOUDINI_PATH", "")])
         _env["HOUDINI_PATH"] = hpath    
         
     
     if platform == "win32":
         user_expand_hou = os.path.join("~", "Documents", HOU_VERSION) 
-        hpath = ";".join([hou_pipe_path, _env["HH"],_env.get("HOUDINI_PATH", "")])
+        hpath = ";".join([hou_pipe_path, common, _env["HH"],_env.get("HOUDINI_PATH", "")])
         _env["HOUDINI_PATH"] = hpath
+        
+    
+    ##### Setting HOUDINI_OTLSCAN_PATH
+    if platform == "linux" or platform == "linux2":
+        houdini_otlscan_path = ":".join([os.path.join(common, "houdini", "otls"), _env.get("HOUDINI_PATH", "")])
+        _env["HOUDINI_OTLSCAN_PATH"] = houdini_otlscan_path    
+        
+    
+    if platform == "win32":
+        user_expand_hou = os.path.join("~", "Documents", HOU_VERSION) 
+        houdini_otlscan_path = ";".join([os.path.join(common, "houdini", "otls"), _env.get("HOUDINI_PATH", "")])
+        _env["HOUDINI_OTLSCAN_PATH"] = houdini_otlscan_path
         
 
     
@@ -67,6 +80,9 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path):
     _env["JOB"] = job   
     _env["DFSTART"], _env["DFEND"] = str(first_frame), str(last_frame)
     _env["SHOT"] = shot_path
+    _env["PROJECT"] = project
+    _env["PPM_COMMON"] = common
+    _env["PPM_COMMON_HOU"] = os.path.join(common, "houdini")
     _env["H_INSTALL"] = hfs
     
     

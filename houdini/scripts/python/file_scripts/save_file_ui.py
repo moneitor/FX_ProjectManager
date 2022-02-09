@@ -18,7 +18,7 @@ class FileSave(QWidget):
     """
     def __init__(self, parent=parentHou):
         super(FileSave, self).__init__()
-        self.setWindowTitle("Pipeline Save")
+        self.setWindowTitle("PPM Houdini File Save")
         self.file_name = ""        
         self.shot_path = os.getenv("SHOT")        
         self.version_value = 1

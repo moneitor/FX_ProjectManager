@@ -98,11 +98,13 @@ class Projects:
                 sandbox_dict = ds.sandbox()         
                 reference_dict = ds.reference() 
                 edit_dict = ds.edit()
+                common_dict = ds.common()
                 ppm_mkdir(path)
                 make_dirs_from_dict(path, asset_dict)
                 make_dirs_from_dict(path, sandbox_dict)
                 make_dirs_from_dict(path, reference_dict)
                 make_dirs_from_dict(path, edit_dict)
+                make_dirs_from_dict(path, common_dict)
                   
             
         else:

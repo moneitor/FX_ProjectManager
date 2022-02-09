@@ -68,6 +68,18 @@ def shot(shot_name):
     return folders
 
 
+def common():
+    folders = {"common": {"houdini":{"desktop": None,
+                                    "toolbar": None,
+                                    "otls": None,
+                                    "packages": None,
+                                    "scripts": {"python": None, "vex": {"include" : None}}},
+                            
+                        }
+               }
+    
+    return folders
+
 
 
 def go_folder(project_path, houdini=0, shot_number=1):
@@ -78,4 +90,8 @@ def go_folder(project_path, houdini=0, shot_number=1):
         os.chdir(project_path)
     else:
         os.chdir(project_path + '\\Shot_{}\\work\\fx'.format(shot_number))
+        
+        
+        
+
 

@@ -37,7 +37,7 @@ class PPM_Main_UI(QDialog):
         super(PPM_Main_UI, self).__init__()       
 
         self.setWindowTitle("PROJECT MANAGER")
-        self.setMaximumWidth(860)
+        self.setMinimumWidth(1060)
         self.setMinimumHeight(400)
         
         self._project = None
@@ -54,6 +54,7 @@ class PPM_Main_UI(QDialog):
         self._shot_path = ""
         self._shot_first_frame = ""
         self._shot_last_frame = ""
+        self._common = ""
         
         self._project_path = "" 
         
@@ -264,7 +265,8 @@ class PPM_Main_UI(QDialog):
         
     def connections(self):
         self.btn_add_project.clicked.connect(self.add_project)
-        self.lst_projects.itemClicked.connect(self.get_project)        
+        self.lst_projects.itemClicked.connect(self.get_project)   
+        self.lst_projects.itemClicked.connect(self.get_common_folder)     
         self.btn_rm_project.clicked.connect(self.delete_project)
         
         self.btn_add_seq.clicked.connect(self.add_sequence)
@@ -312,7 +314,8 @@ class PPM_Main_UI(QDialog):
         if result == QtWidgets.QDialog.Accepted:
             self._project_name = new_project_window.return_name()
             self._project_fps = new_project_window.return_fps()
-            self._project_resolution = new_project_window.return_resolution()
+            self._project_resolution = new_project_window.return_resolution()           
+            
             
             self.lbl_project_path.setText(self._project_name)            
             self.lbl_project_fps.setText(self._project_fps)            
@@ -436,7 +439,9 @@ class PPM_Main_UI(QDialog):
             self._shot_first_frame = new_shot_window.return_first_frame()  
             self._shot_last_frame = new_shot_window.return_last_frame()  
 
-            logic.create_new_shot(self._sequence, self._shot_name, self._shot_first_frame, self._shot_last_frame)
+            create_new_shot = logic.create_new_shot(self._sequence, self._shot_name, self._shot_first_frame, self._shot_last_frame)
+            if create_new_shot == False:
+                QMessageBox.warning(self, "Warning", "Shot Already Exists.")
             self.update_shots_list()
         
         print(self._sequence_name)
@@ -482,6 +487,13 @@ class PPM_Main_UI(QDialog):
         self.update_shots_list()
         
         
+    def get_common_folder(self):
+        """ 
+        This saves the path to the common folder, where houdini and nuke can look for scripts within the project.
+        """
+        self._common = os.path.join(self._project_path, "common")
+        
+        
         
     def hou_run(self):
         lg.Logger.info("Running houdini")
@@ -491,7 +503,9 @@ class PPM_Main_UI(QDialog):
                 job=self._shot_path, 
                 first_frame=int(self._shot_first_frame),
                 last_frame=int(self._shot_last_frame),
-                shot_path = self._shot_path)
+                shot_path = self._shot_path,
+                project_path = self._project_path,
+                common=self._common)
         
         
         
