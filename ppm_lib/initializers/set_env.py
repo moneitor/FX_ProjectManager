@@ -83,6 +83,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     _env["PROJECT"] = project
     _env["PPM_COMMON"] = common
     _env["PPM_COMMON_HOU"] = os.path.join(common, "houdini")
+    _env["PPM_OTLSCAN_PATH"] = os.path.join(common, "houdini", "otls")
     _env["H_INSTALL"] = hfs
     
     
