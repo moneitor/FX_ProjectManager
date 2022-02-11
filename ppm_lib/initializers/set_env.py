@@ -42,26 +42,12 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     hh = os.pathsep.join([os.path.join(hfs, "houdini"), os.path.expanduser(user_expand_hou)])
     _env["HH"] = hh
     
-    
-    ##### Setting HOUDINI_PATH
-    #if platform == "linux" or platform == "linux2":
-    #    hpath = ":".join([hou_pipe_path, common, _env["HH"],_env.get("HOUDINI_PATH", "")])
-        #_env["HOUDINI_PATH"] = hpath   
+
     _env["HOUDINI_PATH"]  = hou_pipe_path
     _env["HOUDINI_PATH"]  += os.pathsep + common + os.pathsep + _env["HH"] + os.pathsep + _env.get("HOUDINI_PATH", "")
         
-    
-    #if platform == "win32":
-    #    hpath = ";".join([hou_pipe_path, common, _env["HH"],_env.get("HOUDINI_PATH", "")])
-    #    _env["HOUDINI_PATH"] = hpath
-        
-    
-    ##### Setting HOUDINI_OTLSCAN_PATH
-    #if platform == "linux" or platform == "linux2":  
-    
  
-        
-        
+ 
     base_folder = os.path.dirname(HOU_INSTALLATION) # Base folder where houdini is installed
     if platform == "linux" or platform == "linux2":    
     
@@ -71,20 +57,13 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     if platform == "win32":
         fxlabs_version = HOU_VERSION.replace("houdini", "SideFXLabs") # path to folder where SideFXLabs tools are installed
         
-        
+    global_common_hou = os.path.join(os.path.dirname(os.path.dirname(project)), "houdini")  # path to global otls of PPM
         
     _env['HOUDINI_OTLSCAN_PATH'] = os.path.join(common, "houdini", "otls")
+    _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(global_common_hou, "otls")
     _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(base_folder, "sidefx_packages", fxlabs_version, "otls")
     _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(HOU_INSTALLATION, "houdini", "otls")
     _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(HOU_INSTALLATION, "packages", "kinefx", "otls")
-        
-        
-        
-    """
-    if platform == "win32":        
-        houdini_otlscan_path = ";".join( [_env.get("HOUDINI_PATH", ""), os.path.join(common, "houdini", "otls")])
-        _env["HOUDINI_OTLSCAN_PATH"] = houdini_otlscan_path
-    """
         
 
     
@@ -101,6 +80,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     _env["DFSTART"], _env["DFEND"] = str(first_frame), str(last_frame)
     _env["SHOT"] = shot_path
     _env["PROJECT"] = project
+    _env["GLOBAL_COMMON_HOU"] = global_common_hou
     _env["PPM_COMMON"] = common
     _env["PPM_COMMON_HOU"] = os.path.join(common, "houdini")
     _env["PPM_OTLSCAN_PATH"] = os.path.join(common, "houdini", "otls")

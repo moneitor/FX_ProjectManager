@@ -89,4 +89,10 @@ Displays the files saved in the current shot.
 ![](images/savingFile.png)
 
 
+#### Save new file
+Displays the files saved in the current shot.
+
+![](images/otl_publisher.png)
+
+
 
