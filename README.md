@@ -27,7 +27,7 @@ The **first part** of the manager is in charge of creation and modification of p
 
 The **second part** of the manager is software based and works from inside each DCC "Nuke, and Houdini", which will let you open and save files, version up, manage versioning of caches, publishing of setups etc.
 
-## First part
+## PROJECT SETUP
 
 ####      Project manager window
 Main hub that stores most of the functionalities that are not going to be run directly from the DCCs
@@ -66,7 +66,7 @@ Work in progress, allows to rename files, offset the frame range, fix padding is
 
 
 
-## Houdini
+## HOUDINI
 
 #### PPM Shelf
 The main Houdini functionalities are part of the PPM_Lib shelf tool
