@@ -58,8 +58,20 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     
     ##### Setting HOUDINI_OTLSCAN_PATH
     #if platform == "linux" or platform == "linux2":  
+    
+ 
+        
+        
     base_folder = os.path.dirname(HOU_INSTALLATION) # Base folder where houdini is installed
-    fxlabs_version = HOU_VERSION.replace("hfs", "SideFXLabs") # path to folder where SideFXLabs tools are installed
+    if platform == "linux" or platform == "linux2":    
+    
+        fxlabs_version = HOU_VERSION.replace("hfs", "SideFXLabs") # path to folder where SideFXLabs tools are installed
+        
+        
+    if platform == "win32":
+        fxlabs_version = HOU_VERSION.replace("houdini", "SideFXLabs") # path to folder where SideFXLabs tools are installed
+        
+        
         
     _env['HOUDINI_OTLSCAN_PATH'] = os.path.join(common, "houdini", "otls")
     _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(base_folder, "sidefx_packages", fxlabs_version, "otls")
