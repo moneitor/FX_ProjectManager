@@ -118,7 +118,7 @@ if selection[0] == 0:
     geoCreate.createNode("RBD_Rigg::01", "test")]]></script>
   </tool>
 
-  <toolshelf name="PPM" label="PPM">
+  <toolshelf name="pipeline" label="pipeline">
     <memberTool name="openFile"/>
     <memberTool name="save"/>
     <memberTool name="up_version"/>
