@@ -50,20 +50,18 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
         
     
     if platform == "win32":
-        user_expand_hou = os.path.join("~", "Documents", HOU_VERSION) 
         hpath = ";".join([hou_pipe_path, common, _env["HH"],_env.get("HOUDINI_PATH", "")])
         _env["HOUDINI_PATH"] = hpath
         
     
     ##### Setting HOUDINI_OTLSCAN_PATH
     if platform == "linux" or platform == "linux2":
-        houdini_otlscan_path = ":".join([os.path.join(common, "houdini", "otls"), _env.get("HOUDINI_PATH", "")])
+        houdini_otlscan_path = ":".join( [_env.get("HOUDINI_PATH", ""), os.path.join(common, "houdini", "otls")])
         _env["HOUDINI_OTLSCAN_PATH"] = houdini_otlscan_path    
         
     
-    if platform == "win32":
-        user_expand_hou = os.path.join("~", "Documents", HOU_VERSION) 
-        houdini_otlscan_path = ";".join([os.path.join(common, "houdini", "otls"), _env.get("HOUDINI_PATH", "")])
+    if platform == "win32":        
+        houdini_otlscan_path = ";".join( [_env.get("HOUDINI_PATH", ""), os.path.join(common, "houdini", "otls")])
         _env["HOUDINI_OTLSCAN_PATH"] = houdini_otlscan_path
         
 
