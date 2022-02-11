@@ -29,6 +29,7 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
         self._number_of_inputs = 1
         
         self.setMinimumWidth(600)
+        self.setWindowTitle("HDA Publisher")
         
         self.setupUi(self)
         self.btn_save.setEnabled(False)
