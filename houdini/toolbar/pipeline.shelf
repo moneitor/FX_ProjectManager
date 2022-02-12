@@ -119,8 +119,8 @@ if selection[0] == 0:
   </tool>
 
   <toolshelf name="pipeline" label="pipeline">
-    <memberTool name="openFile"/>
     <memberTool name="save"/>
+    <memberTool name="openFile"/>
     <memberTool name="up_version"/>
     <memberTool name="Extract_fbx"/>
     <memberTool name="MantraControls"/>

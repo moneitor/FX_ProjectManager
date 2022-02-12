@@ -5,15 +5,6 @@
  Note, that two definitions of the same element are not allowed in
  a single file. -->
 
-  <toolshelf name="QtExamples" label="QtExamples">
-    <memberTool name="simpleDialog"/>
-    <memberTool name="ComboBox"/>
-    <memberTool name="inspectScene"/>
-    <memberTool name="StandardDialogs"/>
-    <memberTool name="RopControls"/>
-    <memberTool name="CheckingDirectories"/>
-  </toolshelf>
-
   <tool name="simpleDialog" label="Simple Dialog" icon="PLASMA_App">
     <script scriptType="python"><![CDATA[from qtDialogs import Simple_Dialog as s
 reload(s)
