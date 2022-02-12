@@ -1,5 +1,5 @@
 venv/*
-*.hip
+*.hip*
 __pycache__
 *.bgeo*
 *backup*
