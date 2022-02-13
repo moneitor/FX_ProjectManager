@@ -8,4 +8,18 @@
   <toolshelf name="numpyExamples" label="Numpy Examples">
     <memberTool name="matrix_vector"/>
   </toolshelf>
+
+  <tool name="matrix_vector" label="Matrix times vector" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[import numpy as np
+
+M = np.matrix([ [1, 5, 2],
+                [3, 2, 5],
+                [0, 1, 3] ])
+             
+vec = np.array([1,3,6])
+
+
+print("vec * M = {}".format(vec @ M))
+print("M * vec = {}".format(M @ vec))]]></script>
+  </tool>
 </shelfDocument>
