@@ -74,8 +74,19 @@ if not hou.hipFile.hasUnsavedChanges():
     f_ui.show_files()
 else: 
     msgBoxSave = QMessageBox()
-    msgBoxSave.setText("Save your changes first")
-    msgBoxSave.exec_()
+    msgBoxSave.setText("The file contained unsaved changes.")
+    msgBoxSave.setWindowTitle("Save First")
+    msgBoxSave.setDetailedText("Save any modification made using Ctrl + S, or ignore and save anyway")
+    msgBoxSave.setIcon(QMessageBox.Warning)
+    msgBoxSave.setStandardButtons(QMessageBox.Ok | QMessageBox.Ignore)
+    result = msgBoxSave.exec_()
+    
+    print ("RESULT")
+    print(result)
+    print(QMessageBox.StandardButton.Ignore)
+    
+    if result == 1048576:
+        f_ui.show_files()
 
 ]]></script>
   </tool>

@@ -90,15 +90,16 @@ class Files(QDialog):
     
     def open_file(self):
         if len(self._full_file_path ) > 0:
-            if not hou.hipFile.hasUnsavedChanges():
-                hou.hipFile.load(self._full_file_path )
-                print("\n =============================\n")
-                print ("Opening file at: " + self._full_file_path )
-                print("\n =============================\n")
-            else:
-                msgBoxSave = QMessageBox(self)
-                msgBoxSave.setText("Save your changes first")
-                msgBoxSave.exec_()
+            #if not hou.hipFile.hasUnsavedChanges():
+            hou.hipFile.load(self._full_file_path )
+            print("\n =============================\n")
+            print ("Opening file at: " + self._full_file_path )
+            print("\n =============================\n")
+            #else:
+                #pass
+                #msgBoxSave = QMessageBox(self)
+                #msgBoxSave.setText("Save your changes first")
+                #msgBoxSave.exec_()
 
         else:
             print("Please select a file")
