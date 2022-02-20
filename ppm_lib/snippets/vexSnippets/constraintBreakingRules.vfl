@@ -1,0 +1,30 @@
+// Simple rules so I don't have to write from scratch every time
+
+int br_by_force = chi("break_by_force");
+int br_by_torque = chi("break_by_torque");
+int br_by_distance = chi("break_by_distance");
+int br_by_angle = chi("break_by_angle");
+
+if(br_by_force == 1) {
+    f@breakForce = chf("max_break_force");
+} else {
+    f@breakForce = -1;
+}
+
+if(br_by_torque == 1) {
+    f@breakTorque = chf("max_break_torque");
+} else {
+    f@breakTorque = -1;
+}
+
+if(br_by_distance == 1) {
+    f@breakDistance = chf("max_break_distance");
+} else {
+    f@breakDistance = -1;
+}
+
+if(br_by_angle == 1) {
+    f@breakAngle = chf("max_break_angle");
+} else {
+    f@breakAngle = -1;
+}

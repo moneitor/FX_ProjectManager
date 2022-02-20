@@ -1,0 +1,17 @@
+int max_points = chi("max_points");
+float radius = chf("radius");
+string att = chs("attribute");
+
+i@found_point = i@ptnum;
+
+int pc[] = pcfind(0, "P", v@P, radius, max_points);
+i[]@t = pc;
+
+foreach(int point; pc){
+    string findName = point(0, att, point);
+   
+    if(findName != s@`chs("attribute")`){
+        i@found_point = point;
+        break;
+    }
+}
