@@ -61,7 +61,9 @@ def shot(shot_name):
                                                         "track": None,
                                                         "photogrametry": None,
                                                         "lens_info": None,
-                                                        "plate": None,
+                                                        "plate": {"backplate": None, "animplate": None, "Undistort": None,
+                                                                  "tecnical": None
+                                                            },
                                                         "camera": None,
                                                         "previs": None}}
 

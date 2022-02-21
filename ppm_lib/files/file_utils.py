@@ -62,11 +62,20 @@ def _frame_range_from_file_seq(dir_name):
     for fil in sorted(frames_list):
         fil = os.path.join(dir_name, fil)        
         file_full_name = os.path.basename(fil)        
-        file_frame = file_full_name.split(".")[1]             
+        file_frame = file_full_name.split(".")[1]            
         
         
         if file_frame.startswith("0"):
-            frames.append(int(float(file_frame.lstrip("0"))))
+            is_all_zeroes = True
+            for f in file_frame:
+                
+                if f != "0":
+                    is_all_zeroes = False
+                    
+            if is_all_zeroes:
+                frames.append(0)
+            else:
+                frames.append(int(float(file_frame.lstrip("0"))))
         else:
             frames.append(int(file_frame))           
 
@@ -100,39 +109,57 @@ def renumber_files(dir_name, new_start_frame=1001, leading_zeroes=4):
 def fix_padding(dir_name):
     
     files = []
-    
-    for fil in os.listdir(dir_name):
-        fil = os.path.join(dir_name, fil)
-        directory = os.path.dirname(fil)
-        file_full_name = os.path.basename(fil)
-        
-        file_name = file_full_name.split(".")[0]
-        file_frame = file_full_name.split(".")[-2]
-        file_ext = file_full_name.split(".")[-1] 
-        
-        fixed_frame = file_frame.zfill(4)
-        
-        new_name = file_name + "." + fixed_frame + "." + file_ext
-        
-        full_path_new = os.path.join(directory, new_name)
-        
-        files.append(full_path_new)
-        
-        os.rename(fil, full_path_new)
+    if dir_name:
+        for fil in os.listdir(dir_name):
+            
+            fil = os.path.join(dir_name, fil)
+            
+            if not os.path.isfile(fil):
+                print("File does not exist.")
+
+            directory = os.path.dirname(fil)
+            
+            if not os.path.exists(directory):
+                print("Folder does not exist.")
+
+            file_full_name = os.path.basename(fil)           
+
+            file_name = file_full_name.split(".")[0]
+            print(file_name)
+            
+            file_frame = file_full_name.split(".")[-2].lstrip("0")
+            print(file_frame)
+            file_ext = file_full_name.split(".")[-1] 
+            print(file_ext)
+            
+            fixed_frame = file_frame.zfill(4)
+            print(fixed_frame)
+            
+            new_name = file_name + "." + fixed_frame + "." + file_ext
+            
+            full_path_new = os.path.join(directory, new_name)
+            
+            files.append(full_path_new)
+            
+            os.rename(fil, full_path_new)
         
     return files
         
         
 def get_first_file_from_sequence(dir_name):  
-    first_file = os.listdir(dir_name)[0]
     
-    basename =  first_file.split(".")[0]
-    frame = "#" * len(first_file.split(".")[-2])
-    extension = first_file.split(".")[-1]
-    
-    final_name = basename + "." + frame + "." + extension
-    
-    return final_name
+    if dir_name:
+        first_file = os.listdir(dir_name)[0]
+        
+        basename =  first_file.split(".")[0]
+        frame = "####" 
+        extension = first_file.split(".")[-1]
+        
+        final_name = basename + "." + frame + "." + extension
+        
+        return final_name
+    else:
+        pass
         
         
         
