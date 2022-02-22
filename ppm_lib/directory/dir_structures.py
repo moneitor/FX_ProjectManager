@@ -56,6 +56,7 @@ def shot(shot_name):
                                                                 "abc": None, "hda": None, "simulation": None,
                                                                 "cameras": None},
                                                         "lighting": None,
+                                                        "hdri" : None,
                                                         "roto": None,
                                                         "rnd": None,
                                                         "track": None,

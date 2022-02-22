@@ -19,6 +19,7 @@ from entity import project as pr
 from entity import sequence as sq
 from entity import shot as s
 from ui.palette import Palette
+from asset_creator_compiled import Ui_Dlg_AssetCreation
 
 
 import ppm_new_project_ui as new_ui
@@ -249,6 +250,9 @@ class PPM_Main_UI(QDialog):
         ##### PUTTING IT ALL TOGETHER   
         self.wdg_projects.setLayout(self.lyt_main_projects_v)
         self.wdg_assets.setLayout(self.lyt_assets)
+        test = Ui_Dlg_AssetCreation()
+        #self.wdg_assets.setLayout(test)
+        
         self.wdg_files.setLayout(self.lyt_files)
         self.wdg_templates.setLayout(self.lyt_templates_h)        
         

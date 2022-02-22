@@ -137,6 +137,7 @@ if selection[0] == 0:
     <memberTool name="MantraControls"/>
     <memberTool name="batcher"/>
     <memberTool name="hda_publisher"/>
+    <memberTool name="frameRange"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -181,5 +182,14 @@ else:
     msgBoxSave.setText('Select a node that can be converted into an HDA')
     msgBoxSave.exec_()
     ]]></script>
+  </tool>
+
+  <tool name="frameRange" label="Set Frame Range" icon="SOP_agentclip">
+    <script scriptType="python"><![CDATA[import hou
+import os
+
+hou.playbar.setFrameRange(int(os.getenv("DFSTART")), int(os.getenv("DFEND")))
+hou.playbar.setPlaybackRange(int(os.getenv("DFSTART")), int(os.getenv("DFEND")))
+hou.playbar.jumpToNextKeyframe()]]></script>
   </tool>
 </shelfDocument>
