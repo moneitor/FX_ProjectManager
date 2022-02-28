@@ -284,6 +284,13 @@ class PPM_Main_UI(QDialog):
         self.btn_houdini.clicked.connect(self.hou_run)
         
         self.btn_rename_files.clicked.connect(self.run_renamer)
+        
+        
+    def set_current_item_on_list(self, qlist, name):
+        for i in range(qlist.count()):
+            current_item = qlist.item(i)
+            if current_item.text() == name:                
+                qlist.setCurrentItem(current_item)
     
     
     def initialize_projects_list(self):
@@ -329,6 +336,9 @@ class PPM_Main_UI(QDialog):
             self.initialize_projects_list()
             self.lst_sequences.clear()
             self.lst_shots.clear()
+            
+            
+            self.set_current_item_on_list(self.lst_projects, self._project_name)
             
             
     def get_project(self, t):
@@ -393,6 +403,9 @@ class PPM_Main_UI(QDialog):
         
         print(self._sequence_name) 
         
+        self.set_current_item_on_list(self.lst_sequences, self._sequence_name)
+
+        
         
     def get_sequence(self, t):
         sequence_name = t.text()
@@ -449,6 +462,8 @@ class PPM_Main_UI(QDialog):
             self.update_shots_list()
         
         print(self._sequence_name)
+        
+        self.set_current_item_on_list(self.lst_shots, self._shot_name)
     
     
     def get_shot(self, t):
