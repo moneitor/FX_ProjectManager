@@ -28,6 +28,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     pwd = os.path.dirname(os.path.dirname(os.path.dirname(abs_path))    )
     hou_pipe_path = os.path.join(pwd, "houdini")
     ppm_lib = os.path.join(pwd, "ppm_lib")
+    global_common_hou = os.path.join(os.path.dirname(os.path.dirname(project)), "houdini")  # path to global otls of PPM
     
     hfs = HOU_INSTALLATION
    
@@ -43,8 +44,9 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     _env["HH"] = hh
     
 
-    _env["HOUDINI_PATH"]  = hou_pipe_path
+    _env["HOUDINI_PATH"]  = hou_pipe_path    
     _env["HOUDINI_PATH"]  += os.pathsep + common + os.pathsep + _env["HH"] + os.pathsep + _env.get("HOUDINI_PATH", "")
+    
         
  
  
@@ -57,7 +59,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     if platform == "win32":
         fxlabs_version = HOU_VERSION.replace("houdini", "SideFXLabs") # path to folder where SideFXLabs tools are installed
         
-    global_common_hou = os.path.join(os.path.dirname(os.path.dirname(project)), "houdini")  # path to global otls of PPM
+    
         
     _env['HOUDINI_OTLSCAN_PATH'] = os.path.join(common, "houdini", "otls")
     _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(global_common_hou, "otls")
@@ -85,6 +87,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     _env["PPM_COMMON_HOU"] = os.path.join(common, "houdini")
     _env["PPM_OTLSCAN_PATH"] = os.path.join(common, "houdini", "otls")
     _env["H_INSTALL"] = hfs
+    _env["HOUDINI_PACKAGE_DIR"]  = os.path.join(global_common_hou, "packages")
     
     
     lg.Logger.info("HH set to [{}]".format(hh))   

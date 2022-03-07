@@ -1,9 +1,9 @@
 {
-	"env": [
-		{
-		"PACO": "ROMOLAAAAA"
-		}
-	],
-	"path": "/home/hernan/Documents/FX_ProjectManager/houdini",
-	"package_path": "/home/hernan/Documents/FX_ProjectManager/houdini/packages"
+    "path": "$PACO",
+    "load_package_once": true,
+    "env": [
+        {
+            "PACO": "ROMOLAAAAA"
+        }
+    ]    
 }
