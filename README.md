@@ -9,7 +9,9 @@ projects in the future, I decided to slowly create a set of tools that kind of w
 This is still work in progress and will remain like that for the long term.
 
 The main initial UI is executed by running the python file stored in: FX_ProjectManager/ppm_lib/ppm_main_ui.py 
+
 cd yourFolder/FX_ProjectManager/ppm_lib/ppm_main_ui.py 
+
 use: python3 ppm_main_ui.py
 
 ### Purpose
