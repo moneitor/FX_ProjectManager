@@ -7,12 +7,7 @@ With the goal of learning and getting better at python, and maybe along the way 
 projects in the future, I decided to slowly create a set of tools that kind of work like a simple vfx pipeline for personal projects.
 
 This is still work in progress and will remain like that for the long term.
-
-The main initial UI is executed by running the python file stored in: FX_ProjectManager/ppm_lib/ppm_main_ui.py 
-
-cd yourFolder/FX_ProjectManager/ppm_lib/ppm_main_ui.py 
-
-use: python3 ppm_main_ui.py
+ 
 
 ### Purpose
 Standardize the way I create projects, load Software and Plugins, Save and Name files.
@@ -28,6 +23,15 @@ There are VEX Snippets that you might find useful inside:
  * Create a virtualenvironment inside the FX_ProjectManager folder and install the python dependecies defined on the **requirements.txt**.
  * Run ```pip install -r requirements.txt```. This will install the python libraries required. On Windows you might need a different version of the same libraries
  * rename the ```./.env_example``` to ```./env``` and update it's contents to point to the installation folders on your system
+
+The main initial UI is executed by running the python file stored in: FX_ProjectManager/ppm_lib/ppm_main_ui.py 
+
+### Usage
+
+ * cd yourFolder/FX_ProjectManager
+ * source venv/bin/activate
+ * cd yourFolder/FX_ProjectManager/ppm_lib/ppm_main_ui.py 
+ * python3 ppm_main_ui.py
 
 The **first part** of the manager is in charge of creation and modification of projects, sequences and shots, Modification of file sequences, ingesting of plates, conversion from DNG to EXR.
 
