@@ -94,13 +94,13 @@ Displays the files saved in the current shot.
 
 
 #### Save new file
-Displays the files saved in the current shot.
+Gives the user the option to name the file, it adds the prefix and postfix to the name keeping the naming convention of the pipeline.
 
 ![](images/savingFile.png)
 
 
-#### Save new file
-Displays the files saved in the current shot.
+#### OTL Publisher
+WIP Converts a selected subnetwork into an HDA, if any spare parameters have been added to the subnetwork, they will be copied and added to the definition of the HDA.
 
 ![](images/otl_publisher.png)
 
