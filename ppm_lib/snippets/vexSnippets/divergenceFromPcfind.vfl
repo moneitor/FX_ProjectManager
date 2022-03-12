@@ -1,0 +1,33 @@
+function vector extractParallelComponent(vector reference; vector MyVector){    
+    vector parallel = (dot(MyVector , reference) / pow(length(reference), 2)) * reference;    
+    return parallel;
+}
+string att = chs("att");
+
+float rad = chf("radius");
+int maxp = chi("maxpoints");
+
+float dot_sign = 0;
+vector n_normal = 0;
+vector n_pos = 0;
+vector dir = 0;
+vector parallel = 0;
+float length_parallel = 0;
+float total_lengths = 0;
+
+int c_points[] = pcfind(0, "P", v@P, rad, maxp);
+removeindex(c_points, 0);
+
+for(int n = 0; n < len(c_points); n++){
+    n_normal = point(0, att, c_points[n]);    
+    n_pos = point(0, "P", c_points[n]);
+    
+    dir = (v@P - n_pos);
+    dot_sign = sign(dot(normalize(n_normal), normalize(dir))) * -1;      
+    
+    parallel = extractParallelComponent(dir, n_normal);
+    length_parallel = length(parallel) * dot_sign;
+    total_lengths += length_parallel/ len(c_points);    
+}
+
+f@divergence = (total_lengths);
