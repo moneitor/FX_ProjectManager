@@ -1,0 +1,19 @@
+vector displace = 0;
+int nei[] = i[]@nei;
+
+
+for (int i = 0; i < len(nei); i++) {
+    vector n_p = point(0, "prev_p", nei[i]);
+    vector off = n_p - v@P;
+    displace += off;
+}
+
+displace /= len(nei);
+displace *= f@TimeInc * chf("k");
+displace += v@v * chf("mult_down");
+displace *= set(0,1,0);
+
+
+v@v = displace;
+v@P += displace * @TimeInc;
+

@@ -1,0 +1,30 @@
+int prs = i@numprim;
+vector springForce[];
+
+for (int pr=0; pr<prs; pr++) {
+    float k = prim(0, "stiffness", pr);
+    float le0 = prim(0, "restlength", pr);
+    
+    int pts[] = primpoints(0, pr);
+    vector p0 = point(0, "P", pts[0]);
+    vector p1 = point(0, "P", pts[1]);
+    
+    float le1 = length(p0 - p1);
+    vector ndir = normalize(p0 - p1);
+    
+    vector x = (le1 - le0) * ndir;    
+    
+    float c = 0.1;
+    vector v0 = point(0, "v", pts[0]);
+    vector v1 = point(0, "v", pts[1]);    
+    
+    vector force0 = (-k * x) -c * x;
+    vector force1 = (k  * x) -c * x;
+    
+    springForce[pts[0]] += force0; 
+    springForce[pts[1]] += force1;
+    
+    setpointattrib(0, "springForce", pts[0], springForce[pts[0]]);
+    setpointattrib(0, "springForce", pts[1], springForce[pts[1]]);   
+
+}
