@@ -1,0 +1,37 @@
+int tet_points[] = primpoints(0, @primnum);
+int pt_neigh[] = {};
+
+function matrix build_matrix_4(vector A; vector B; vector C; vector P){
+
+    matrix TM = set(A.x, A.y, A.z, 0,
+                   B.x, B.y, B.z, 0,
+                   C.x, C.y, C.z, 0,
+                   P.x, P.y, P.z, 1);        
+    return TM;
+}
+
+
+matrix A, B;
+
+
+foreach (int pt; tet_points) {
+    int pt0 = tet_points[0];
+    pt_neigh = neighbours(0, pt0);
+    int pt1 = pt_neigh[0];
+    int pt2 = pt_neigh[1];
+    int pt3 = pt_neigh[2];    
+    
+    vector A_v0 = normalize(point(0, "P", pt0) - point(0, "P", pt1));
+    vector A_v1 = normalize(point(0, "P", pt0) - point(0, "P", pt2));
+    vector A_v2 = normalize(point(0, "P", pt0) - point(0, "P", pt3));
+    vector A_p0 = point(0, "P", pt0);
+    A = build_matrix_4(A_v0, A_v1, A_v2, A_p0);    
+    
+    vector B_v0 = normalize(point(1, "P", pt0) - point(1, "P", pt1));
+    vector B_v1 = normalize(point(1, "P", pt0) - point(1, "P", pt2));
+    vector B_v2 = normalize(point(1, "P", pt0) - point(1, "P", pt3));
+    vector B_p0 = point(1, "P", pt0);
+    B = build_matrix_4(B_v0, B_v1, B_v2, B_p0);   
+}
+
+4@diff = invert(A) * B;
