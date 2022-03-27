@@ -1,0 +1,20 @@
+int n[] = neighbours(0, @ptnum);
+
+function int return_point_with_max_attribute(string att; int points[]){
+    
+    float old_att = 0;
+    int max_point = 0;
+    foreach(int pt; points){
+        float current_att = point(0, att, pt);
+        if (current_att > old_att){
+            max_point = pt;
+        } else {
+            continue;
+        }
+        old_att = current_att;
+    }
+    return max_point;
+}
+
+
+i@maxpt = return_point_with_max_attribute(chs("attribute"), n);

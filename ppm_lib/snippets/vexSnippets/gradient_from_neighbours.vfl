@@ -1,0 +1,17 @@
+float rad = chf("radius");
+int maxp = chi("maxpoints");
+
+string att = chs("attribute");
+
+int c_points[] = neighbours(0, @ptnum);
+
+
+vector gradient = 0;
+
+foreach (int pt; c_points){
+    vector dir = (point(0, "P", pt) - v@P);
+    float diff = point(0, att, @ptnum) - point(0, att, pt);
+    gradient += dir * diff;
+}
+
+v@gradient = gradient;
