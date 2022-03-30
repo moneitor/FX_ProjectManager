@@ -1,0 +1,15 @@
+int trs  = chi('transformation_order');
+int xyz  = chi('rotation_order');
+vector t = chv('translation');
+vector r = chv('rotation');
+vector s = chv('scale');
+vector p = chv('pivot');
+
+matrix myTM = maketransform(trs, xyz, t, r, s, p);
+
+matrix3 myTM_N = matrix3(invert(myTM));
+@P *= myTM;
+
+
+v@N *= transpose(myTM_N);
+v@N = normalize(v@N);
