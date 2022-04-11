@@ -118,7 +118,7 @@ class FileSave(QWidget):
         version = self._return_version()
         
         
-        full_path = os.path.join(shot_path, "work", "fx", shot_name + "__" + file_name + "__v" + version + ".hipnc")
+        full_path = os.path.join(shot_path, "work", "fx", shot_name + "__" + file_name + "__v" + version + ".hiplc")
         self.full_name_for_save = full_path
         
         self.display_path.setText(self.full_name_for_save)

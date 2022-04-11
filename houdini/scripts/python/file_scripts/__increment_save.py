@@ -39,7 +39,7 @@ def return_version():
     max_version = 0
     versions = []
     for _file in return_list_files()[0]:
-        if (_file.endswith(".hip") or _file.endswith(".hipnc")) and "VER" in _file:
+        if (_file.endswith(".hip") or _file.endswith(".hipnc") or _file.endswith(".hiplc")) and "VER" in _file:
             version = _file.split(".")[0].split("_")[-1].split("R")[-1]
             versions.append(version)
             max_version = max(versions)

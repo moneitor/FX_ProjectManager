@@ -46,7 +46,7 @@ class Files_Handling():
         file_path = self.return_file_path()
         dir_list = os.listdir(file_path)
         for file_element in dir_list:
-            if file_element.endswith(".hip") or file_element.endswith(".hipnc"):
+            if file_element.endswith(".hip") or file_element.endswith(".hipnc") or file_element.endswith(".hiplc"):
                 correct_name_list.append(file_element)
 
         return correct_name_list

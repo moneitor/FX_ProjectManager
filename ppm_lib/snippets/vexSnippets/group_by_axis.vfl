@@ -1,0 +1,25 @@
+vector axis = getbbox_size();
+
+i@group_axisX = 0;
+i@group_axisY = 0;
+i@group_axisZ = 0;
+
+int myAxis = 0;
+
+if (axis.y > axis.x && axis.y > axis.z){
+	myAxis = 1;
+}
+
+if (axis.z > axis.x && axis.z > axis.y){
+	myAxis = 2;
+}
+
+if (myAxis == 0){
+	i@group_axisX = 1;
+}
+if (myAxis == 1) {
+	i@group_axisY = 1;
+}
+if (myAxis == 2) {
+	i@group_axisZ = 1;
+}

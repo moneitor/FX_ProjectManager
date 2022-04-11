@@ -18,15 +18,40 @@ class Houdini_Files():
         """
         Return all the existing paths to a houdini file in the working folder
         """
-        self._file_paths = [file for file in file_utils.get_files_of_type(self._work_path, "hipnc") if "backup" not in file]
-        return self._file_paths
+        _hiplc = file_utils.get_files_of_type(self._work_path, "hiplc")
+        _hipnc = file_utils.get_files_of_type(self._work_path, "hipnc")
+        _hip = file_utils.get_files_of_type(self._work_path, "hip")
         
+        _file_paths_hiplc = None
+        _file_paths_hipnc = None
+        _file_paths_hip =  None
+        
+        
+        if _hiplc:
+            _file_paths_hiplc = [file for file in _hiplc if "backup" not in file]
+        if _hipnc:
+            _file_paths_hipnc = [file for file in _hipnc if "backup" not in file]
+        if _hip:
+            _file_paths_hip = [file for file in _hip if "backup" not in file]
+        
+        if _file_paths_hiplc:
+            self._file_paths = _file_paths_hiplc 
+        if _file_paths_hipnc:
+            self._file_paths += _file_paths_hipnc 
+        if _file_paths_hip:
+            self._file_paths += _file_paths_hip 
+        
+        
+        return self._file_paths
+
+ 
         
     def return_file_names(self):
         """
         Return all the existing file names in the working folder
         """
         self.return_files()
+        print(self.return_files())
         self._files = [os.path.basename(file) for file in self._file_paths]
         return self._files
     
