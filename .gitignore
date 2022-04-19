@@ -8,4 +8,8 @@ __pycache__
 *.hdanc*
 *token*
 .env
+<<<<<<< HEAD
 *.otl*
+=======
+*otllc*
+>>>>>>> 3425a4638b1e13989ae186e5c46e7453488857ce
