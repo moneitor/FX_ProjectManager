@@ -68,9 +68,9 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
         global_parameter = self.cb_global.currentText()
         
         if global_parameter == "Project":
-            self._path = os.path.join(os.getenv("PPM_COMMON_HOU"), "otls", self._name) + "_{}.hdanc".format(self._version.zfill(3))   
+            self._path = os.path.join(os.getenv("PPM_COMMON_HOU"), "otls", self._name) + "_{}.otllc".format(self._version.zfill(3))   
         if global_parameter == "Globally":
-            self._path = os.path.join(os.getenv("GLOBAL_COMMON_HOU"), "otls", self._name) + "_{}.hdanc".format(self._version.zfill(3))  
+            self._path = os.path.join(os.getenv("GLOBAL_COMMON_HOU"), "otls", self._name) + "_{}.otllc".format(self._version.zfill(3))  
             
         self.lbl_path.setText(self._path)           
         
