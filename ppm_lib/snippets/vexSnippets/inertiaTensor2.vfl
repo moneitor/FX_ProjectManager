@@ -1,0 +1,39 @@
+//WRANGLE 1
+// v@dir is the vector pointing from the centroid to the point
+
+int npts = npoints(0);
+
+f@mass = (1000.0/f@volume) / npts;
+
+// this approach is based on this video on youtube
+// youtube.com/watch?v=nMNWu4ZX340
+matrix3 ident = ident();
+
+matrix3 inertiaTensor_from_vector_and_mass(vector vec; float mass){
+    matrix3 inertia = 1;
+    matrix3 _ident = ident();
+    
+    inertia = mass * ((length2(vec) * _ident) - (outerproduct(vec, vec)));
+        
+    return inertia;
+}
+                      
+            
+3@inertiaTensor = inertiaTensor_from_vector_and_mass(v@dir, f@mass);
+
+
+
+//WRANGLE 2
+int npts = npoints(0);
+
+matrix3 inertiaTensor = 0;
+vector angular_accel = 0;
+for (int i = 0; i < npts; i++) {
+    matrix3 __inertiaT = point(0, "inertiaTensor", i);      
+    angular_accel += invert(__inertiaT) * v@torque ;
+    
+    inertiaTensor += __inertiaT;
+}
+
+v@ang_accel = angular_accel;
+3@inertiaTensor = inertiaTensor;
