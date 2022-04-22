@@ -1,0 +1,37 @@
+//WRANGLE 1
+vector return_avg_of_attribute(int input; string att){
+    // return approx center of mass
+    int _npts = npoints(input);
+    vector avg = 0;
+    for (int i = 0; i < _npts; i++) {
+        vector fp =point(input, att, i);
+        avg += fp;
+    }
+    vector centroid = avg / _npts;
+    return centroid;
+}
+
+matrix3 inertiaTensor_per_point(int input; int pt; float mass){
+    // computes the inertia tensor for a single point
+    matrix3 I = ident();
+    vector centroid = return_avg_of_attribute(input, "P");
+    vector myp = point(input, "P", pt);
+    vector p = myp - centroid;
+    vector Ix = set((p.y*p.y) + (p.z*p.z),   -p.y*p.y,  -p.z*p.x);
+    vector Iy = set(-p.x*p.y, ((p.z*p.z) + (p.x*p.x)),  -p.z*p.y);
+    vector Iz = set(-p.x*p.z,  -p.y*p.z,   (p.x*p.x)+(p.y*p.y));
+    
+    I = set(Ix, Iy, Iz);           
+
+    return I * mass;
+}
+
+int npts = npoints(0);
+
+f@mass = (1000.0/f@volume) / npts;
+
+3@inertiaTensor = inertiaTensor_per_point(0, @ptnum, f@mass);
+
+
+//WRANGLE 2
+v@ang_accel = invert(3@inertiaTensor) * v@torque;
