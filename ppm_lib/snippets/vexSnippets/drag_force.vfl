@@ -1,0 +1,26 @@
+float C = chf("drag_coefficient"); // Drag coefficient
+float p = chf("air_density"); // density of fluid
+float A = f@facing_area; // projected cross sectional area of body
+                         // perpendicular to the flow direction
+float s = length(v@v); // speed
+
+float limit = s * f@mass / f@TimeInc;
+
+                         
+vector drag_force = ((C * p * A * (s * s))  * 0.5) * normalize(v@v * -1);
+float drag_len = length(drag_force);
+
+drag_force = normalize(drag_force);
+drag_force *= min(drag_len, limit);
+
+
+
+if (length(v@v) > 0.001) {
+    v@drag_force = drag_force;
+} else {
+    v@drag_force = 0;
+} 
+
+v@drag_force /= npoints(0); // ?????
+
+

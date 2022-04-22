@@ -1,0 +1,25 @@
+vector find_centroid(int input){
+    // Finds the centroid of the set of points on the given input
+    vector centroid = 0;
+    for (int pt = 0; pt < npoints(input); pt++) {
+        vector fp = point(input, "P", pt);
+        centroid += fp; 
+    }
+    centroid /= npoints(input);
+    return centroid;
+}
+
+
+vector projec_a_onto_plane(vector pos; vector plane_position; vector plane_normal){
+    // Project the point position onto the plane
+    // described by the plane_position and the plane_normal
+    plane_normal = normalize(plane_normal);
+    vector new_p = pos - (dot(plane_normal, (pos - plane_position))) * plane_normal;
+    return new_p;
+}
+
+
+vector plane_p = find_centroid(0);
+vector force_dir = v@`chs("vector")`;
+
+v@P = projec_a_onto_plane(v@P, plane_p, force_dir);
