@@ -1,0 +1,34 @@
+vector return_avg_of_attribute(int input; string att){
+    // return approx center of mass
+    int npts = npoints(input);
+    vector avg = 0;
+    for (int i = 0; i < npts; i++) {
+        vector fp =point(input, att, i);
+        avg += fp;
+    }
+    vector centroid = avg / npts;
+    return centroid;
+}
+
+int npts = npoints(0);
+
+f@mass = (1000.0/f@volume) / npts;
+
+
+
+vector centroid = return_avg_of_attribute(0, "P");
+matrix3 cov = 0;
+
+float mass = 0;
+int _npts = npoints(0);
+for (int i = 0; i < _npts; i++ ) {
+    vector p = point(0, "P", i);
+    mass = point(0, "mass", i);
+    vector r = p - centroid;
+    cov += outerproduct(r,r);
+}
+    
+cov  /= _npts * f@mass ;
+
+
+3@inertiaTensor = invert(cov);
