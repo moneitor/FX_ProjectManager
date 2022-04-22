@@ -1,0 +1,44 @@
+//WRANGLE 1
+
+// v@dir is the vector pointing from the centroid to the point
+
+int npts = npoints(0);
+
+f@mass = (1000.0/f@volume) / npts;
+
+// this approach is based on this video on youtube
+// youtube.com/watch?v=nMNWu4ZX340
+
+matrix3 vector_to_tilde_matrix(vector vec){
+    // converts a vector into a tilde matrix so cross products
+    // can be represented as matrix multiplications
+    matrix3 tilde = set(0,  -vec.z,      vec.y,
+                       vec.z,   0,    -vec.x,
+                      -vec.y,   vec.x,   0);
+               
+    return tilde;
+}
+
+
+matrix3 tildaDir = vector_to_tilde_matrix(v@dir);
+                      
+                   
+3@inertiaTensor = -@mass * tildaDir * tildaDir;
+
+
+
+
+//WRANGLE 2
+int npts = npoints(0);
+
+matrix3 inertiaTensor = 0;
+vector angular_accel = 0;
+for (int i = 0; i < npts; i++) {
+    matrix3 __inertiaT = point(0, "inertiaTensor", i);      
+    angular_accel += invert(__inertiaT) * v@torque ;
+    
+    inertiaTensor += __inertiaT;
+}
+
+v@ang_accel = angular_accel;
+3@inertiaTensor = inertiaTensor;
