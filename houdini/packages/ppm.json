@@ -1,9 +1,10 @@
 {
-    "path": "$PACO",
-    "load_package_once": true,
     "env": [
-        {
-            "PACO": "ROMOLAAAAA"
-        }
+        {"PATH": "C:/ProgramData/redshift/bin" },
+        {"PXR_PLUGINPATH_NAME": "C:/ProgramData/redshift/Plugins/Solaris/19.0.561"},          
+        {"HOUDINI_PATH" : "C:/ProgramData/redshift/Plugins/Houdini/19.0.561"},
+        {"REDSHIFT_COREDATAPATH": "C:/ProgramData/redshift/"},
+        {"HOUDINI_OTLSCAN_PATH": "C:/ProgramData/redshift/Plugins/Houdini/19.0.561/otls"},
+        {"PYTHONPATH": "C:/FX_ProjectManager/ppm_lib"}
     ]    
 }
