@@ -3,6 +3,7 @@ from db import database_interface as db
 import db.database_utils as db_u
 from directory.directory_utils import ppm_mkdir, ppm_rmdir, make_dirs_from_dict
 from directory import dir_structures as ds
+from sys import platform
 
 import os
 
@@ -117,7 +118,21 @@ class Projects:
         lg.Logger.critical("{}  Trying to remove project {}".format(__name__, name)) 
         if name:                        
             db.delete(self.connection_project, name, DELETE_BY_NAME)
-            ppm_rmdir(os.path.join(PROJECTS_PATH, name) )
+            
+            if platform == "linux" or platform == "linux2":                
+                ppm_rmdir(os.path.join(PROJECTS_PATH, name) )
+
+            if platform == "win32":
+                top = os.path.join(PROJECTS_PATH, name)
+                for root, dirs, files in os.walk(top, topdown=False):
+                    for name in files:
+                        filename = os.path.join(root, name)
+                        os.chmod(filename, stat.S_IWUSR)
+                        os.remove(filename)
+                    for name in dirs:
+                        os.rmdir(os.path.join(root, name))
+                os.rmdir(top)
+
             
     
     
