@@ -174,7 +174,7 @@ if hou.selectedNodes():
             
             _name = "ppm::{}::{}".format(_name, _version)
     
-            otl_new_node = node.createDigitalAsset(name = _name,
+            otl_new_node = node.createDigitalAsset(name = _name.split("::")[1],
                                     hda_file_name=_path,
                                     description=_name, 
                                     comment=_description, 
