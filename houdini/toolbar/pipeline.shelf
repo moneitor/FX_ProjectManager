@@ -147,7 +147,7 @@ from PySide2 import QtWidgets
 from ppm_hdas import create_hda_ui as c
 importlib.reload(c)
 from ppm_hdas import create_hda_logic as l
-importlib.reload(c)
+importlib.reload(l)
 node = None
 if hou.selectedNodes():
     

@@ -6,6 +6,8 @@ from PySide2 import QtCore
 import hou
 from .hda_saver_compile import Ui_HDA_Manager_UI
 
+from utilityFunctions import fix_name
+
 import os
 import sys
 
@@ -41,6 +43,7 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
         
         self.btn_cancel.clicked.connect(self.close)
         self.ln_name.textChanged.connect(self.set_name)
+        self.ln_name.textChanged.connect(self._fix_name)
         self.ln_name.textChanged.connect(self.activate_save)
         self.ln_description.textChanged.connect(self.set_name)
         self.ln_description.textChanged.connect(self.activate_save)
@@ -48,8 +51,9 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
         self.spn_inputs.valueChanged.connect(self.set_name)
         self.btn_save.clicked.connect(self.set_name)        
         self.btn_save.clicked.connect(self.accept)      
-        
-        
+
+
+  
         
     def activate_save(self):
         if (self.ln_name.text()) != "" and self.ln_description.toPlainText() != "":
@@ -72,7 +76,15 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
         if global_parameter == "Globally":
             self._path = os.path.join(os.getenv("GLOBAL_COMMON_HOU"), "otls", self._name) + "_{}.otllc".format(self._version.zfill(3))  
             
-        self.lbl_path.setText(self._path)           
+        self.lbl_path.setText(self._path)      
+
+
+    def _fix_name(self, t):
+        new_text = fix_name(t)
+        self.ln_name.setText(new_text) 
+
+        
+   
         
     
     def return_name(self):

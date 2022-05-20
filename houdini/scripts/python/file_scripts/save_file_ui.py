@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QDialog, QLineEdit, QPushButton, QSpinBox, QLabel, QHBoxLayout, QFormLayout, QVBoxLayout, QMessageBox, QStyleFactory, QWidget
 from PySide2 import QtCore, QtGui
 import hou
-from .save_file_logic import fix_name
+from utilityFunctions import fix_name
 
 import os
 import sys
