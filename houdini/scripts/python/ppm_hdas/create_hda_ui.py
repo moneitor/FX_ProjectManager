@@ -46,6 +46,7 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
         self.ln_name.textChanged.connect(self._fix_name)
         self.ln_name.textChanged.connect(self.activate_save)
         self.ln_description.textChanged.connect(self.set_name)
+        self.ln_description.textChanged.connect(self.set_description)
         self.ln_description.textChanged.connect(self.activate_save)
         self.spn_version.valueChanged.connect(self.set_name)
         self.spn_inputs.valueChanged.connect(self.set_name)
@@ -77,6 +78,11 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
             self._path = os.path.join(os.getenv("GLOBAL_COMMON_HOU"), "otls", self._name) + "_{}.otllc".format(self._version.zfill(3))  
             
         self.lbl_path.setText(self._path)      
+
+    
+    def set_description(self):
+        self._description = self.ln_description.toPlainText()
+
 
 
     def _fix_name(self, t):

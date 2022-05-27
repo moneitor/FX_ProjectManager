@@ -173,15 +173,18 @@ if hou.selectedNodes():
             _description = new_hda.return_description()
             
             _name = "ppm::{}::{}".format(_name, _version)
-    
-            otl_new_node = node.createDigitalAsset(name = _name.split("::")[1],
+            """
+            otl_new_node = node.createDigitalAsset(name = _name,
                                     hda_file_name=_path,
-                                    description=_name, 
+                                    description=_name.split("::")[1], 
                                     comment=_description, 
                                     min_num_inputs=_inputs, 
                                     version=_version)  
+            """
                                     
-            otl_new_node.type().definition().setParmTemplateGroup(node_ptg)
+            print("Comment: {}".format(_description))
+                                    
+            #otl_new_node.type().definition().setParmTemplateGroup(node_ptg)
                                     
                                     
 else:
