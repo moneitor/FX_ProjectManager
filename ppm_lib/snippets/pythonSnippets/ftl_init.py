@@ -10,5 +10,10 @@ class Utils{
   public:
     static void parallelTransport(UT_Vector3 currP, UT_Vector3 parentP, UT_Vector3 parentN, UT_Vector3 parentT, UT_Vector3 &o_newN, UT_Vector3 &o_newT){
     UT_Vector3 currT;
+    UT_Matrix3 parallelTransportM;
+    
+    currT = currP - parent;
+    int k = parallelTranportM.dihedral(parenT, currT);
+
     }
 }
