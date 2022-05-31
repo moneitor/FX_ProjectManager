@@ -21,6 +21,8 @@ from entity import shot as s
 from ui.palette import Palette
 from asset_creator_compiled import Ui_Dlg_AssetCreation
 
+from send2trash import send2trash # library to send stuff to the bin
+
 
 import ppm_new_project_ui as new_ui
 import ppm_new_seq_ui as new_ui_seq

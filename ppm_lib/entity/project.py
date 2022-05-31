@@ -4,6 +4,7 @@ import db.database_utils as db_u
 from directory.directory_utils import ppm_mkdir, ppm_rmdir, make_dirs_from_dict
 from directory import dir_structures as ds
 from sys import platform
+import stat
 
 import os
 
@@ -122,8 +123,9 @@ class Projects:
             if platform == "linux" or platform == "linux2":                
                 ppm_rmdir(os.path.join(PROJECTS_PATH, name) )
 
-            if platform == "win32":
+            if platform == "win32":                
                 top = os.path.join(PROJECTS_PATH, name)
+                #send2trash(top)
                 for root, dirs, files in os.walk(top, topdown=False):
                     for name in files:
                         filename = os.path.join(root, name)

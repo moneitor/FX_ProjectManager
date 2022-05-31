@@ -5,6 +5,7 @@ from db import database_interface as db
 from db import database_utils as db_u
 import os
 from sys import platform
+import stat
 
 ######################### COMANDS ###################################
 #CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
@@ -107,6 +108,7 @@ class Sequences:
                 ppm_rmdir(sequence_path)
             
             if platform == "win32":
+                #send2trash(sequence_path)
                 top = sequence_path
                 for root, dirs, files in os.walk(top, topdown=False):
                     for name in files:

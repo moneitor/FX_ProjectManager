@@ -7,6 +7,8 @@ from directory import dir_structures as ds
 import os
 from PySide2.QtWidgets import QMessageBox
 from sys import platform
+import stat
+from send2trash import send2trash # library to send stuff to the bin
 
 ######################### COMANDS ###################################
 
@@ -106,6 +108,7 @@ class Shots:
                 ppm_rmdir(shot_path)
                 
             if platform == "win32":
+                #send2trash(shot_path)
                 top = shot_path
                 for root, dirs, files in os.walk(top, topdown=False):
                     for name in files:
