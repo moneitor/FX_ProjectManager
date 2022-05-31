@@ -28,7 +28,7 @@ DELETE_BY_NAME = 'DELETE FROM sequences WHERE name = ?;'
 
 #######################################################################
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
-PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
+PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects")
 
 
 
@@ -110,7 +110,9 @@ class Sequences:
                 #ppm_rmdir(sequence_path)
             
             if platform == "win32":
-                send2trash(sequence_path)
+                print(sequence_path)
+                #send2trash(sequence_path)
+                print ("Folders can't be deleted from Windows yet, so please go ahead and remove the folder manually. ")
                 """
                 top = sequence_path
                 for root, dirs, files in os.walk(top, topdown=False):

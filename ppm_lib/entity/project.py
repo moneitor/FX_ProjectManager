@@ -9,6 +9,7 @@ from send2trash import send2trash # library to send stuff to the bin
 
 import os
 
+
 __all__= ["Projects", "project"]
 
 ######################### COMANDS ###################################
@@ -29,7 +30,8 @@ DELETE_BY_NAME = 'DELETE FROM projects WHERE name = ?;'
 
 
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
-PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
+PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects")
+#PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
 
 
 class Projects:    
@@ -51,8 +53,7 @@ class Projects:
             current_project = Project(project[1])
             projects.append(current_project)
             
-        return projects       
-    
+        return projects          
 
         
         
@@ -125,9 +126,12 @@ class Projects:
                 send2trash(os.path.join(PROJECTS_PATH, name) )           
                 #ppm_rmdir(os.path.join(PROJECTS_PATH, name) )
 
-            if platform == "win32":                
-                top = os.path.join(PROJECTS_PATH, name)
-                send2trash(top)
+            if platform == "win32":      
+                from win32com.shell import shell, shellcon          
+                top = os.path.join(PROJECTS_PATH, name)                
+                print ("Folders can't be deleted from Windows yet, so please go ahead and remove the folder manually. ")
+                #self.deltorecyclebin(top)
+                #send2trash(top)
                 """
                 for root, dirs, files in os.walk(top, topdown=False):
                     for name in files:
@@ -138,6 +142,17 @@ class Projects:
                         os.rmdir(os.path.join(root, name))
                 os.rmdir(top)
                 """
+
+            
+    def deltorecyclebin(self, filename):
+        """Crappy function that I found online, send2trash won't work on windows 
+        if I try to run the script while the database is open"""
+        if not os.path.exists(filename):
+            return True
+        res = shell.SHFileOperation((0,shellcon.FO_DELETE,filename,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))
+
+        if not res[1]:
+            os.system("del " + filename)
 
             
     

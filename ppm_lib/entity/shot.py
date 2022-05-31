@@ -109,7 +109,8 @@ class Shots:
                 #ppm_rmdir(shot_path)
                 
             if platform == "win32":
-                send2trash(shot_path)
+                #send2trash(shot_path)
+                print ("Folders can't be deleted from Windows yet, so please go ahead and remove the folder manually. ")
                 """
                 top = shot_path
                 for root, dirs, files in os.walk(top, topdown=False):
