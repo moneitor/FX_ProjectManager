@@ -105,10 +105,12 @@ class Shots:
             db.delete(self.connection_shot, shot_name, DELETE_BY_NAME)
             
             if platform == "linux" or platform == "linux2":
-                ppm_rmdir(shot_path)
+                send2trash(shot_path)
+                #ppm_rmdir(shot_path)
                 
             if platform == "win32":
-                #send2trash(shot_path)
+                send2trash(shot_path)
+                """
                 top = shot_path
                 for root, dirs, files in os.walk(top, topdown=False):
                     for name in files:
@@ -117,6 +119,7 @@ class Shots:
                         os.remove(filename)
                     for name in dirs:
                         os.rmdir(os.path.join(root, name))
+                """
         else:
             lg.Logger.warning("Shot [{}] does not exist.".format(shot_name))
     

@@ -6,6 +6,7 @@ from db import database_utils as db_u
 import os
 from sys import platform
 import stat
+from send2trash import send2trash # library to send stuff to the bin
 
 ######################### COMANDS ###################################
 #CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
@@ -104,11 +105,13 @@ class Sequences:
         if os.path.exists(sequence_path):
             db.delete(self.connection_seq, sequence_name, DELETE_BY_NAME)     
             
-            if platform == "linux" or platform == "linux2":     
-                ppm_rmdir(sequence_path)
+            if platform == "linux" or platform == "linux2":    
+                send2trash(sequence_path) 
+                #ppm_rmdir(sequence_path)
             
             if platform == "win32":
-                #send2trash(sequence_path)
+                send2trash(sequence_path)
+                """
                 top = sequence_path
                 for root, dirs, files in os.walk(top, topdown=False):
                     for name in files:
@@ -118,6 +121,7 @@ class Sequences:
                     for name in dirs:
                         os.rmdir(os.path.join(root, name))
                 os.rmdir(top)
+                """
         
             
         

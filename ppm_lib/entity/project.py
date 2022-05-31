@@ -5,6 +5,7 @@ from directory.directory_utils import ppm_mkdir, ppm_rmdir, make_dirs_from_dict
 from directory import dir_structures as ds
 from sys import platform
 import stat
+from send2trash import send2trash # library to send stuff to the bin
 
 import os
 
@@ -120,12 +121,14 @@ class Projects:
         if name:                        
             db.delete(self.connection_project, name, DELETE_BY_NAME)
             
-            if platform == "linux" or platform == "linux2":                
-                ppm_rmdir(os.path.join(PROJECTS_PATH, name) )
+            if platform == "linux" or platform == "linux2":    
+                send2trash(os.path.join(PROJECTS_PATH, name) )           
+                #ppm_rmdir(os.path.join(PROJECTS_PATH, name) )
 
             if platform == "win32":                
                 top = os.path.join(PROJECTS_PATH, name)
-                #send2trash(top)
+                send2trash(top)
+                """
                 for root, dirs, files in os.walk(top, topdown=False):
                     for name in files:
                         filename = os.path.join(root, name)
@@ -134,6 +137,7 @@ class Projects:
                     for name in dirs:
                         os.rmdir(os.path.join(root, name))
                 os.rmdir(top)
+                """
 
             
     
