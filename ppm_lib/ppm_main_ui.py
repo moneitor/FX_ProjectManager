@@ -270,11 +270,13 @@ class PPM_Main_UI(QDialog):
     def connections(self):
         self.btn_add_project.clicked.connect(self.add_project)
         self.lst_projects.itemClicked.connect(self.get_project)   
-        self.lst_projects.itemClicked.connect(self.get_common_folder)     
+        self.lst_projects.itemClicked.connect(self.get_common_folder)   
+        self.lst_projects.itemClicked.connect(self.clean_project_info)  
         self.btn_rm_project.clicked.connect(self.delete_project)
         
         self.btn_add_seq.clicked.connect(self.add_sequence)
-        self.lst_sequences.itemClicked.connect(self.get_sequence)        
+        self.lst_sequences.itemClicked.connect(self.get_sequence) 
+        self.lst_sequences.itemClicked.connect(self.clean_project_info)        
         self.btn_rm_seq.clicked.connect(self.delete_sequence)
         
         self.btn_add_shot.clicked.connect(self.add_shot)
@@ -314,6 +316,14 @@ class PPM_Main_UI(QDialog):
         self.lst_shots.clear()
         self.lst_shots.addItems(all_shots)
         self.lst_shots.sortItems()
+        
+    
+    def clean_project_info(self):
+        self.lbl_project_path.setText("PLEASE SELECT A SHOT")
+        self.lbl_project_fps.setText("PLEASE SELECT A SHOT")
+        self.lbl_project_resolution.setText("PLEASE SELECT A SHOT")
+        self.lbl_shot_first_frame.setText("PLEASE SELECT A SHOT")
+        self.lbl_shot_last_frame.setText("PLEASE SELECT A SHOT")
         
         
     
@@ -400,6 +410,8 @@ class PPM_Main_UI(QDialog):
 
             logic.create_new_sequence(self._project, self._sequence_name)
             self.update_sequences_list()
+            self.lst_shots.clear()
+            #self.update_shots_list() 
         
         print(self._sequence_name) 
         
@@ -418,12 +430,9 @@ class PPM_Main_UI(QDialog):
         
         self._sequence = sequence 
         
-        self.btn_add_shot.setEnabled(True)
-        #self.btn_add_shot.setStyleSheet("background-color: rgb(45,45,45)")        
-        self.btn_rm_shot.setEnabled(True)
-        #self.btn_rm_shot.setStyleSheet("background-color: rgb(45,45,45)")        
-        self.btn_edit_shot.setEnabled(True)
-        #self.btn_edit_shot.setStyleSheet("background-color: rgb(45,45,45)")
+        self.btn_add_shot.setEnabled(True)              
+        self.btn_rm_shot.setEnabled(True)              
+        self.btn_edit_shot.setEnabled(True)        
         
         self.update_shots_list()        
 

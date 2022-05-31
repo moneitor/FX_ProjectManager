@@ -6,6 +6,7 @@ from db import database_utils as db_u
 from directory import dir_structures as ds
 import os
 from PySide2.QtWidgets import QMessageBox
+from sys import platform
 
 ######################### COMANDS ###################################
 
@@ -100,7 +101,19 @@ class Shots:
         
         if os.path.exists(shot_path):
             db.delete(self.connection_shot, shot_name, DELETE_BY_NAME)
-            ppm_rmdir(shot_path)
+            
+            if platform == "linux" or platform == "linux2":
+                ppm_rmdir(shot_path)
+                
+            if platform == "win32":
+                top = shot_path
+                for root, dirs, files in os.walk(top, topdown=False):
+                    for name in files:
+                        filename = os.path.join(root, name)
+                        os.chmod(filename, stat.S_IWUSR)
+                        os.remove(filename)
+                    for name in dirs:
+                        os.rmdir(os.path.join(root, name))
         else:
             lg.Logger.warning("Shot [{}] does not exist.".format(shot_name))
     
