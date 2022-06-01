@@ -1,7 +1,6 @@
 ## FX Personal Project Manager
 #### Using Python 3.8.10
 
-Works better on Linux, on Windows I am having problems when deleting an entity (Project, Sequence or Shot), other than that behaves as expected on Windows, although in general performes better on Linux where I have had less problems with the databases.
 
 Hi there.
 
@@ -9,6 +8,9 @@ With the goal of learning and getting better at python, and maybe along the way 
 projects in the future, I decided to slowly create a set of tools that kind of work like a simple vfx pipeline for personal projects.
 
 This is still work in progress and will remain like that for the long term.
+
+Also, it works better on Linux, on Windows I am having problems when deleting an entity (Project, Sequence or Shot), other than that behaves as expected on Windows, although in general performes better on Linux where I have had less problems with the databases.
+
  
 
 ### Purpose
