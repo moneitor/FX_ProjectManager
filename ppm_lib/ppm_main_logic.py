@@ -98,11 +98,12 @@ def create_new_shot(sequence, shot_name, first_frame, last_frame):
 
 def delete_shot(sequence, shot_name):
     if shot_name:              
-        shots = s.Shots(sequence)
+        shots = s.Shots(sequence)        
         shots.delete_shot(shot_name)
 
 
 if __name__ == "__main__":
+    
     projects = pr.Projects()
     projects.delete_project("romola")
     #projects.add_project("PROJECT_C", 24, "1920")

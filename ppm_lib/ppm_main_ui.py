@@ -478,43 +478,48 @@ class PPM_Main_UI(QDialog):
     
     
     def get_shot(self, t):
+        print(t.text())
         shot_name = t.text()
         shot_name = shot_name.split("_")[-1]
         
         shot = logic.get_shot(self._sequence, shot_name)      
         
         self._shot_name = self._sequence_name + "_" + str(shot.get_name())
-        self._shot_path = os.path.join(self._sequence_path, self._shot_name)        
+        self._shot_path = os.path.join(self._sequence_path, self._shot_name)   
         self._shot_first_frame = str(logic.get_shot_first_frame(self._sequence, self._shot_name))
         self._shot_last_frame = str(logic.get_shot_last_frame(self._sequence, self._shot_name))
         
         self.lbl_project_path.setText(self._shot_path)
+        self.lbl_project_fps.setText(self._project_fps)            
+        self.lbl_project_resolution.setText(self._project_resolution)        
         self.lbl_shot_first_frame.setText(self._shot_first_frame)
         self.lbl_shot_last_frame.setText(self._shot_last_frame)
         
-        self.btn_houdini.setEnabled(True)
-        #self.btn_houdini.setStyleSheet("background-color: rgb(45,45,45)")        
+        self.btn_houdini.setEnabled(True)              
         self.btn_nuke.setEnabled(True)
-        #self.btn_nuke.setStyleSheet("background-color: rgb(45,45,45)")
-        
-            
-                  
+
         self._shot = shot       
                
         return shot
     
     
-    def delete_shot(self):
-        shot_name = self._shot_name               
+    def delete_shot(self):      
+
+        selected_shot =  self.lst_shots.selectedItems()[0]   
+        shot_name = selected_shot.text()
         
-        if not self._shot_name:
-            QMessageBox.warning(self, "Warning", "Select a shot.")    
-            return
-        res = QMessageBox.question(self, "Warning", "Are you sure that you want to delete this shot? ")
-        if res == QMessageBox.Yes:            
-            logic.delete_shot(self._sequence, shot_name)           
-            
-        self.update_shots_list()
+        if selected_shot: # Test if there is an item selected     
+            print ("Deleting Shot: {}".format(shot_name))    
+
+            if not self._shot_name:
+                QMessageBox.warning(self, "Warning", "Select a shot.")    
+                return
+            res = QMessageBox.question(self, "Warning", "Are you sure that you want to delete this shot? ")
+            if res == QMessageBox.Yes:  
+                                  
+                logic.delete_shot(self._sequence, shot_name)           
+                
+            self.update_shots_list()
         
         
     def get_common_folder(self):
