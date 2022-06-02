@@ -11,8 +11,7 @@ for (int i = 0; i < npts; i++) {
     vector mypos = point(0, "P", i);
 
     int pts[] = pcfind(0, "P", mypos, radius, maxpt);
-    removeindex(pts, 0);
-    
+    removeindex(pts, 0);   
     
     
     for (int j = 0; j < len(pts); j++) {
@@ -22,6 +21,7 @@ for (int i = 0; i < npts; i++) {
         
         if (length(dir) > mindist){
             int newpt = addpoint(0, newpos);
+            setpointgroup(0, "new_point", newpt, 1, "set");
             
             foreach(string att; ptattribs){
                 int attType = pointattribtype(0, att);
@@ -41,10 +41,13 @@ for (int i = 0; i < npts; i++) {
                             setpointattrib(0, att, newpt, newatt);
                         }
                         if (attsize > 1) {
-                            vector getatt0 = point(0, att, i);
-                            vector getatt1 = point(0, att, pts[j]);
-                            vector newatt = (getatt0 + getatt1)/2;
-                            setpointattrib(0, att, newpt, newatt);
+                            if (att != "P") {
+                                vector getatt0 = point(0, att, i);
+                                vector getatt1 = point(0, att, pts[j]);
+                                vector newatt = (getatt0 + getatt1)/2;                              
+                                
+                                setpointattrib(0, att, newpt, newatt);
+                            }
                         }
                     }
                 }
