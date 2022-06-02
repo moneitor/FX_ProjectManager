@@ -15,8 +15,9 @@ GET_ALL_PROJECTS = 'SELECT * FROM projects'
 #######################################################################
 
 
-PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
+PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__))).replace("\\",'/')
+PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects").replace("\\",'/')
+
 
 
 # Connection to the database        

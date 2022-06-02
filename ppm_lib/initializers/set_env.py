@@ -4,7 +4,7 @@ from ppm_logger import logger as lg
 from dotenv import load_dotenv
 
 
-dotenv_path = "../.env"
+dotenv_path = "../.env".replace("\\",'/')
 
 
 def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, common):
@@ -44,7 +44,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     _env["HH"] = hh
     
 
-    _env["HOUDINI_PATH"]  = hou_pipe_path    
+    _env["HOUDINI_PATH"]  = hou_pipe_path.replace("\\",'/') 
     _env["HOUDINI_PATH"]  += os.pathsep + common + os.pathsep + _env["HH"] + os.pathsep + _env.get("HOUDINI_PATH", "")
     
         
@@ -78,16 +78,16 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
         
     _env["FPS"] =  str(fps)
     _env["RESX"], _env["RESY"] = str(resx), str(resy)
-    _env["JOB"] = job   
+    _env["JOB"] = job.replace("\\",'/')
     _env["DFSTART"], _env["DFEND"] = str(first_frame), str(last_frame)
-    _env["SHOT"] = shot_path
-    _env["PROJECT"] = project
-    _env["GLOBAL_COMMON_HOU"] = global_common_hou
-    _env["PPM_COMMON"] = common
-    _env["PPM_COMMON_HOU"] = os.path.join(common, "houdini")
-    _env["PPM_OTLSCAN_PATH"] = os.path.join(common, "houdini", "otls")
-    _env["H_INSTALL"] = hfs
-    _env["HOUDINI_PACKAGE_DIR"]  = os.path.join(global_common_hou, "packages")
+    _env["SHOT"] = shot_path.replace("\\",'/')
+    _env["PROJECT"] = project.replace("\\",'/')
+    _env["GLOBAL_COMMON_HOU"] = global_common_hou.replace("\\",'/')
+    _env["PPM_COMMON"] = common.replace("\\",'/')
+    _env["PPM_COMMON_HOU"] = os.path.join(common, "houdini").replace("\\",'/')
+    _env["PPM_OTLSCAN_PATH"] = os.path.join(common, "houdini", "otls").replace("\\",'/')
+    _env["H_INSTALL"] = hfs.replace("\\",'/')
+    _env["HOUDINI_PACKAGE_DIR"]  = os.path.join(global_common_hou, "packages").replace("\\",'/')
     
     
     lg.Logger.info("HH set to [{}]".format(hh))   

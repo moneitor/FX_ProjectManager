@@ -3,6 +3,7 @@ from PySide2 import QtCore
 from .files_handling import Houdini_Files
 import os
 
+from sys import platform
 
 import hou
 parentHou = hou.ui.mainQtWindow()
@@ -90,11 +91,18 @@ class Files(QDialog):
     
     def open_file(self):
         if len(self._full_file_path ) > 0:
-            #if not hou.hipFile.hasUnsavedChanges():
-            hou.hipFile.load(self._full_file_path )
+            #if not hou.hipFile.hasUnsavedChanges():    
+            if platform == "win32":
+                print ("Fixing path slashes for windows")
+                self._full_file_path = self._full_file_path.replace("\\",'/')       
+            
             print("\n =============================\n")
             print ("Opening file at: " + self._full_file_path )
             print("\n =============================\n")
+
+            
+
+            hou.hipFile.load(self._full_file_path )
             #else:
                 #pass
                 #msgBoxSave = QMessageBox(self)

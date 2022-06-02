@@ -340,7 +340,7 @@ class PPM_Main_UI(QDialog):
             self._project_resolution = new_project_window.return_resolution()           
             
             
-            self.lbl_project_path.setText(self._project_name)            
+            self.lbl_project_path.setText(self._project_name.replace("\\",'/'))            
             self.lbl_project_fps.setText(self._project_fps)            
             self.lbl_project_resolution.setText(self._project_resolution)
             
@@ -358,11 +358,11 @@ class PPM_Main_UI(QDialog):
         project = logic.get_project(project_name)      
         
         self._project_name = str(project.get_name())
-        self._project_path = project.get_path()
+        self._project_path = project.get_path().replace("\\",'/')
         self._project_fps = str(project.get_fps()) 
         self._project_resolution = str(project.get_resolution())
         
-        self.lbl_project_path.setText(str(project.get_path()) )
+        self.lbl_project_path.setText(str(project.get_path()).replace("\\",'/') )
         self.lbl_project_fps.setText(str(project.get_fps()) )
         self.lbl_project_resolution.setText(str(project.get_resolution()))   
         
@@ -408,7 +408,7 @@ class PPM_Main_UI(QDialog):
         if result == QtWidgets.QDialog.Accepted:
             self._sequence_name = new_sequence_window.return_name()     
             self._sequence_path = os.path.join(self._project_name, self._sequence_name)
-            self.lbl_project_path.setText(self._sequence_path)        
+            self.lbl_project_path.setText(self._sequence_path.replace("\\",'/'))        
 
             logic.create_new_sequence(self._project, self._sequence_name)
             self.update_sequences_list()
@@ -427,8 +427,8 @@ class PPM_Main_UI(QDialog):
         sequence = logic.get_sequence(self._project, sequence_name)      
         
         self._sequence_name = str(sequence.get_name())
-        self._sequence_path = os.path.join(self._project_path, self._sequence_name)
-        self.lbl_project_path.setText(self._sequence_path)
+        self._sequence_path = os.path.join(self._project_path, self._sequence_name).replace("\\",'/')
+        self.lbl_project_path.setText(self._sequence_path.replace("\\",'/'))
         
         self._sequence = sequence 
         
@@ -462,8 +462,8 @@ class PPM_Main_UI(QDialog):
         
         if result == QtWidgets.QDialog.Accepted:
             self._shot_name = self._sequence_name + "_" + new_shot_window.return_name()     
-            self._shot_path = os.path.join(self._sequence_name, self._shot_name)
-            self.lbl_project_path.setText(self._shot_path)     
+            self._shot_path = os.path.join(self._sequence_name, self._shot_name).replace("\\",'/')
+            self.lbl_project_path.setText(self._shot_path.replace("\\",'/'))     
             self._shot_first_frame = new_shot_window.return_first_frame()  
             self._shot_last_frame = new_shot_window.return_last_frame()  
 
@@ -485,11 +485,11 @@ class PPM_Main_UI(QDialog):
         shot = logic.get_shot(self._sequence, shot_name)      
         
         self._shot_name = self._sequence_name + "_" + str(shot.get_name())
-        self._shot_path = os.path.join(self._sequence_path, self._shot_name)   
+        self._shot_path = os.path.join(self._sequence_path, self._shot_name).replace("\\",'/') 
         self._shot_first_frame = str(logic.get_shot_first_frame(self._sequence, self._shot_name))
         self._shot_last_frame = str(logic.get_shot_last_frame(self._sequence, self._shot_name))
         
-        self.lbl_project_path.setText(self._shot_path)
+        self.lbl_project_path.setText(self._shot_path.replace("\\",'/'))
         self.lbl_project_fps.setText(self._project_fps)            
         self.lbl_project_resolution.setText(self._project_resolution)        
         self.lbl_shot_first_frame.setText(self._shot_first_frame)
@@ -526,7 +526,7 @@ class PPM_Main_UI(QDialog):
         """ 
         This saves the path to the common folder, where houdini and nuke can look for scripts within the project.
         """
-        self._common = os.path.join(self._project_path, "common")
+        self._common = os.path.join(self._project_path, "common").replace("\\",'/')
         
         
         

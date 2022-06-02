@@ -103,7 +103,7 @@ class Houdini_Files():
                  
         
         new_version_full_path = file_name.replace("_v" + current_version, "_v" + new_version)
-        print("NEWWWW   ", "_v" + current_version, "_v" + new_version)    
+        print("NEW   ", "_v" + current_version, "_v" + new_version)    
         print(new_version_full_path)    
         
         return new_version_full_path       
