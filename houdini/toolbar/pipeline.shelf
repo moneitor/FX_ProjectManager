@@ -184,7 +184,7 @@ if hou.selectedNodes():
                                     
             print("Comment: {}".format(_description))
                                     
-            #otl_new_node.type().definition().setParmTemplateGroup(node_ptg)
+            otl_new_node.type().definition().setParmTemplateGroup(node_ptg)
                                     
                                     
 else:
