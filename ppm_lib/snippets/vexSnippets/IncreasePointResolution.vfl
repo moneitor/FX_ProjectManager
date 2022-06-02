@@ -1,48 +1,60 @@
+// USE A DETAIL WRANGLE
+
 float radius = chf("radius");
 int maxpt = chi("max_pt");
 float mindist = chf("min_distance");
+
+int npts = npoints(0);
 string ptattribs[] = detailintrinsic(0, "pointattributes");
 
-int pts[] = pcfind(0, "P", v@P, radius, maxpt);
+for (int i = 0; i < npts; i++) {
+    vector mypos = point(0, "P", i);
 
-
-// For each found point it creates a new point in the middle if myself
-// and the founded point
-foreach(int p; pts) {
-    vector fpos = point(0, "P", p);
-    vector dir = fpos - v@P;
-    float dist = length(dir);
-    vector newpos = v@P + ( dir * 0.5);
+    int pts[] = pcfind(0, "P", mypos, radius, maxpt);
+    removeindex(pts, 0);
     
-    if(dist >= mindist) {
-        int newpt = addpoint(0, newpos);   
+    
+    
+    for (int j = 0; j < len(pts); j++) {
+        vector fpos = point(0, "P", pts[j]);
+        vector dir = fpos - mypos;
+        vector newpos = mypos + (dir * 0.5);
         
-        // Iterates through all the point attributes and updates the attribs
-        // on the new points
-        foreach(string att; ptattribs){
-            int attType = pointattribtype(0, att);
-            if (attType != -1) {
-              if (attType == 0){
-                int getatt = point(0, att, p);
-                setpointattrib(0, att, newpt, getatt);                
-              }      
-              if (attType == 1) {
-                int attsize = attribsize(0, "point", att);
-                if (attsize == 1) {
-                    float getatt = point(0, att, p);
-                    setpointattrib(0, att, newpt, getatt);
+        if (length(dir) > mindist){
+            int newpt = addpoint(0, newpos);
+            
+            foreach(string att; ptattribs){
+                int attType = pointattribtype(0, att);
+                if (attType != -1) {
+                    if (attType == 0){
+                        int getatt0 = point(0, att, i);
+                        int getatt1 = point(0, att, pts[j]);
+                        
+                        setpointattrib(0, att, newpt, max(getatt0, getatt1));
                     }
-                if (attsize > 1) {
-                    vector getatt = point(0, att, p);
+                    if (attType == 1) {
+                        int attsize = attribsize(0, "point", att);
+                        if (attsize == 1){
+                            float getatt0 = point(0, att, i);
+                            float getatt1 = point(0, att, pts[j]);
+                            float newatt = (getatt0 + getatt1) / 2;
+                            setpointattrib(0, att, newpt, newatt);
+                        }
+                        if (attsize > 1) {
+                            vector getatt0 = point(0, att, i);
+                            vector getatt1 = point(0, att, pts[j]);
+                            vector newatt = (getatt0 + getatt1)/2;
+                            setpointattrib(0, att, newpt, newatt);
+                        }
+                    }
+                }
+                if (attType == 2) {
+                    string getatt = point(0, att, pts[j]);
                     setpointattrib(0, att, newpt, getatt);
                 }
-                
-              }
-              if (attType == 2) {
-                string getatt = point(0, att, p);
-                setpointattrib(0, att, newpt, getatt);
-              }
-           }        
+            }
         }
-    }    
+        
+    }
+    
 }
