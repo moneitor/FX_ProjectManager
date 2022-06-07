@@ -2,6 +2,7 @@ import os
 from sys import platform
 from ppm_logger import logger as lg
 from dotenv import load_dotenv
+from sys import platform
 
 
 dotenv_path = "../.env".replace("\\",'/')
@@ -12,11 +13,16 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path=dotenv_path)    
         
-        lg.Logger.info(os.getenv("HOU_INSTALLATION"))
-        lg.Logger.info(os.getenv("HOU_VERSION"))
+        lg.Logger.info("HOU INSTALLATION: " + os.getenv("HOU_INSTALLATION"))
+        lg.Logger.info("HOU VERSION: " + os.getenv("HOU_VERSION"))
 
-        HOU_VERSION = os.getenv("HOU_VERSION")
-        HOU_INSTALLATION = os.getenv("HOU_INSTALLATION")
+        HOU_VERSION = os.getenv("HOU_VERSION").replace("\\",'/') 
+        HOU_INSTALLATION = os.getenv("HOU_INSTALLATION").replace("\\",'/') 
+
+        if platform == "win32":
+            lg.Logger.info("MSVC Directory: " + os.getenv("MSVCDir"))
+            MSVCDir = os.getenv("MSVCDir").replace("\\",'/') 
+
 
     else:
         lg.Logger.warning("Please make sure '.env' file exist on the root directory of FX_ProjectManager. ")

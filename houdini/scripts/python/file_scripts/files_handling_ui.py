@@ -1,6 +1,8 @@
 from PySide2.QtWidgets import QWidget, QListWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QStyleFactory, QMessageBox, QFormLayout
 from PySide2 import QtCore
+
 from .files_handling import Houdini_Files
+
 import os
 
 from sys import platform
@@ -29,6 +31,7 @@ class Files(QDialog):
     def widgets(self):
         self.lbl_files = QLabel("Houdini Files:")
         self.lst_files = QListWidget()  
+        self.lst_files.setSortingEnabled(True)
         self.lst_files.setMinimumWidth(400)        
         self.btn_open = QPushButton("Open")
         self.btn_cancel = QPushButton("Cancel")
@@ -67,6 +70,8 @@ class Files(QDialog):
         self.btn_cancel.clicked.connect(self.close)    
         self.lst_files.itemClicked.connect(self.return_file_path)  
         self.lst_files.itemClicked.connect(self.file_info)
+        self.lst_files.itemDoubleClicked.connect(self.open_file)
+        self.lst_files.itemDoubleClicked.connect(self.accept)
         self.btn_open.clicked.connect(self.open_file)
         self.btn_open.clicked.connect(self.accept)
         
@@ -78,7 +83,7 @@ class Files(QDialog):
         if files:
             self.lst_files.addItems(files)
             
-        self.lst_files.sortItems()
+        self.lst_files.sortItems(QtCore.Qt.SortOrder(0)) # Sort items in alphabetical order
         
         
     def return_file_path(self, f):
