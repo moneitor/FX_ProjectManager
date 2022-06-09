@@ -13,4 +13,4 @@ hou.playbar.setRealTime(True)
 desktops_dict = dict((d.name(), d) for d in hou.ui.desktops())
 desktops_dict['ppm'].setAsCurrent()
 
-sys.path.append("../../../../FX_ProjectManager")
+#sys.path.append("../../../../FX_ProjectManager")
