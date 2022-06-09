@@ -138,6 +138,8 @@ if selection[0] == 0:
     <memberTool name="batcher"/>
     <memberTool name="hda_publisher"/>
     <memberTool name="frameRange"/>
+    <memberTool name="dependent"/>
+    <memberTool name="cp_parameters"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
