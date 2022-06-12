@@ -127,7 +127,10 @@ class FileSave(QWidget):
 
 
     def save_file_ui(self):
-        if(os.path.isdir(self.shot_path)) and len(self.name.text())>0:
+        
+        __shot_path = os.path.isdir(self.shot_path)
+        print(__shot_path)
+        if(__shot_path) and len(self.name.text())>0:
             print("Saving file on {}".format(self.full_name_for_save))
             hou.hipFile.save(self.full_name_for_save, True)
            
