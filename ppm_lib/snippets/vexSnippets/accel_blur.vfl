@@ -1,0 +1,17 @@
+vector v = v@v * @TimeInc;
+vector accel = v@accel * f@TimeInc * @TimeInc;
+
+int samples = 10;
+
+vector new_v = v / float(samples);
+vector new_p = v@P;
+
+vector new_accel = accel/ float(samples);
+
+for(int i = 0; i < samples; i++) {   
+   
+    new_v += new_accel / (samples + 1);
+    new_p += new_v;
+    
+    int newpt = addpoint(0, new_p);
+}
