@@ -3,9 +3,9 @@ import os
 import sys
 
 # Initialization of the framerange to the proper range
-hou.playbar.setFrameRange(int(os.getenv("DFSTART")), int(os.getenv("DFEND")))
-hou.playbar.setPlaybackRange(int(os.getenv("DFSTART")), int(os.getenv("DFEND")))
-hou.playbar.jumpToNextKeyframe()
+#hou.playbar.setFrameRange(int(os.getenv("DFSTART")), int(os.getenv("DFEND")))
+#hou.playbar.setPlaybackRange(int(os.getenv("DFSTART")), int(os.getenv("DFEND")))
+#hou.playbar.jumpToNextKeyframe()
 
 hou.playbar.setRealTime(True)
 
