@@ -12,11 +12,9 @@ import os
 
 __all__= ["Projects", "project"]
 
-######################### COMANDS ###################################
+#########################        COMANDS      ###################################
 CREATE_PROJECTS = 'CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
-#CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, fps INTEGER, resolution TEXT, path TEXT);'
 CREATE_SEQUENCES = 'CREATE TABLE IF NOT EXISTS sequences (id INTEGER PRIMARY KEY, name TEXT, path TEXT);'
-# TODO UPDATE THE CREATE SEQUENCES DATABASE TO 
 
 INSERT_PROJECT = 'INSERT INTO projects (name, fps, resolution, path) VALUES (?, ?, ?, ?);'
 
@@ -26,12 +24,13 @@ GET_ALL_SEQUENCES = 'SELECT * FROM sequences'
 GET_PROJECT_BY_NAME = 'SELECT * FROM projects WHERE name = ?;'
 DELETE_BY_NAME = 'DELETE FROM projects WHERE name = ?;'
 
-#######################################################################
 
+
+###########################       PATHS      ############################################
 
 PROJECTS_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects")
-#PROJECTS_PATH = os.path.join(PROJECTS_PATH, "projects/")
+
 
 
 class Projects:    
@@ -153,6 +152,10 @@ class Projects:
 
         if not res[1]:
             os.system("del " + filename)
+
+
+    def editProject(self):
+        pass
 
             
     
