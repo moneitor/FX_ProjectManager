@@ -1,0 +1,5 @@
+// example from Georges Nakhle
+int num = 1;
+
+int c = ord(itoa(num));
+s@result = chr(c+48); 

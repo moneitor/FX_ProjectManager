@@ -1,0 +1,15 @@
+// example from Pete Kyme
+int maxValue = i@numprim;
+
+if (maxValue > 0) {
+    string suffix = "";
+    
+    int numChars = int(log10(maxValue)/log10(26)) + 1;
+    int index = i@primnum;
+    for(int i = 0; i < numChars; i++) {
+        int chrIndex = index % 26;
+        suffix = chr(chrIndex + 97) + suffix;
+        index = (index - index % 26) / 26;
+    }
+    s@name += suffix;
+}
