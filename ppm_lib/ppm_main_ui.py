@@ -27,6 +27,7 @@ from send2trash import send2trash # library to send stuff to the bin
 import ppm_new_project_ui as new_ui
 import ppm_new_seq_ui as new_ui_seq
 import ppm_new_shot_ui as new_ui_shot
+import ppm_edit_shot_ui as edit_ui_shot
 
 from houdini_startup import hou_run
 
@@ -284,6 +285,7 @@ class PPM_Main_UI(QDialog):
         self.btn_add_shot.clicked.connect(self.add_shot)
         self.lst_shots.itemClicked.connect(self.get_shot)        
         self.btn_rm_shot.clicked.connect(self.delete_shot)
+        self.btn_edit_shot.clicked.connect(self.edit_shot)
         
         self.btn_houdini.clicked.connect(self.hou_run)
         
@@ -301,16 +303,14 @@ class PPM_Main_UI(QDialog):
         all_projects =  pr.Projects().get_all_project_names() 
         self.lst_projects.clear()
         self.lst_projects.addItems(all_projects)    
-        self.lst_projects.sortItems()
-                   
+        self.lst_projects.sortItems()                   
 
     
     def update_sequences_list(self):
         all_sequences = sq.Sequences(self._project).get_sequences_names()
         self.lst_sequences.clear()
         self.lst_sequences.addItems(all_sequences)        
-        self.lst_sequences.sortItems()
-    
+        self.lst_sequences.sortItems()    
     
     
     def update_shots_list(self):
@@ -325,8 +325,7 @@ class PPM_Main_UI(QDialog):
         self.lbl_project_fps.setText("PLEASE SELECT A SHOT")
         self.lbl_project_resolution.setText("PLEASE SELECT A SHOT")
         self.lbl_shot_first_frame.setText("PLEASE SELECT A SHOT")
-        self.lbl_shot_last_frame.setText("PLEASE SELECT A SHOT")
-        
+        self.lbl_shot_last_frame.setText("PLEASE SELECT A SHOT")        
         
     
     def add_project(self):
@@ -418,7 +417,6 @@ class PPM_Main_UI(QDialog):
         print(self._sequence_name) 
         
         self.set_current_item_on_list(self.lst_sequences, self._sequence_name)
-
         
         
     def get_sequence(self, t):
@@ -475,6 +473,30 @@ class PPM_Main_UI(QDialog):
         print(self._sequence_name)
         
         self.set_current_item_on_list(self.lst_shots, self._shot_name)
+        
+    
+    def edit_shot(self):        
+        new_start = "0"
+        new_end = "0"
+        
+        lg.Logger.info("Editing Shot")
+        edit_shot_window = edit_ui_shot.PPM_EditShot(self._shot_first_frame, self._shot_last_frame)
+        result = edit_shot_window.exec_()
+        
+        if result == QtWidgets.QDialog.Accepted:
+            new_start = edit_shot_window.return_first_frame()
+            new_end = edit_shot_window.return_last_frame()
+            
+        print (new_start)
+        print (new_end)
+        
+        logic.edit_shot(self._sequence, self._shot_name, new_start, new_end)
+        
+        self._shot_first_frame = str(logic.get_shot_first_frame(self._sequence, self._shot_name))
+        self._shot_last_frame = str(logic.get_shot_last_frame(self._sequence, self._shot_name))        
+        
+        self.lbl_shot_first_frame.setText(self._shot_first_frame)
+        self.lbl_shot_last_frame.setText(self._shot_last_frame)
     
     
     def get_shot(self, t):
@@ -542,6 +564,10 @@ class PPM_Main_UI(QDialog):
                 project_path = self._project_path,
                 common=self._common)
         
+    
+    def nuke_run(self):
+        "pass"
+        
         
         
     ######################### FILE UTILITIES ############################################################
@@ -565,4 +591,3 @@ if __name__ == "__main__":
     w.show()
     
     sys.exit(app.exec_())
-

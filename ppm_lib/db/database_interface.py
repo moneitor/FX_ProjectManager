@@ -70,6 +70,10 @@ def add_new_shot(connection, name, firstFrame, lastFrame, path, cmd):
     _last_frame = lastFrame
     _path = path            
     database_utils.add_shot(connection, _name, _first_frame, _last_frame, _path, cmd)
+    
+
+def edit_by_name_shot(connection, firstFrame, lastFrame, name, cmd):
+    database_utils.edit_by_name(connection, firstFrame, lastFrame,  name, cmd)
 
 
 def find_by_name_shot(connection, name, cmd):

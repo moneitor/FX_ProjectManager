@@ -95,6 +95,13 @@ def create_new_shot(sequence, shot_name, first_frame, last_frame):
         shot = shots.add_shot(shot_name, first_frame, last_frame)
         
         return shot
+    
+    
+def edit_shot(sequence, shot_name, first_frame, last_frame):
+    if sequence and shot_name:
+        shots = s.Shots(sequence)
+        shot = shots.edit_shot(shot_name, first_frame, last_frame)
+        print("EDITING LOGIC")
 
 
 def delete_shot(sequence, shot_name):

@@ -15,12 +15,10 @@ from send2trash import send2trash # library to send stuff to the bin
 CREATE_SHOTS = 'CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY, name TEXT, firstFrame INTEGER, lastFrame INTEGER, path TEXT);'
 
 INSERT_SHOT = 'INSERT INTO shots (name, firstFrame, lastFrame, path) VALUES (?, ?, ?, ?);'
+EDIT_SHOT = 'UPDATE shots SET firstFrame=?, lastFrame = ? WHERE name = ?'
 GET_ALL_SHOTS = 'SELECT * FROM shots'
 GET_SHOT_BY_NAME = 'SELECT * FROM shots WHERE name = ?;'
 DELETE_BY_NAME = 'DELETE FROM shots WHERE name = ?;'
-
-
-
 
 
 
@@ -61,6 +59,16 @@ class Shots:
         else:
             lg.Logger.warning("Shot [{}] already exists".format(shot_name))            
             return False
+        
+    
+    def edit_shot(self, shot_name, first_frame, last_frame):
+        shot_path = os.path.join(self.sequence_path, shot_name)
+        
+        if db.find_by_name(self.connection_shot, shot_name, GET_SHOT_BY_NAME):
+            db.edit_by_name_shot(self.connection_shot, first_frame, last_frame, shot_name, EDIT_SHOT)
+            print("EDITING INSIDE SHOTS FILE")
+        
+        
             
             
     def get_shots(self):
