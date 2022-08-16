@@ -1,0 +1,10 @@
+int u = floor(v@uv.x);
+int v = floor(v@uv.y);
+
+i@udim = 1000 + (u + 1) + (v * 10);
+
+if(chi("viz_color")) {
+    v@Cd.x = random(i@udim);
+    v@Cd.y = random(i@udim * 464 + 1);
+    v@Cd.z = random(i@udim * 1235 +10);
+}
