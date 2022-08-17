@@ -1,0 +1,71 @@
+// Simple Euler
+float dt = f@TimeInc;
+
+vector v1 = volumesamplev(1, 0, v@P);
+v@P += v1 * dt;
+
+
+
+// Midpoint Method
+function vector MidPoint_from_volume(int input; vector pos; float dt) {
+    vector rk = 0;
+    vector xn = pos;
+    vector f_x = 0;    
+    
+    vector v1 = volumesamplev(input, 0, xn);
+    
+    f_x = xn + (  (v1 * dt) * 0.5) ;
+    vector v2 = volumesamplev(input, 0, f_x);
+    
+    return v2 * dt;
+
+}
+
+
+vector evaluateRunge = MidPoint_from_volume(1, v@P, f@TimeInc);
+
+v@P += evaluateRunge;
+
+
+
+
+
+
+// Runge Kutta
+function vector Runge_Kutta4_from_volume(int input; vector pos; float dt) {
+
+    //input :: input to sample from, eg: second input
+    //pos   :: position from where to sample eg: v@P
+    //dt    :: delta time, usually f@TimeInc
+
+    vector rk = 0;
+    vector xn = pos;
+    vector f_x = 0;
+    
+    f_x = xn;
+    vector k1 = volumesamplev(input, 0, (f_x) );  
+    
+    f_x = (xn + (k1 / 2) * dt);
+    vector k2 = volumesamplev(input, 0,  f_x );  
+    
+    f_x = (xn + (k2 / 2 ) * dt);
+    vector k3 = volumesamplev(input, 0,  f_x );
+    
+    f_x = (xn + (k3) * dt);
+    vector k4 = volumesamplev(input, 0, f_x );
+    
+    
+    rk =  (k1 + 2*k2 + 2*k3 + k4) / 6;  
+    
+    
+    return rk * dt;
+}
+
+
+float dt = f@TimeInc;
+vector evaluateRunge = Runge_Kutta4_from_volume(1, v@P, f@TimeInc);
+
+
+
+v@P += evaluateRunge;
+v@v = evaluateRunge;
