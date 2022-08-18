@@ -69,3 +69,41 @@ vector evaluateRunge = Runge_Kutta4_from_volume(1, v@P, f@TimeInc);
 
 v@P += evaluateRunge;
 v@v = evaluateRunge;
+
+
+
+
+
+
+function vector Runge_Kutta4_from_points(int input; vector pos; float dt; int maxpts) {
+    vector rk = 0;
+    vector xn = pos;
+    vector f_x = 0;
+    
+    f_x = xn;
+    vector k1 = pcfilter(pcopen(input, "P", xn, 5, maxpts), "v");
+    
+    f_x = (xn + (k1 / 2) * dt);
+    vector k2 = pcfilter(pcopen(input, "P", f_x, 5, maxpts), "v");  
+    
+    f_x = (xn + (k2 / 2 ) * dt);
+    vector k3 = pcfilter(pcopen(input, "P", f_x, 5, maxpts), "v");
+    
+    f_x = (xn + (k3) * dt);
+    vector k4 = pcfilter(pcopen(input, "P", f_x, 5, maxpts), "v");  
+    
+
+    rk =  (k1 + 2*k2 + 2*k3 + k4) / 6;  
+    return rk * dt;
+}
+
+
+
+vector evaluateRunge = Runge_Kutta4_from_points(1, v@P, f@TimeInc, 5);
+
+
+
+v@P += evaluateRunge; // integrate position
+//v@v = evaluateRunge * (1/@TimeInc); // integrate velocity
+
+
