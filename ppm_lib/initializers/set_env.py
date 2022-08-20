@@ -62,7 +62,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
         
     if platform == "win32":
         fxlabs_version = HOU_VERSION.replace("houdini", "SideFXLabs") # path to folder where SideFXLabs tools are installed on WINDOWS
-        
+               
     
         
     _env['HOUDINI_OTLSCAN_PATH'] = os.path.join(common, "houdini", "otls")
