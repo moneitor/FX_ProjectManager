@@ -1,0 +1,38 @@
+//variables to store the vectors of the matrix
+vector x , y , z;
+
+//get the neighbours of point 0
+vector pos = point(0 ,  "P" , 0);
+int pt1 = neighbour(0 , 0 , 0);
+int pt2 = neighbour(0 , 0 , 1);
+
+//get vectors between point 0 and it's neighbours
+vector v0 = (pos - point(0 , "P" , pt1));
+vector v1 = (point(0 , "P" , pt2) - pos);
+
+//set x and y depending on which one of v0 and v1 is longer
+if(length(v0) < length(v1)) {
+   x = normalize(v0);
+   y = normalize(v1);
+
+} else {
+   x = normalize(v1);
+   y = normalize(v0);
+}
+
+//set z as the cross product between x and y
+z = normalize(cross(x , y));
+
+
+//set the rotation matrix
+4@boxTM = set(x.x , x.y , x.z , 0 ,
+              y.x , y.y , y.z , 0 ,
+              z.x , z.y , z.z , 0 ,
+              pos.x , pos.y , pos.z , 1);
+
+//determinant to see if the matrix is scaled or skewed
+f@det = determinant(4@boxTM);
+
+
+
+
