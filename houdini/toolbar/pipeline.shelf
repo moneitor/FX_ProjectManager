@@ -141,6 +141,7 @@ if selection[0] == 0:
     <memberTool name="dependent"/>
     <memberTool name="cp_parameters"/>
     <memberTool name="compareParms"/>
+    <memberTool name="FixLabsCache"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -277,5 +278,16 @@ if len(hou.selectedNodes()) == 2:
     hou.ui.selectFromList(diff_parms, column_header="------------------------------------------------{}-----------------------------------------------{} ".format(source_name.upper(), target_name.upper()),
                           message="""This list displays the parameters with different values
                           between the two selected nodes""", width=800)]]></script>
+  </tool>
+
+  <tool name="FixLabsCache" label="Fix Labs Cache" icon="SOP_filecache">
+    <script scriptType="python"><![CDATA[labs_nodes = hou.selectedNodes()
+
+if labs_nodes:
+    for node in labs_nodes:
+        node.parm("basename").set('`$OS`_`opname("..")`')
+        node.parm("hardenbasename").set(0)
+else:
+    hou.ui.displayMessage("Please select at least one 'labs file cache'!")]]></script>
   </tool>
 </shelfDocument>
