@@ -435,7 +435,9 @@ def run_app():
 
 
 
-    
-run_app()]]></script>
+selected_node = hou.selectedNodes()
+
+if selected_node:
+    run_app()]]></script>
   </tool>
 </shelfDocument>
