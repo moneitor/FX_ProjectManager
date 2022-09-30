@@ -142,6 +142,7 @@ if selection[0] == 0:
     <memberTool name="cp_parameters"/>
     <memberTool name="compareParms"/>
     <memberTool name="FixLabsCache"/>
+    <memberTool name="userProperties"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -281,13 +282,160 @@ if len(hou.selectedNodes()) == 2:
   </tool>
 
   <tool name="FixLabsCache" label="Fix Labs Cache" icon="SOP_filecache">
-    <script scriptType="python"><![CDATA[labs_nodes = hou.selectedNodes()
+    <script scriptType="python"><![CDATA[import hou
+
+labs_nodes = hou.selectedNodes()
+
+
 
 if labs_nodes:
     for node in labs_nodes:
-        node.parm("basename").set('`$OS`_`opname("..")`')
-        node.parm("hardenbasename").set(0)
+        if "labs::filecache" in node.type().name():
+            node.parm("basename").set('`$OS`_`opname("..")`')
+            node.parm("hardenbasename").set(0)
+        else:
+            continue
 else:
     hou.ui.displayMessage("Please select at least one 'labs file cache'!")]]></script>
+  </tool>
+
+  <tool name="userProperties" label="abc userProperties" icon="SOP_alembic">
+    <script scriptType="python"><![CDATA[import hou
+import os
+import json
+
+
+from PySide2 import QtCore, QtWidgets, QtGui
+from PySide2.QtWidgets import QTreeWidget, QTreeWidgetItem
+
+parentHou = hou.ui.mainQtWindow()
+
+class DisplayUserProperties(QtWidgets.QWidget):
+    def __init__(self, parent=parentHou):
+        super(DisplayUserProperties, self).__init__()
+        
+        self.setMaximumSize(800,900)
+        self.setMinimumSize(500,500)
+        self.setWindowTitle("Simple Dialog")  
+
+        self.widgets()
+        self.layout()
+        self.connections()      
+        self.data_type = 0
+        
+        self.iterate_data_structure()
+
+
+    def widgets(self):     
+        self.rb_properties = QtWidgets.QRadioButton("Properties")
+        self.rb_properties.setChecked(True)
+        self.rb_metadata = QtWidgets.QRadioButton("Metadata")
+        self.btn_cancel = QtWidgets.QPushButton("Close")
+        self.tree = QtWidgets.QTreeWidget()
+        self.tree.setColumnCount(2)
+        self.tree.setHeaderLabels(["Attribute", "Value"])
+        
+
+    def layout(self):
+        form_layout = QtWidgets.QFormLayout()  
+        form_layout.addRow("", self.rb_properties)
+        form_layout.addRow("", self.rb_metadata)
+        form_layout.addRow("Data", self.tree)
+
+        buttons_layout = QtWidgets.QHBoxLayout()
+        buttons_layout.addStretch()
+        buttons_layout.addWidget(self.btn_cancel)        
+
+        main_layout = QtWidgets.QVBoxLayout(self)        
+        main_layout.addLayout(form_layout)
+        main_layout.addLayout(buttons_layout)
+        
+
+    def connections(self):
+        self.btn_cancel.clicked.connect(self.close)
+        self.rb_properties.clicked.connect(self.use_properties)
+        self.rb_metadata.clicked.connect(self.use_metadata)
+        
+        self.rb_properties.clicked.connect(self.iterate_data_structure)
+        self.rb_metadata.clicked.connect(self.iterate_data_structure)
+
+        
+        
+    def use_properties(self):   
+        self.data_type = 0
+        
+        
+    def use_metadata(self):
+        self.data_type = 1
+        
+
+        
+        
+    def extract_userProperties(self):
+        self.tree.clear()
+        selected_node = hou.selectedNodes()[0]
+        if selected_node:
+            geo = selected_node.geometry()
+            for prim in geo.prims():
+                user_att = prim.attribValue("abc_userProperties")                    
+                user_att_dict = json.loads(user_att)       
+
+                return user_att_dict            
+            
+            
+    def extract_userMetadata(self):
+        selected_node = hou.selectedNodes()[0]
+        if selected_node:
+            geo = selected_node.geometry()
+            for prim in geo.prims():            
+                user_meta = prim.attribValue("abc_userPropertiesMetadata")                 
+                user_meta_dict = json.loads(user_meta)
+                
+                return user_meta_dict
+        
+    
+    def iterate_data_structure(self):
+        elements = []
+        
+        properties = self.extract_userProperties()
+        metadata = self.extract_userMetadata()  
+        
+        if self.data_type == 0:
+            data_to_use = properties
+        if self.data_type == 1:
+            data_to_use = metadata
+        
+        
+        for key, values in data_to_use.items():
+            attribute = QtWidgets.QTreeWidgetItem([key, str(values)])            
+            #for value in values:
+                #att_value = QtWidgets.QTreeWidgetItem([value, "10"])                
+                #attribute = QtWidgets.QTreeWidgetItem([key, value])                
+                #attribute.addChild(att_value)
+                
+            elements.append(attribute)
+            
+        self.tree.insertTopLevelItems(0, elements)
+
+
+
+
+def run_app():
+    # check if the dialog already exist and delete it
+    # so it opens a new one
+    try:
+        app.close()
+        app.deleteLater()
+    except:
+        pass
+    app = DisplayUserProperties()
+    app.setParent(parentHou, QtCore.Qt.Window)
+    app.setStyle(QtWidgets.QStyleFactory.create("fusion"))    
+    app.show()   
+
+
+
+    
+run_app()]]></script>
   </tool>
 </shelfDocument>
