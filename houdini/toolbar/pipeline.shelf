@@ -141,8 +141,9 @@ if selection[0] == 0:
     <memberTool name="dependent"/>
     <memberTool name="cp_parameters"/>
     <memberTool name="compareParms"/>
-    <memberTool name="FixLabsCache"/>
     <memberTool name="userProperties"/>
+    <memberTool name="FixLabsCache"/>
+    <memberTool name="create_fetch"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -405,17 +406,17 @@ class DisplayUserProperties(QtWidgets.QWidget):
         if self.data_type == 1:
             data_to_use = metadata
         
-        
-        for key, values in data_to_use.items():
-            attribute = QtWidgets.QTreeWidgetItem([key, str(values)])            
-            #for value in values:
-                #att_value = QtWidgets.QTreeWidgetItem([value, "10"])                
-                #attribute = QtWidgets.QTreeWidgetItem([key, value])                
-                #attribute.addChild(att_value)
+        if data_to_use:
+            for key, values in data_to_use.items():
+                attribute = QtWidgets.QTreeWidgetItem([key, str(values)])            
+                #for value in values:
+                    #att_value = QtWidgets.QTreeWidgetItem([value, "10"])                
+                    #attribute = QtWidgets.QTreeWidgetItem([key, value])                
+                    #attribute.addChild(att_value)
+                    
+                elements.append(attribute)
                 
-            elements.append(attribute)
-            
-        self.tree.insertTopLevelItems(0, elements)
+            self.tree.insertTopLevelItems(0, elements)
 
 
 
@@ -439,5 +440,20 @@ selected_node = hou.selectedNodes()
 
 if selected_node:
     run_app()]]></script>
+  </tool>
+
+  <tool name="create_fetch" label="Labs Cache Fetch" icon="ROP_fetch">
+    <script scriptType="python"><![CDATA[import hou
+
+nodes = hou.selectedNodes()
+out = hou.node("/out")
+
+if nodes:
+    for node in nodes:
+        if "labs::filecache" in node.type().name():
+            node.setColor(hou.Color(0.89,0.412,0.761))
+            rop_geo = hou.node(node.path() + "/render")    
+            fetch = out.createNode("fetch", "out_{}".format(node.name()) )
+            fetch.parm("source").set(rop_geo.path())]]></script>
   </tool>
 </shelfDocument>
