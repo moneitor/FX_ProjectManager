@@ -144,6 +144,7 @@ if selection[0] == 0:
     <memberTool name="userProperties"/>
     <memberTool name="FixLabsCache"/>
     <memberTool name="create_fetch"/>
+    <memberTool name="omerge"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -455,5 +456,36 @@ if nodes:
             rop_geo = hou.node(node.path() + "/render")    
             fetch = out.createNode("fetch", "out_{}".format(node.name()) )
             fetch.parm("source").set(rop_geo.path())]]></script>
+  </tool>
+
+  <tool name="omerge" label="O Merge" icon="SOP_object_merge">
+    <script scriptType="python"><![CDATA[selected = hou.selectedNodes()
+
+isCtrlClick = kwargs["ctrlclick"]
+
+"""If shelf is ctrl+click pressed, then the relative path of the node
+    will be used"""
+
+
+if selected:    
+
+    for node in selected:
+        node.setColor(hou.Color(0.451, 0.369, 0.769))
+        pos = node.position()   
+        new_pos = pos + hou.Vector2((0, -1.5))
+        parent = node.parent()
+        omerge = parent.createNode("object_merge", "om_{}".format(node.name()))
+        omerge.setPosition(pos)
+        omerge.move((0, -1.5))
+        omerge.setColor(hou.Color(0.451, 0.369, 0.769))
+        
+        relpath = omerge.relativePathTo(node)
+        
+        if isCtrlClick:
+            omerge.parm("objpath1").set(relpath)
+        
+        else:
+            omerge.parm("objpath1").set(node.path())
+        ]]></script>
   </tool>
 </shelfDocument>
