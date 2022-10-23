@@ -145,6 +145,7 @@ if selection[0] == 0:
     <memberTool name="FixLabsCache"/>
     <memberTool name="create_fetch"/>
     <memberTool name="omerge"/>
+    <memberTool name="tool_1"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -487,5 +488,33 @@ if selected:
         else:
             omerge.parm("objpath1").set(node.path())
         ]]></script>
+  </tool>
+
+  <tool name="tool_1" label="New Tool" icon="OBJ_viewportisolator">
+    <script scriptType="python"><![CDATA[import hou
+
+def update_scene_view():
+    panes = hou.ui.panes()
+    scene_viewer = None
+    scene_viewer_pane = None
+    
+    for pane in panes:
+        for tab in pane.tabs():            
+            if tab.type() == hou.paneTabType.SceneViewer:
+                scene_viewer = tab
+                scene_viewer_pane = pane
+    
+    
+    if scene_viewer:
+        scene_viewer.close()
+    else:
+        hou.ui.displayMessage("No Scene View present")
+        
+    if scene_viewer_pane:
+        scene_viewer_pane.createTab(hou.paneTabType.SceneViewer)    
+    
+
+    
+update_scene_view()]]></script>
   </tool>
 </shelfDocument>
