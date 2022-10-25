@@ -145,7 +145,7 @@ if selection[0] == 0:
     <memberTool name="FixLabsCache"/>
     <memberTool name="create_fetch"/>
     <memberTool name="omerge"/>
-    <memberTool name="tool_1"/>
+    <memberTool name="updateView"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -475,22 +475,28 @@ if selected:
         pos = node.position()   
         new_pos = pos + hou.Vector2((0, -1.5))
         parent = node.parent()
+        null = parent.createNode("null", "OUT_{}".format(node.name()))
+        null.setPosition(pos)
+        null.move((0, -1.5))
+        
         omerge = parent.createNode("object_merge", "om_{}".format(node.name()))
         omerge.setPosition(pos)
-        omerge.move((0, -1.5))
+        omerge.move((0, -2.5))
         omerge.setColor(hou.Color(0.451, 0.369, 0.769))
         
-        relpath = omerge.relativePathTo(node)
+        null.setInput(0, node)
+        
+        relpath = omerge.relativePathTo(null)
         
         if isCtrlClick:
             omerge.parm("objpath1").set(relpath)
         
         else:
-            omerge.parm("objpath1").set(node.path())
+            omerge.parm("objpath1").set(null.path())
         ]]></script>
   </tool>
 
-  <tool name="tool_1" label="New Tool" icon="OBJ_viewportisolator">
+  <tool name="updateView" label="Update Viewer" icon="OBJ_viewportisolator">
     <script scriptType="python"><![CDATA[import hou
 
 def update_scene_view():
@@ -505,13 +511,21 @@ def update_scene_view():
                 scene_viewer_pane = pane
     
     
+    
     if scene_viewer:
+        #pass
         scene_viewer.close()
     else:
+        #pass
         hou.ui.displayMessage("No Scene View present")
         
     if scene_viewer_pane:
-        scene_viewer_pane.createTab(hou.paneTabType.SceneViewer)    
+        #pass
+        new_view = scene_viewer_pane.createTab(hou.paneTabType.SceneViewer)  
+        
+    perspective =new_view.viewports()[-1]
+    settings = perspective.settings()
+    settings.setColorScheme(hou.viewportColorScheme.Dark)
     
 
     
