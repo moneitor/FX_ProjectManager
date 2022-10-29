@@ -145,7 +145,11 @@ if selection[0] == 0:
     <memberTool name="FixLabsCache"/>
     <memberTool name="create_fetch"/>
     <memberTool name="omerge"/>
+<<<<<<< HEAD
     <memberTool name="viewportReset"/>
+=======
+    <memberTool name="updateView"/>
+>>>>>>> c23d147ac0d46508b901eea38cae77371ddf9be8
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -475,22 +479,32 @@ if selected:
         pos = node.position()   
         new_pos = pos + hou.Vector2((0, -1.5))
         parent = node.parent()
+        null = parent.createNode("null", "OUT_{}".format(node.name()))
+        null.setPosition(pos)
+        null.move((0, -1.5))
+        
         omerge = parent.createNode("object_merge", "om_{}".format(node.name()))
         omerge.setPosition(pos)
-        omerge.move((0, -1.5))
+        omerge.move((0, -2.5))
         omerge.setColor(hou.Color(0.451, 0.369, 0.769))
         
-        relpath = omerge.relativePathTo(node)
+        null.setInput(0, node)
+        
+        relpath = omerge.relativePathTo(null)
         
         if isCtrlClick:
             omerge.parm("objpath1").set(relpath)
         
         else:
-            omerge.parm("objpath1").set(node.path())
+            omerge.parm("objpath1").set(null.path())
         ]]></script>
   </tool>
 
+<<<<<<< HEAD
   <tool name="viewportReset" label="Viewport Reset" icon="OBJ_viewportisolator">
+=======
+  <tool name="updateView" label="Update Viewer" icon="OBJ_viewportisolator">
+>>>>>>> c23d147ac0d46508b901eea38cae77371ddf9be8
     <script scriptType="python"><![CDATA[import hou
 
 def update_scene_view():
@@ -510,7 +524,9 @@ def update_scene_view():
     old_color = old_perspective.settings().colorScheme()
     
     
+    
     if scene_viewer:
+<<<<<<< HEAD
         
         scene_viewer.close()
     else:
@@ -524,6 +540,21 @@ def update_scene_view():
         settings = perspective.settings()
         settings.setColorScheme(old_color)
         
+=======
+        #pass
+        scene_viewer.close()
+    else:
+        #pass
+        hou.ui.displayMessage("No Scene View present")
+        
+    if scene_viewer_pane:
+        #pass
+        new_view = scene_viewer_pane.createTab(hou.paneTabType.SceneViewer)  
+        
+    perspective =new_view.viewports()[-1]
+    settings = perspective.settings()
+    settings.setColorScheme(hou.viewportColorScheme.Dark)
+>>>>>>> c23d147ac0d46508b901eea38cae77371ddf9be8
     
 
     
