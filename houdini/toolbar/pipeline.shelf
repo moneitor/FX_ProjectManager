@@ -143,6 +143,8 @@ if selection[0] == 0:
     <memberTool name="compareParms"/>
     <memberTool name="userprops"/>
     <memberTool name="resetViewport"/>
+    <memberTool name="merge"/>
+    <memberTool name="rop_fetch"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -284,26 +286,30 @@ if len(hou.selectedNodes()) == 2:
   <tool name="userprops" label="User Properties" icon="SOP_alembic">
     <script scriptType="python"><![CDATA[import os
 import json
+
+
 from PySide2 import QtCore, QtWidgets, QtGui
 from PySide2.QtWidgets import QTreeWidget, QTreeWidgetItem
 
-#parentHou = hou.ui.mainQtWindow()
-parentHou = hou.qt.mainWindow()
+parentHou = hou.ui.mainQtWindow()
 
 class DisplayUserProperties(QtWidgets.QWidget):
     def __init__(self, parent=parentHou):
         super(DisplayUserProperties, self).__init__()
-       
+        
         self.setMaximumSize(800,900)
         self.setMinimumSize(500,500)
-        self.setWindowTitle("User Properties ABC")  
+        self.setWindowTitle("Simple Dialog")  
+
         self.widgets()
         self.layout()
         self.connections()      
         self.data_type = 0
-       
+        
         self.iterate_data_structure()
-    def widgets(self):    
+
+
+    def widgets(self):     
         self.rb_properties = QtWidgets.QRadioButton("Properties")
         self.rb_properties.setChecked(True)
         self.rb_metadata = QtWidgets.QRadioButton("Metadata")
@@ -311,37 +317,43 @@ class DisplayUserProperties(QtWidgets.QWidget):
         self.tree = QtWidgets.QTreeWidget()
         self.tree.setColumnCount(2)
         self.tree.setHeaderLabels(["Attribute", "Value"])
-       
+        
+
     def layout(self):
         form_layout = QtWidgets.QFormLayout()  
         form_layout.addRow("", self.rb_properties)
         form_layout.addRow("", self.rb_metadata)
         form_layout.addRow("Data", self.tree)
+
         buttons_layout = QtWidgets.QHBoxLayout()
         buttons_layout.addStretch()
         buttons_layout.addWidget(self.btn_cancel)        
+
         main_layout = QtWidgets.QVBoxLayout(self)        
         main_layout.addLayout(form_layout)
         main_layout.addLayout(buttons_layout)
-       
+        
+
     def connections(self):
         self.btn_cancel.clicked.connect(self.close)
         self.rb_properties.clicked.connect(self.use_properties)
         self.rb_metadata.clicked.connect(self.use_metadata)
-       
+        
         self.rb_properties.clicked.connect(self.iterate_data_structure)
         self.rb_metadata.clicked.connect(self.iterate_data_structure)
-       
-       
-    def use_properties(self):  
+
+        
+        
+    def use_properties(self):   
         self.data_type = 0
-       
-       
+        
+        
     def use_metadata(self):
         self.data_type = 1
-       
-       
-       
+        
+
+        
+        
     def extract_userProperties(self):
         self.tree.clear()
         selected_node = hou.selectedNodes()[0]
@@ -349,45 +361,48 @@ class DisplayUserProperties(QtWidgets.QWidget):
             geo = selected_node.geometry()
             for prim in geo.prims():
                 user_att = prim.attribValue("abc_userProperties")                    
-                user_att_dict = json.loads(user_att)      
+                user_att_dict = json.loads(user_att)       
+
                 return user_att_dict            
-           
-           
+            
+            
     def extract_userMetadata(self):
         selected_node = hou.selectedNodes()[0]
         if selected_node:
             geo = selected_node.geometry()
             for prim in geo.prims():            
-                user_meta = prim.attribValue("abc_userPropertiesMetadata")                
+                user_meta = prim.attribValue("abc_userPropertiesMetadata")                 
                 user_meta_dict = json.loads(user_meta)
-               
+                
                 return user_meta_dict
-       
-   
+        
+    
     def iterate_data_structure(self):
         elements = []
-       
+        
         properties = self.extract_userProperties()
         metadata = self.extract_userMetadata()  
-       
+        
         if self.data_type == 0:
             data_to_use = properties
         if self.data_type == 1:
             data_to_use = metadata
-       
-       
-        for key, values in data_to_use.items():
-            attribute = QtWidgets.QTreeWidgetItem([key, str(values)])            
-            #for value in values:
-                #att_value = QtWidgets.QTreeWidgetItem([value, "10"])                
-                #attribute = QtWidgets.QTreeWidgetItem([key, value])                
-                #attribute.addChild(att_value)
-               
-            elements.append(attribute)
-           
-        self.tree.insertTopLevelItems(0, elements)
-       
-       
+        
+        if data_to_use:
+            for key, values in data_to_use.items():
+                attribute = QtWidgets.QTreeWidgetItem([key, str(values)])            
+                #for value in values:
+                    #att_value = QtWidgets.QTreeWidgetItem([value, "10"])                
+                    #attribute = QtWidgets.QTreeWidgetItem([key, value])                
+                    #attribute.addChild(att_value)
+                    
+                elements.append(attribute)
+                
+            self.tree.insertTopLevelItems(0, elements)
+
+
+
+
 def run_app():
     # check if the dialog already exist and delete it
     # so it opens a new one
@@ -399,14 +414,12 @@ def run_app():
     app = DisplayUserProperties()
     app.setParent(parentHou, QtCore.Qt.Window)
     app.setStyle(QtWidgets.QStyleFactory.create("fusion"))    
-    app.show()  
-   
-   
+    app.show()
+    
 selected_node = hou.selectedNodes()
 
 if selected_node:
-    if "alembic" in selected_node[0].type().name():
-        run_app()]]></script>
+    run_app()]]></script>
   </tool>
 
   <tool name="resetViewport" label="Reset Viewport" icon="OBJ_camera">
@@ -448,5 +461,54 @@ if selected_node:
         
         
 update_scene_view()]]></script>
+  </tool>
+
+  <tool name="merge" label="Object Merge" icon="SOP_object_merge">
+    <script scriptType="python"><![CDATA[isCtrlClick = kwargs["ctrlclick"]
+
+"""If shelf is ctrl+click pressed, then the relative path of the node
+    will be used"""
+selected = hou.selectedNodes()
+
+if selected:    
+
+    for node in selected:
+        node.setColor(hou.Color(0.451, 0.369, 0.769))
+        pos = node.position()   
+        new_pos = pos + hou.Vector2((0, -1.5))
+        parent = node.parent()
+        null = parent.createNode("null", "OUT_{}".format(node.name()))
+        null.setPosition(pos)
+        null.move((0, -1.5))
+        
+        omerge = parent.createNode("object_merge", "om_{}".format(node.name()))
+        omerge.setPosition(pos)
+        omerge.move((0, -2.5))
+        omerge.setColor(hou.Color(0.451, 0.369, 0.769))
+        
+        null.setInput(0, node)
+        
+        relpath = omerge.relativePathTo(null)
+        
+        if isCtrlClick:
+            omerge.parm("objpath1").set(relpath)
+        
+        else:
+            omerge.parm("objpath1").set(null.path())]]></script>
+  </tool>
+
+  <tool name="rop_fetch" label="ROP Fetch" icon="SOP_filecache">
+    <script scriptType="python"><![CDATA[import hou
+
+nodes = hou.selectedNodes()
+out = hou.node("/out")
+
+if nodes:
+    for node in nodes:
+        if "labs::filecache" in node.type().name():
+            node.setColor(hou.Color(0.89,0.412,0.761))
+            rop_geo = hou.node(node.path() + "/render")    
+            fetch = out.createNode("fetch", "out_{}".format(node.name()) )
+            fetch.parm("source").set(rop_geo.path())]]></script>
   </tool>
 </shelfDocument>
