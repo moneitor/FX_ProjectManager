@@ -141,13 +141,276 @@ if selection[0] == 0:
     <memberTool name="dependent"/>
     <memberTool name="cp_parameters"/>
     <memberTool name="compareParms"/>
-    <memberTool name="userProperties"/>
+    <memberTool name="userprops"/>
+    <memberTool name="resetViewport"/>
   </toolshelf>
 
-  <tool name="viewportReset" label="Viewport Reset" icon="OBJ_viewportisolator">
+  <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
+    <script scriptType="python"><![CDATA[import importlib
+from PySide2.QtWidgets import QMessageBox
+from PySide2 import QtWidgets
+from ppm_hdas import create_hda_ui as c
+importlib.reload(c)
+from ppm_hdas import create_hda_logic as l
+importlib.reload(l)
+node = None
+if hou.selectedNodes():
+    
+    node = hou.selectedNodes()[0]
+    if node.canCreateDigitalAsset():
+        node_ptg = node.parmTemplateGroup()
+        
+        for i in range(4):
+            lbl_parm = "label" + str(i + 1)
+            
+            if node.parm(lbl_parm) is not None:
+                node_ptg.remove(lbl_parm)
+                
+    
+        new_hda = c.HDA_Save()
+        result = new_hda.exec_()
+        
+        if result == QtWidgets.QDialog.Accepted:
+            _name = new_hda.return_name()     
+            _path = new_hda.return_path() 
+            _version = new_hda.return_version()     
+            _inputs = new_hda.return_inputs()   
+            _description = new_hda.return_description()
+            
+            _name = "ppm::{}::{}".format(_name, _version)
+            
+            otl_new_node = node.createDigitalAsset(name = _name,
+                                    hda_file_name=_path,
+                                    description=_name.split("::")[1], 
+                                    comment=_description, 
+                                    min_num_inputs=_inputs, 
+                                    version=_version)  
+            
+                                    
+            print("Comment: {}".format(_description))
+                                    
+            otl_new_node.type().definition().setParmTemplateGroup(node_ptg)
+                                    
+                                    
+else:
+    msgBoxSave = QMessageBox()
+    msgBoxSave.setText('Select a node that can be converted into an HDA')
+    msgBoxSave.exec_()]]></script>
+  </tool>
+
+  <tool name="frameRange" label="Set Frame Range" icon="SOP_agentclip">
+    <script scriptType="python"><![CDATA[import hou
+import os
+
+hou.playbar.setFrameRange(int(os.getenv("DFSTART")), int(os.getenv("DFEND")))
+hou.playbar.setPlaybackRange(int(os.getenv("DFSTART")), int(os.getenv("DFEND")))
+hou.playbar.jumpToNextKeyframe()]]></script>
+  </tool>
+
+  <tool name="cp_parameters" label="Copy Parameters" icon="SOP_attribcopy">
+    <script scriptType="python"><![CDATA["""
+Copy parameters from node A to node B
+"""
+
+import hou
+
+if len(hou.selectedNodes()) == 2:
+    node_source = hou.selectedNodes()[0]
+    node_target = hou.selectedNodes()[1]
+    
+    print(node_source.name(), node_target.name())
+    
+    nptg_source = node_source.parmTemplateGroup()
+    nptg_target = node_target.parmTemplateGroup()
+    
+    for i in range(4):
+        lbl_parm = "label" + str(i + 1)
+        print(lbl_parm)
+        
+        if node_target.parm(lbl_parm) is not None:
+            nptg_target.remove(lbl_parm)
+            print("removing: {}".format(lbl_parm))
+    
+    node_target.setParmTemplateGroup(nptg_source)
+    
+else:
+    hou.ui.displayMessage("""Please select two nodes, the first node is the one that contains
+    the parameters, and the second one is the one where you want to copy the parameters""")]]></script>
+  </tool>
+
+  <tool name="dependent" label="Show Dependent Nodes" icon="SOP_attribfade">
+    <script scriptType="python"><![CDATA["""
+Displays a list of nodes that depend on this node
+"""
+
+node = hou.selectedNodes()[0]
+
+if node:
+    lst_nodes = [n.path() for n in node.dependents() if node.name() not in n.path()]
+    
+    hou.ui.selectFromList(lst_nodes, column_header="Dependent Nodes")
+    ]]></script>
+  </tool>
+
+  <tool name="compareParms" label="Compare Parameters" icon="SOP_attribcreate-2.0">
     <script scriptType="python"><![CDATA[import hou
 
-def update_scene_view():
+if len(hou.selectedNodes()) == 2:
+    node_source = hou.selectedNodes()[0]
+    node_target = hou.selectedNodes()[1]
+   
+    source_name = node_source.name()
+    target_name = node_target.name()
+   
+    parms_source = [parm for parm in node_source.parms()]
+    node_target  = [parm for parm in node_target.parms()]
+   
+    all_parms = zip(parms_source, node_target)
+    diff_parms = []
+   
+    for parm in all_parms:
+        if parm[0].eval() != parm[1].eval():
+            if "folder" not in parm[0].name():              
+                                                   
+                str_build = "Parm Name: %20s ===> Value 1:  %10s   , Value 2: %10s"% (parm[0].name() , str(parm[0].eval()), str(parm[1].eval()) )
+               
+                diff_parms.append(str_build)
+         
+    hou.ui.selectFromList(diff_parms, column_header="------------------------------------------------{}-----------------------------------------------{} ".format(source_name.upper(), target_name.upper()),
+                          message="""This list displays the parameters with different values
+                          between the two selected nodes""", width=800)]]></script>
+  </tool>
+
+  <tool name="userprops" label="User Properties" icon="SOP_alembic">
+    <script scriptType="python"><![CDATA[import os
+import json
+from PySide2 import QtCore, QtWidgets, QtGui
+from PySide2.QtWidgets import QTreeWidget, QTreeWidgetItem
+
+#parentHou = hou.ui.mainQtWindow()
+parentHou = hou.qt.mainWindow()
+
+class DisplayUserProperties(QtWidgets.QWidget):
+    def __init__(self, parent=parentHou):
+        super(DisplayUserProperties, self).__init__()
+       
+        self.setMaximumSize(800,900)
+        self.setMinimumSize(500,500)
+        self.setWindowTitle("User Properties ABC")  
+        self.widgets()
+        self.layout()
+        self.connections()      
+        self.data_type = 0
+       
+        self.iterate_data_structure()
+    def widgets(self):    
+        self.rb_properties = QtWidgets.QRadioButton("Properties")
+        self.rb_properties.setChecked(True)
+        self.rb_metadata = QtWidgets.QRadioButton("Metadata")
+        self.btn_cancel = QtWidgets.QPushButton("Close")
+        self.tree = QtWidgets.QTreeWidget()
+        self.tree.setColumnCount(2)
+        self.tree.setHeaderLabels(["Attribute", "Value"])
+       
+    def layout(self):
+        form_layout = QtWidgets.QFormLayout()  
+        form_layout.addRow("", self.rb_properties)
+        form_layout.addRow("", self.rb_metadata)
+        form_layout.addRow("Data", self.tree)
+        buttons_layout = QtWidgets.QHBoxLayout()
+        buttons_layout.addStretch()
+        buttons_layout.addWidget(self.btn_cancel)        
+        main_layout = QtWidgets.QVBoxLayout(self)        
+        main_layout.addLayout(form_layout)
+        main_layout.addLayout(buttons_layout)
+       
+    def connections(self):
+        self.btn_cancel.clicked.connect(self.close)
+        self.rb_properties.clicked.connect(self.use_properties)
+        self.rb_metadata.clicked.connect(self.use_metadata)
+       
+        self.rb_properties.clicked.connect(self.iterate_data_structure)
+        self.rb_metadata.clicked.connect(self.iterate_data_structure)
+       
+       
+    def use_properties(self):  
+        self.data_type = 0
+       
+       
+    def use_metadata(self):
+        self.data_type = 1
+       
+       
+       
+    def extract_userProperties(self):
+        self.tree.clear()
+        selected_node = hou.selectedNodes()[0]
+        if selected_node:
+            geo = selected_node.geometry()
+            for prim in geo.prims():
+                user_att = prim.attribValue("abc_userProperties")                    
+                user_att_dict = json.loads(user_att)      
+                return user_att_dict            
+           
+           
+    def extract_userMetadata(self):
+        selected_node = hou.selectedNodes()[0]
+        if selected_node:
+            geo = selected_node.geometry()
+            for prim in geo.prims():            
+                user_meta = prim.attribValue("abc_userPropertiesMetadata")                
+                user_meta_dict = json.loads(user_meta)
+               
+                return user_meta_dict
+       
+   
+    def iterate_data_structure(self):
+        elements = []
+       
+        properties = self.extract_userProperties()
+        metadata = self.extract_userMetadata()  
+       
+        if self.data_type == 0:
+            data_to_use = properties
+        if self.data_type == 1:
+            data_to_use = metadata
+       
+       
+        for key, values in data_to_use.items():
+            attribute = QtWidgets.QTreeWidgetItem([key, str(values)])            
+            #for value in values:
+                #att_value = QtWidgets.QTreeWidgetItem([value, "10"])                
+                #attribute = QtWidgets.QTreeWidgetItem([key, value])                
+                #attribute.addChild(att_value)
+               
+            elements.append(attribute)
+           
+        self.tree.insertTopLevelItems(0, elements)
+       
+       
+def run_app():
+    # check if the dialog already exist and delete it
+    # so it opens a new one
+    try:
+        app.close()
+        app.deleteLater()
+    except:
+        pass
+    app = DisplayUserProperties()
+    app.setParent(parentHou, QtCore.Qt.Window)
+    app.setStyle(QtWidgets.QStyleFactory.create("fusion"))    
+    app.show()  
+   
+   
+selected_node = hou.selectedNodes()
+
+if selected_node:
+    if "alembic" in selected_node[0].type().name():
+        run_app()]]></script>
+  </tool>
+
+  <tool name="resetViewport" label="Reset Viewport" icon="OBJ_camera">
+    <script scriptType="python"><![CDATA[def update_scene_view():
     panes = hou.ui.panes()
     scene_viewer = None
     scene_viewer_pane = None
@@ -181,9 +444,9 @@ def update_scene_view():
         new_view = scene_viewer_pane.createTab(hou.paneTabType.SceneViewer) 
         perspective = new_view.viewports()[-1]
         settings = perspective.settings()
-        settings.setColorScheme(old_color)      
-
-    
+        settings.setColorScheme(old_color) 
+        
+        
 update_scene_view()]]></script>
   </tool>
 </shelfDocument>
