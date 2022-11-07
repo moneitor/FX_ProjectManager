@@ -473,13 +473,14 @@ selected = hou.selectedNodes()
 if selected:    
 
     for node in selected:
-        node.setColor(hou.Color(0.451, 0.369, 0.769))
+        
         pos = node.position()   
         new_pos = pos + hou.Vector2((0, -1.5))
         parent = node.parent()
         null = parent.createNode("null", "OUT_{}".format(node.name()))
         null.setPosition(pos)
         null.move((0, -1.5))
+        null.setColor(hou.Color(0.451, 0.369, 0.769))
         
         omerge = parent.createNode("object_merge", "om_{}".format(node.name()))
         omerge.setPosition(pos)
