@@ -464,42 +464,31 @@ update_scene_view()]]></script>
   </tool>
 
   <tool name="merge" label="Object Merge" icon="SOP_object_merge">
-    <script scriptType="python"><![CDATA[isCtrlClick = kwargs["ctrlclick"]
+    <script scriptType="python"><![CDATA[import importlib
 
-"""If shelf is ctrl+click pressed, then the relative path of the node
-    will be used"""
-selected = hou.selectedNodes()
+from ppm_utilities import node_utils as node_utils
+importlib.reload(node_utils)
 
-if selected:    
+isCtrlClick = kwargs["ctrlclick"] # Checks if ctrlclick was used or not
 
-    for node in selected:
-        
-        pos = node.position()   
-        new_pos = pos + hou.Vector2((0, -1.5))
-        parent = node.parent()
-        null = parent.createNode("null", "OUT_{}".format(node.name()))
-        null.setPosition(pos)
-        null.move((0, -1.5))
-        null.setColor(hou.Color(0.451, 0.369, 0.769))
-        
-        omerge = parent.createNode("object_merge", "om_{}".format(node.name()))
-        omerge.setPosition(pos)
-        omerge.move((0, -2.5))
-        omerge.setColor(hou.Color(0.451, 0.369, 0.769))
-        
-        null.setInput(0, node)
-        
-        relpath = omerge.relativePathTo(null)
-        
-        if isCtrlClick:
-            omerge.parm("objpath1").set(relpath)
-        
-        else:
-            omerge.parm("objpath1").set(null.path())]]></script>
+
+node_utils.create_object_merge(isCtrlClick)
+
+]]></script>
   </tool>
 
   <tool name="rop_fetch" label="ROP Fetch" icon="SOP_filecache">
-    <script scriptType="python"><![CDATA[import hou
+    <script scriptType="python"><![CDATA[import importlib
+
+from ppm_utilities import node_utils as node_utils
+importlib.reload(node_utils)
+
+
+node_utils.create_rop_fetch()
+
+'''
+
+import hou
 
 nodes = hou.selectedNodes()
 out = hou.node("/out")
@@ -510,6 +499,6 @@ if nodes:
             node.setColor(hou.Color(0.89,0.412,0.761))
             rop_geo = hou.node(node.path() + "/render")    
             fetch = out.createNode("fetch", "out_{}".format(node.name()) )
-            fetch.parm("source").set(rop_geo.path())]]></script>
+            fetch.parm("source").set(rop_geo.path())''']]></script>
   </tool>
 </shelfDocument>
