@@ -194,10 +194,10 @@ if hou.selectedNodes():
             otl_new_node.type().definition().setParmTemplateGroup(node_ptg)
                                     
                                     
-else:
-    msgBoxSave = QMessageBox()
-    msgBoxSave.setText('Select a node that can be converted into an HDA')
-    msgBoxSave.exec_()]]></script>
+    else:
+        msgBoxSave = QMessageBox()
+        msgBoxSave.setText('Select a node that can be converted into an HDA')
+        msgBoxSave.exec_()]]></script>
   </tool>
 
   <tool name="frameRange" label="Set Frame Range" icon="SOP_agentclip">

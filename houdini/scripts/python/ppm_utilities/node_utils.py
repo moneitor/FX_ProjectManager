@@ -33,10 +33,11 @@ def create_object_merge(ctrl_click):
             relpath = omerge.relativePathTo(null)
             
             if isCtrlClick:
-                omerge.parm("objpath1").set(relpath)
+                omerge.parm("objpath1").set(null.path())
             
             else:
-                omerge.parm("objpath1").set(null.path())
+                
+                omerge.parm("objpath1").set(relpath)
                 
                 
                 
