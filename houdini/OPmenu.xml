@@ -9,38 +9,16 @@
         <scriptItem id="h.ppm_object_merge">
             <label>Create Object Merge</label>         
             <scriptCode><![CDATA[import hou
-isCtrlClick = kwargs["ctrlclick"]
 
-"""If shelf is ctrl+click pressed, then the relative path of the node
-    will be used"""
-selected = hou.selectedNodes()
+import importlib
 
-if selected:    
+from ppm_utilities import node_utils as node_utils
+importlib.reload(node_utils)
 
-    for node in selected:
-        
-        pos = node.position()   
-        new_pos = pos + hou.Vector2((0, -1.5))
-        parent = node.parent()
-        null = parent.createNode("null", "OUT_{}".format(node.name()))
-        null.setPosition(pos)
-        null.move((0, -1.5))
-        null.setColor(hou.Color(0.451, 0.369, 0.769))
-        
-        omerge = parent.createNode("object_merge", "om_{}".format(node.name()))
-        omerge.setPosition(pos)
-        omerge.move((0, -2.5))
-        omerge.setColor(hou.Color(0.451, 0.369, 0.769))
-        
-        null.setInput(0, node)
-        
-        relpath = omerge.relativePathTo(null)
-        
-        if isCtrlClick:
-            omerge.parm("objpath1").set(relpath)
-        
-        else:
-            omerge.parm("objpath1").set(null.path())]]></scriptCode>
+isCtrlClick = kwargs["ctrlclick"] # Checks if ctrlclick was used or not
+
+
+node_utils.create_object_merge(isCtrlClick)]]></scriptCode>
             
 
         </scriptItem> 
