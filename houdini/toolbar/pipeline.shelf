@@ -148,7 +148,28 @@ if selection[0] == 0:
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
-    <script scriptType="python"><![CDATA[import importlib
+    <script scriptType="python"><![CDATA[content = """<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+<!-- This file contains definitions of shelves, toolbars, and tools.
+It should not be hand-edited when it is being used by the application.
+Note, that two definitions of the same element are not allowed in
+a single file. -->
+<tool name="$HDA_DEFAULT_TOOL" label="$HDA_LABEL" icon="$HDA_ICON">
+    <toolMenuContext name="viewer">
+    <contextNetType>SOP</contextNetType>
+    </toolMenuContext>
+    <toolMenuContext name="network">
+    <contextOpType>$HDA_TABLE_AND_NAME</contextOpType>
+    </toolMenuContext>
+    <toolSubmenu>Digital Assets</toolSubmenu>
+    <script scriptType="python"><![CDATA[import soptoolutils
+soptoolutils.genericTool(kwargs, \'$HDA_NAME\')]]]]><![CDATA[></script>
+</tool>
+</shelfDocument>
+        """
+        
+
+import importlib
 from PySide2.QtWidgets import QMessageBox
 from PySide2 import QtWidgets
 from ppm_hdas import create_hda_ui as c
@@ -191,7 +212,30 @@ if hou.selectedNodes():
                                     
             print("Comment: {}".format(_description))
                                     
+            # Here we update the parm template group on the new definition
             otl_new_node.type().definition().setParmTemplateGroup(node_ptg)
+            
+            
+            new_definition = otl_new_node.type().definition()
+            
+            # On this part we are putting the otl inside the PPM menu entry
+            #if new_definition.hasSection("Tools.shelf"):
+            new_definition.addSection("Tools.shelf", content)
+            
+            tools_shelf = new_definition.sections()["Tools.shelf"]
+                
+            old_contents = tools_shelf.contents()
+                
+            new_menu_entry = "<toolSubmenu>PPM</toolSubmenu>"
+            new_contents = old_contents.replace("<toolSubmenu>Digital Assets</toolSubmenu>", new_menu_entry)
+                
+                
+            new_definition.addSection("Tools.shelf", new_contents)
+                
+
+            
+                
+        
                                     
                                     
     else:

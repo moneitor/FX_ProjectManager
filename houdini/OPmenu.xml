@@ -6,21 +6,16 @@
     <subMenu>
     <label>PPM</label>       
         
-        <scriptItem id="h.ppm_object_merge">
+        <scriptItem id="ppm_object_merge">
             <label>Create Object Merge</label>         
             <scriptCode><![CDATA[import hou
-
 import importlib
-
 from ppm_utilities import node_utils as node_utils
 importlib.reload(node_utils)
 
 isCtrlClick = kwargs["ctrlclick"] # Checks if ctrlclick was used or not
 
-
-node_utils.create_object_merge(isCtrlClick)]]></scriptCode>
-            
-
+node_utils.create_object_merge(isCtrlClick)]]></scriptCode>         
         </scriptItem> 
     </subMenu>
     </menu>
