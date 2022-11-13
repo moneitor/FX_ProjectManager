@@ -52,6 +52,7 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
         self.spn_inputs.valueChanged.connect(self.set_name)
         self.btn_save.clicked.connect(self.set_name)        
         self.btn_save.clicked.connect(self.accept)      
+        self.cb_global.currentTextChanged.connect(self.set_name)
 
 
   
@@ -69,13 +70,15 @@ class HDA_Save(QDialog, Ui_HDA_Manager_UI):
         self._name = self.ln_name.text()
         self._version = self.spn_version.text()
         self._number_of_inputs = int(self.spn_inputs.text())
+
+        pipe_name = "ppm." + self._name
         
         global_parameter = self.cb_global.currentText()
         
-        if global_parameter == "Project":
-            self._path = os.path.join(os.getenv("PPM_COMMON_HOU"), "otls", self._name) + "_{}.otllc".format(self._version.zfill(3))   
+        if global_parameter == "Project":            
+            self._path = os.path.join(os.getenv("PPM_COMMON_HOU"), "otls", pipe_name) + "_{}.otllc".format(self._version.zfill(3))   
         if global_parameter == "Globally":
-            self._path = os.path.join(os.getenv("GLOBAL_COMMON_HOU"), "otls", self._name) + "_{}.otllc".format(self._version.zfill(3))  
+            self._path = os.path.join(os.getenv("GLOBAL_COMMON_HOU"), "otls", pipe_name) + "_{}.otllc".format(self._version.zfill(3))  
             
         self.lbl_path.setText(self._path)      
 
