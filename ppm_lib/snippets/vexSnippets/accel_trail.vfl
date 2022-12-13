@@ -1,0 +1,47 @@
+//// EXAMPLE 1
+
+int samples = chi("samples");
+
+float dt = 1/float(samples);
+
+vector p = v@P;
+vector v = (v@v * f@TimeInc) * dt; 
+vector a = (v@accel * f@TimeInc * f@TimeInc) * dt;
+
+v *= -1;
+
+for (int i = 0; i < samples; i++){
+    
+    vector disp = v  + a * dt ;        
+    p += disp;    
+    int npt = addpoint(0, p);    
+    v += a * dt;    
+    
+}
+
+
+
+
+/////// EXAMPLE 2
+
+int samples = chi("samples");
+float dt = 1 / float(samples);
+
+vector p = v@P;
+vector v = v@v * @TimeInc;
+vector accel = v@accel * f@TimeInc * f@TimeInc;
+
+
+vector new_v = v * dt;
+vector new_accel = accel * dt * dt;
+
+new_v *= -1;
+
+
+for(int i = 0; i < samples; i++) {    
+    
+    p += new_v + new_accel;   
+    int newpt = addpoint(0, p);    
+    new_v += new_accel;
+}
+
