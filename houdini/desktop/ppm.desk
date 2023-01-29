@@ -26,6 +26,7 @@ root {
                     pane panetab18 -a 0 -l 0 -H /obj/ -T OBJ -m textport
                     pane panetab19 -a 1 -l 10 -H /obj/ -T OBJ -m pythonpanel
                     pane panetab20 -a 0 -l 10 -H /obj/ -T OBJ -m scenegraphtree
+                    pane panetab22 -a 0 -l 0 -H /obj/ -T OBJ -m datatree
                 }
             }
         }
@@ -62,7 +63,7 @@ scenegraphtree -S 0.25 -m 0 -p "/collections /lights" -c  -i  -o  -x 1 -s 1 -M 0
 parmeditor -T 0.25 -w 0 panetab5
 takelist -w 1 -G 0.5 panetab6
 performance -c on -d on -f on -g off -j on -k on -m off -n on -o on -t off -v on -p on -y on -u on -e off -r absolute -R seconds -w tree panetab12
-networkeditor -p '{\n	"obj:listmode":"0",\n	"sop:listmode":"0",\n	"showspareinputdep":"1",\n	"showchilddep":"1",\n	"showdep":"0",\n	"showtaskgraphperf":"0",\n	"taskgraphperfstatname":"Cook Time",\n	"perfstatname":"Time",\n	"showperfstats":"1",\n	"grouplistsplit":"0.75",\n	"showtree":"0",\n	"showtypesidebar":"0",\n	"taskgraphsortcriteria":"Automatic",\n	"showparmdialogmax":"1",\n	"treesplit":"0.25",\n	"palettesize":"150 150",\n	"typesidebarsplit":"0.25",\n	"taskgraphcollapsemode":"Off",\n	"workitemcolorattribute":"",\n	"gridmode":"0",\n	"showtimedep":"0",\n	"overviewbounds":"0.000000 0.000000 185.700000 220.500000",\n	"overviewmode":"2",\n	"showgrouplist":"0",\n	"palettemode":"0",\n	"useworkitemcolorattribute":"0",\n	"showtasksmenu":"1",\n	"backgroundimageediting":"0",\n	"backgroundimagebrightness":"1.0",\n	"gridystep":"1.0",\n	"palettecolors":"",\n	"showmenu":"1",\n	"gridxstep":"2.0",\n	"showparmdialog":"1"\n}\n' panetab7
+networkeditor -p '{\n	"sop:listmode":"0",\n	"obj:listmode":"0",\n	"showspareinputdep":"1",\n	"showchilddep":"1",\n	"showdep":"0",\n	"showtaskgraphperf":"0",\n	"taskgraphperfstatname":"Cook Time",\n	"perfstatname":"Time",\n	"showperfstats":"1",\n	"grouplistsplit":"0.75",\n	"showtree":"0",\n	"showtypesidebar":"0",\n	"taskgraphsortcriteria":"Automatic",\n	"showparmdialogmax":"1",\n	"treesplit":"0.25",\n	"palettesize":"150 150",\n	"typesidebarsplit":"0.25",\n	"taskgraphcollapsemode":"Off",\n	"workitemcolorattribute":"",\n	"gridmode":"0",\n	"showtimedep":"0",\n	"overviewbounds":"0.000000 0.000000 279.600000 237.300000",\n	"overviewmode":"2",\n	"showgrouplist":"0",\n	"palettemode":"0",\n	"useworkitemcolorattribute":"0",\n	"showtasksmenu":"1",\n	"backgroundimageediting":"0",\n	"backgroundimagebrightness":"1.0",\n	"gridystep":"1.0",\n	"palettecolors":"",\n	"showmenu":"1",\n	"gridxstep":"2.0",\n	"showparmdialog":"1"\n}\n' panetab7
 netcolumns -c display,xray,select,origin,capture,bone -n OBJ panetab7
 netcolumns -c display,render,template,selectabletemplate,highlight,unload,bypass,lock -n SOP panetab7
 netcolumns -c delscript,comment -n CHOPNET panetab7
@@ -80,7 +81,7 @@ netcolumns -c display,bypass,delscript,comment,input -n LOP panetab7
 netcolumns -c delscript,comment -n MGR panetab7
 netcolumns -c delscript,comment -n DIR panetab7
 treecontrol -a 0 -h 0 -i 1 -f 0 -O 0 -S 0 -D 0 -H 0 -V 0 -C 0 -I 0 -R 0 panetab8
-networkeditor -p '{\n	"showspareinputdep":"1",\n	"showchilddep":"1",\n	"showdep":"0",\n	"showtaskgraphperf":"0",\n	"taskgraphperfstatname":"Cook Time",\n	"perfstatname":"Time",\n	"showperfstats":"1",\n	"grouplistsplit":"0.75",\n	"showtree":"0",\n	"showtypesidebar":"0",\n	"taskgraphsortcriteria":"Automatic",\n	"showparmdialogmax":"1",\n	"treesplit":"0.25",\n	"palettesize":"150 150",\n	"typesidebarsplit":"0.25",\n	"taskgraphcollapsemode":"Off",\n	"workitemcolorattribute":"",\n	"gridmode":"0",\n	"overviewbounds":"0.000000 0.000000 185.700000 220.500000",\n	"overviewmode":"2",\n	"showgrouplist":"0",\n	"palettemode":"0",\n	"useworkitemcolorattribute":"0",\n	"showtasksmenu":"1",\n	"backgroundimageediting":"0",\n	"backgroundimagebrightness":"1.0",\n	"gridystep":"1.0",\n	"palettecolors":"",\n	"showmenu":"1",\n	"gridxstep":"2.0",\n	"showparmdialog":"0"\n}\n' panetab17
+networkeditor -p '{\n	"showspareinputdep":"1",\n	"showchilddep":"1",\n	"showdep":"0",\n	"showtaskgraphperf":"0",\n	"taskgraphperfstatname":"Cook Time",\n	"perfstatname":"Time",\n	"showperfstats":"1",\n	"grouplistsplit":"0.75",\n	"showtree":"0",\n	"showtypesidebar":"0",\n	"taskgraphsortcriteria":"Automatic",\n	"showparmdialogmax":"1",\n	"treesplit":"0.25",\n	"palettesize":"150 150",\n	"typesidebarsplit":"0.25",\n	"taskgraphcollapsemode":"Off",\n	"workitemcolorattribute":"",\n	"gridmode":"0",\n	"overviewbounds":"0.000000 0.000000 279.600000 237.300000",\n	"overviewmode":"2",\n	"showgrouplist":"0",\n	"palettemode":"0",\n	"useworkitemcolorattribute":"0",\n	"showtasksmenu":"1",\n	"backgroundimageediting":"0",\n	"backgroundimagebrightness":"1.0",\n	"gridystep":"1.0",\n	"palettecolors":"",\n	"showmenu":"1",\n	"gridxstep":"2.0",\n	"showparmdialog":"0"\n}\n' panetab17
 netcolumns -c display,xray,select,origin,capture,bone -n OBJ panetab17
 netcolumns -c display,render,template,selectabletemplate,highlight,unload,bypass,lock -n SOP panetab17
 netcolumns -c delscript,comment -n CHOPNET panetab17
@@ -97,7 +98,7 @@ netcolumns -c delscript,comment -n TOPNET panetab17
 netcolumns -c display,bypass,delscript,comment,input -n LOP panetab17
 netcolumns -c delscript,comment -n MGR panetab17
 netcolumns -c delscript,comment -n DIR panetab17
-networkeditor -p '{\n	"showspareinputdep":"1",\n	"showchilddep":"1",\n	"showdep":"0",\n	"showtaskgraphperf":"0",\n	"taskgraphperfstatname":"Cook Time",\n	"perfstatname":"Time",\n	"showperfstats":"1",\n	"grouplistsplit":"0.75",\n	"showtree":"0",\n	"showtypesidebar":"0",\n	"taskgraphsortcriteria":"Automatic",\n	"showparmdialogmax":"1",\n	"treesplit":"0.25",\n	"palettesize":"150 150",\n	"typesidebarsplit":"0.25",\n	"taskgraphcollapsemode":"Off",\n	"workitemcolorattribute":"",\n	"gridmode":"0",\n	"overviewbounds":"0.000000 0.000000 185.700000 220.500000",\n	"overviewmode":"2",\n	"showgrouplist":"0",\n	"palettemode":"0",\n	"useworkitemcolorattribute":"0",\n	"showtasksmenu":"1",\n	"backgroundimageediting":"0",\n	"backgroundimagebrightness":"1.0",\n	"gridystep":"1.0",\n	"palettecolors":"",\n	"showmenu":"1",\n	"gridxstep":"2.0",\n	"showparmdialog":"0"\n}\n' panetab21
+networkeditor -p '{\n	"showspareinputdep":"1",\n	"showchilddep":"1",\n	"showdep":"0",\n	"showtaskgraphperf":"0",\n	"taskgraphperfstatname":"Cook Time",\n	"perfstatname":"Time",\n	"showperfstats":"1",\n	"grouplistsplit":"0.75",\n	"showtree":"0",\n	"showtypesidebar":"0",\n	"taskgraphsortcriteria":"Automatic",\n	"showparmdialogmax":"1",\n	"treesplit":"0.25",\n	"palettesize":"150 150",\n	"typesidebarsplit":"0.25",\n	"taskgraphcollapsemode":"Off",\n	"workitemcolorattribute":"",\n	"gridmode":"0",\n	"overviewbounds":"0.000000 0.000000 279.600000 237.300000",\n	"overviewmode":"2",\n	"showgrouplist":"0",\n	"palettemode":"0",\n	"useworkitemcolorattribute":"0",\n	"showtasksmenu":"1",\n	"backgroundimageediting":"0",\n	"backgroundimagebrightness":"1.0",\n	"gridystep":"1.0",\n	"palettecolors":"",\n	"showmenu":"1",\n	"gridxstep":"2.0",\n	"showparmdialog":"0"\n}\n' panetab21
 netcolumns -c display,xray,select,origin,capture,bone -n OBJ panetab21
 netcolumns -c display,render,template,selectabletemplate,highlight,unload,bypass,lock -n SOP panetab21
 netcolumns -c delscript,comment -n CHOPNET panetab21
@@ -114,3 +115,4 @@ netcolumns -c delscript,comment -n TOPNET panetab21
 netcolumns -c display,bypass,delscript,comment,input -n LOP panetab21
 netcolumns -c delscript,comment -n MGR panetab21
 netcolumns -c delscript,comment -n DIR panetab21
+datatree panetab22
