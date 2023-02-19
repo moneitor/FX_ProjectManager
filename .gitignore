@@ -4,7 +4,6 @@ __pycache__
 *.bgeo*
 *backup*
 *projects*
-*.hda*
 *.hdanc*
 *token*
 .env
