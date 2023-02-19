@@ -1,0 +1,29 @@
+function vector eigenVector( matrix3 myMatrix ; float errorMax){
+
+    vector eigenVal = rand(set(1,5,2));
+    float errorEstimate = 100;
+    float oldEigen = 0;
+   
+    while(errorEstimate  > errorMax) {
+
+        eigenVal = eigenVal * myMatrix;
+   
+        float maxC = max(eigenVal);
+       
+        errorEstimate = ((maxC - oldEigen)/ maxC) * 100;
+   
+        vector newEigen = set(eigenVal.x / maxC , eigenVal.y / maxC , eigenVal.z / maxC);
+   
+        eigenVal = newEigen;
+   
+        oldEigen = maxC;
+   
+        }
+       
+        eigenVal = normalize(eigenVal);
+        return eigenVal;
+       
+}
+
+v@eigen1 = eigenVector(3@__invInertiaTensor, 0.01);
+v@eigen2 = eigenVector(invert(3@__invInertiaTensor), 0.01);

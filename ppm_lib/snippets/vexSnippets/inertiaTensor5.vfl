@@ -1,0 +1,40 @@
+vector return_avg_of_attribute(int input; string att) {
+    int _npts = npoints(input);
+    vector avg = 0;
+    for (int i = 0; i < _npts; i++) {
+        vector fp = point(input, att, i);
+        avg += fp;
+    } 
+    vector  centroid = avg/_npts;
+    return centroid;
+}
+
+vector rav = return_avg_of_attribute(0, "P");
+
+float Ixx = 0;
+float Iyy = 0;
+float Izz = 0;
+float Ixy = 0;
+float Iyz = 0;
+float Ixz = 0;
+
+int npts = npoints(0);
+
+for (int i = 0; i < npts; i++) {
+    vector r = point(0, "P", i) - rav;
+    
+    Ixx += (r.r * r.r) + (r.z * r.z);
+    Iyy += (r.x * r.x) + (r.z * r.z);
+    Izz += (r.x * r.x) + (r.y * r.y);
+    Ixy += - r.x * r.y;
+    Iyz += - r.y * r.z;
+    Ixz += - r.x * r.z;
+}
+
+vector x, y, z;
+x = set(Ixx,Ixy,Ixz);
+y = set(Ixy,Iyy,Iyz);
+z = set(Ixz,Iyz,Izz);
+
+          
+3@__invInertiaTensor = invert(set(x, y, z) / npts);
