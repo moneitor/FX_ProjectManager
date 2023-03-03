@@ -145,6 +145,7 @@ if selection[0] == 0:
     <memberTool name="resetViewport"/>
     <memberTool name="merge"/>
     <memberTool name="rop_fetch"/>
+    <memberTool name="fixLabsCache"/>
   </toolshelf>
 
   <tool name="hda_publisher" label="HDA Publisher" icon="CROWDS_popsteerseek">
@@ -544,5 +545,23 @@ if nodes:
             rop_geo = hou.node(node.path() + "/render")    
             fetch = out.createNode("fetch", "out_{}".format(node.name()) )
             fetch.parm("source").set(rop_geo.path())''']]></script>
+  </tool>
+
+  <tool name="fixLabsCache" label="Fix Labs Cache" icon="SOP_polydoctor">
+    <script scriptType="python"><![CDATA[import hou
+
+labs_nodes = hou.selectedNodes()
+
+if labs_nodes:
+    for node in labs_nodes:
+        if "labs::filecache" in node.type().name():
+            node.parm("basename").set('`$OS`_`opname("..")`')
+            node.parm("hardenbasename").set(0)
+            node.parm("loadfromdisk").set(1)
+            node.setColor( hou.Color(0.89, 0.412, 0.761))
+        else:
+            continue
+else:
+    hou.ui.displayMessage("Please select at least one 'labs file cache'!")]]></script>
   </tool>
 </shelfDocument>
