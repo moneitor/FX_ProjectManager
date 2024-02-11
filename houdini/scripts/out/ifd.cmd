@@ -24,7 +24,7 @@ if ( "$arg1" != "" ) then
     opproperty -f -F "Driver" $arg1 mantra vm_binarygeometry
 
 
-    opparm $arg1 vm_picture '$HIP'/Render/'$OS'/'$OS'_render.'$F4'.exr
+    opparm $arg1 vm_picture '$HIP'/Render/'$OS'/'$OS'.'$F4'.exr
 
 endif
 
