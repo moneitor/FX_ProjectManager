@@ -62,7 +62,7 @@ main.run_app()]]></script>
 Double click the scene you want to open, and then press the Open button.]]></helpText>
     <script scriptType="python"><![CDATA[import importlib
 import hou
-from PySide2.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox
 
 from file_scripts import files_handling as f
 importlib.reload(f)
@@ -171,8 +171,8 @@ soptoolutils.genericTool(kwargs, \'$HDA_NAME\')]]]]><![CDATA[></script>
         
 
 import importlib
-from PySide2.QtWidgets import QMessageBox
-from PySide2 import QtWidgets
+from PySide6.QtWidgets import QMessageBox
+from PySide6 import QtWidgets
 from ppm_hdas import create_hda_ui as c
 importlib.reload(c)
 from ppm_hdas import create_hda_logic as l
@@ -333,8 +333,8 @@ if len(hou.selectedNodes()) == 2:
 import json
 
 
-from PySide2 import QtCore, QtWidgets, QtGui
-from PySide2.QtWidgets import QTreeWidget, QTreeWidgetItem
+from PySide6 import QtCore, QtWidgets, QtGui
+from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem
 
 parentHou = hou.ui.mainQtWindow()
 

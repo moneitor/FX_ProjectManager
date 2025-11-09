@@ -19,8 +19,10 @@ class PPM_NewProject(QDialog):
         self.connections()
         
         
-    def widgets(self):        
-        self.ln_shot_name = QSpinBox()
+    def widgets(self):      
+        # self.ln_shot_name_text = QLineEdit()  
+        # self.ln_shot_name_text.setPlaceholderText("Custom shot identifier")  
+        self.ln_shot_name = QSpinBox()        
         self.ln_shot_name.setMaximum(10000)
         self.ln_shot_name.setValue(10)
         self.cmb_firstFrame = QSpinBox()   
@@ -38,6 +40,7 @@ class PPM_NewProject(QDialog):
         self.lyt_v_main = QVBoxLayout()
         self.lyt_h_main = QHBoxLayout()
         self.form_main = QFormLayout()
+        # self.form_main.addRow("Shot Name:", self.ln_shot_name_text)
         self.form_main.addRow("Shot Number:", self.ln_shot_name)
         self.form_main.addRow("First Frame:", self.cmb_firstFrame)
         self.form_main.addRow("Last Frame:", self.cmb_lastFrame)
@@ -63,10 +66,17 @@ class PPM_NewProject(QDialog):
     def return_name(self):
         value = str(self.ln_shot_name.text())
         fixed_value = value.zfill(4)
+        # identifier = str(self.ln_shot_name_text.text())
+
+        # if identifier:
+        #     final_name = identifier + "_" + fixed_value
+        # else:
+        #     final_name = fixed_value
+        
         return fixed_value
     
     
-    def return_first_frame(self):        
+    def return_first_frame(self):    
         return self.cmb_firstFrame.text()
     
     

@@ -1,7 +1,7 @@
 from telnetlib import SE
 from .create_hda_logic import PPM_HDA
-from PySide2.QtWidgets import QDialog, QStyleFactory
-from PySide2 import QtCore
+from PySide6.QtWidgets import QDialog, QStyleFactory
+from PySide6 import QtCore
 
 import hou
 from .hda_saver_compile import Ui_HDA_Manager_UI

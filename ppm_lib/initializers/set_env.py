@@ -78,6 +78,7 @@ def set_env(fps, resx, resy, job, first_frame, last_frame, shot_path, project, c
         
     _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(HOU_INSTALLATION, "houdini", "otls")
     _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(HOU_INSTALLATION, "packages", "kinefx", "otls")
+    _env['HOUDINI_OTLSCAN_PATH'] += os.pathsep + os.path.join(HOU_INSTALLATION, "packages", "apex", "otls")
     
     print(" PRINTIIING BASE FOOOOOLDER {}".format(os.path.join(base_folder, "sidefx_packages", fxlabs_version, "otls")))
         

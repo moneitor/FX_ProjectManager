@@ -1,5 +1,5 @@
-from PySide2.QtWidgets import QDialog, QLineEdit, QPushButton, QSpinBox, QLabel, QHBoxLayout, QFormLayout, QVBoxLayout, QMessageBox, QStyleFactory, QWidget
-from PySide2 import QtCore, QtGui
+from PySide6.QtWidgets import QDialog, QLineEdit, QPushButton, QSpinBox, QLabel, QHBoxLayout, QFormLayout, QVBoxLayout, QMessageBox, QStyleFactory, QWidget
+from PySide6 import QtCore, QtGui
 import hou
 from utilityFunctions import fix_name
 
@@ -118,7 +118,8 @@ class FileSave(QWidget):
         version = self._return_version()
         
         
-        full_path = os.path.join(shot_path, "work", "fx", shot_name + "__" + file_name + "__v" + version + ".hiplc")
+        #full_path = os.path.join(shot_path, "work", "fx", shot_name + "__" + file_name + "__v" + version + ".hiplc")
+        full_path = os.path.join(shot_path, "work", "fx", shot_name + "__" + file_name + "__v" + version + ".hipnc")
         self.full_name_for_save = full_path
         
         self.display_path.setText(self.full_name_for_save)

@@ -1,5 +1,5 @@
-from PySide2.QtWidgets import QWidget, QListWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QStyleFactory, QMessageBox, QFormLayout
-from PySide2 import QtCore
+from PySide6.QtWidgets import QWidget, QListWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QStyleFactory, QMessageBox, QFormLayout
+from PySide6 import QtCore
 
 from .files_handling import Houdini_Files
 

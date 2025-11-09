@@ -18,7 +18,8 @@ def get_files_of_type(dir, fileType):
     if fils:
         return fils
     else:
-        print( "No files of type: {}".format(fileType))
+        print( "No files of type: {}".format(fileType))    
+
 
 
 
