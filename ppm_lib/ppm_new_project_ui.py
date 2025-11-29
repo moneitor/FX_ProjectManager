@@ -1,5 +1,5 @@
-from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QHBoxLayout, QWidget
-from PySide2.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QHBoxLayout, QWidget
+from PySide6.QtCore import Qt
 import sys
 
 

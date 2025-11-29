@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QApplication, QDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, QRadioButton, QSpinBox, QVBoxLayout, QFileDialog
+from PySide6.QtWidgets import QApplication, QDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, QRadioButton, QSpinBox, QVBoxLayout, QFileDialog
 from .file_utils import rename_files, renumber_files, fix_padding, get_first_file_from_sequence
 
 import sys

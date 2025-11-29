@@ -5,7 +5,7 @@ from db import database_interface as db
 from db import database_utils as db_u
 from directory import dir_structures as ds
 import os
-from PySide2.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox
 from sys import platform
 import stat
 from send2trash import send2trash # library to send stuff to the bin

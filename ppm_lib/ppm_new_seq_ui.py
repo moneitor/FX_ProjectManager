@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QApplication, QDialog, QFormLayout, QHBoxLayout, QLineEdit, QPushButton, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QDialog, QFormLayout, QHBoxLayout, QLineEdit, QPushButton, QVBoxLayout
 import sys
 
 

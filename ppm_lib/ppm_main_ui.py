@@ -9,12 +9,12 @@ moduleauthor::Hernan Llano <hernan@3d.gmail.com>
 
 
 
-from PySide2 import QtGui, QtWidgets
-from PySide2.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
+from PySide6 import QtGui, QtWidgets
+from PySide6.QtWidgets import QApplication, QComboBox, QDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
 import ppm_main_logic as logic
 import sys
 import ppm_logger.logger as lg
-from PySide2.QtCore import Qt
+from PySide6.QtCore import Qt
 from entity import project as pr
 from entity import sequence as sq
 from entity import shot as s
